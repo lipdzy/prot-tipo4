@@ -1,5 +1,5 @@
-  // Produtos de exemplo
-  const products = [
+  // Produtos de exemplo  
+const products = [
     { name: "Base Líquida Matte", price: "R$ 69,90", image: "https://i.postimg.cc/QdZNfwTK/carmedhellokitty.jpg" },
     { name: "Paleta de Sombras 12 Cores", price: "R$ 89,90", image: "https://i.postimg.cc/wML6cQ0d/perfume-hello-Kitty.jpg" },
     { name: "Batom Matte Vermelho", price: "R$ 45,00", image: "https://i.postimg.cc/kXrV0pKC/shampoo.jpg" },
@@ -44,7 +44,6 @@ const clearCartButton = document.getElementById('clearCart');
 const shareCartButton = document.getElementById('shareCart');
 const cartButton = document.getElementById('cartButton');
 const cartButtonCounter = document.getElementById('cartButtonCounter');
-
 let cartItems = [];
 const favorites = new Set();
 
@@ -361,211 +360,219 @@ function shareCartOnWhatsApp() {
     window.open(whatsappUrl, '_blank');
 }
 
-// Inicializar o catálogo
-window.onload = function() {
-    loadProducts();
-    updateCartCounter(); // Inicializar o contador do carrinho
-};
+// Função para remover acentos de uma string
+function removeAccents(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 // Função para pesquisar produtos
 function setupSearch() {
-const searchInput = document.getElementById('searchInput');
-const searchButton = document.getElementById('searchButton');
-const catalogContainer = document.getElementById('catalog');
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const catalogContainer = document.getElementById('catalog');
 
-// Criar elemento para mensagem de "nenhum resultado"
-const noResultsMessage = document.createElement('div');
-noResultsMessage.className = 'no-results';
-noResultsMessage.textContent = 'Nenhum produto encontrado para sua pesquisa.';
-noResultsMessage.style.display = 'none';
-
-// Adicionar a mensagem após o catálogo
-catalogContainer.parentNode.insertBefore(noResultsMessage, catalogContainer.nextSibling);
-
-// Função para realizar a pesquisa
-function performSearch() {
-const searchTerm = searchInput.value.toLowerCase().trim();
-const productCards = document.querySelectorAll('.product');
-let resultsFound = false;
-
-// Se o campo de pesquisa estiver vazio, mostrar todos os produtos
-if (!searchTerm) {
-    productCards.forEach(card => {
-        card.classList.remove('hidden');
-        
-        // Remover qualquer highlight anterior
-        const title = card.querySelector('.product-title');
-        title.innerHTML = title.textContent;
-    });
-    
+    // Criar elemento para mensagem de "nenhum resultado"
+    const noResultsMessage = document.createElement('div');
+    noResultsMessage.className = 'no-results';
+    noResultsMessage.textContent = 'Nenhum produto encontrado para sua pesquisa.';
     noResultsMessage.style.display = 'none';
-    return;
-}
+    // Adicionar a mensagem após o catálogo
+    catalogContainer.parentNode.insertBefore(noResultsMessage, catalogContainer.nextSibling);
 
-// Verificar cada produto
-productCards.forEach(card => {
-    const title = card.querySelector('.product-title');
-    const productName = title.textContent.toLowerCase();
-    
-    if (productName.includes(searchTerm)) {
-        resultsFound = true;
-        card.classList.remove('hidden');
-        
-        // Destacar o termo pesquisado no título
-        const regex = new RegExp(`(${searchTerm})`, 'gi');
-        title.innerHTML = title.textContent.replace(regex, '<span class="search-highlight">$1</span>');
-    } else {
-        card.classList.add('hidden');
-        
-        // Remover qualquer highlight anterior
-        title.innerHTML = title.textContent;
+    // Função para realizar a pesquisa
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const searchTermNoAccents = removeAccents(searchTerm);
+        const productCards = document.querySelectorAll('.product');
+        let resultsFound = false;
+
+        // Se o campo de pesquisa estiver vazio, mostrar todos os produtos
+        if (!searchTerm) {
+            productCards.forEach(card => {
+                card.classList.remove('hidden');
+                
+                // Remover qualquer highlight anterior
+                const title = card.querySelector('.product-title');
+                title.innerHTML = title.textContent;
+            });
+            
+            noResultsMessage.style.display = 'none';
+            return;
+        }
+
+        // Verificar cada produto
+        productCards.forEach(card => {
+            const title = card.querySelector('.product-title');
+            const productName = title.textContent.toLowerCase();
+            const productNameNoAccents = removeAccents(productName);
+            
+            // Verificar se o produto corresponde à pesquisa (com ou sem acentos)
+            if (productName.includes(searchTerm) || productNameNoAccents.includes(searchTermNoAccents)) {
+                resultsFound = true;
+                card.classList.remove('hidden');
+                
+                // Destacar o termo pesquisado no título
+                // Criamos um regex que considera variações com e sem acentos
+                let displayText = title.textContent;
+                let startIndex = productNameNoAccents.indexOf(searchTermNoAccents);
+                
+                if (startIndex !== -1) {
+                    const matchedText = productName.substring(startIndex, startIndex + searchTerm.length);
+                    const regex = new RegExp(matchedText, 'gi');
+                    displayText = displayText.replace(regex, `<span class="search-highlight">${matchedText}</span>`);
+                    title.innerHTML = displayText;
+                }
+            } else {
+                card.classList.add('hidden');
+                
+                // Remover qualquer highlight anterior
+                title.innerHTML = title.textContent;
+            }
+        });
+
+        // Mostrar mensagem se não houver resultados
+        if (!resultsFound) {
+            noResultsMessage.style.display = 'block';
+        } else {
+            noResultsMessage.style.display = 'none';
+        }
     }
-});
 
-// Mostrar mensagem se não houver resultados
-if (!resultsFound) {
-    noResultsMessage.style.display = 'block';
-} else {
-    noResultsMessage.style.display = 'none';
-}
-}
+    // Evento de clique no botão de pesquisa
+    searchButton.addEventListener('click', performSearch);
 
-// Evento de clique no botão de pesquisa
-searchButton.addEventListener('click', performSearch);
+    // Pesquisa em tempo real enquanto o usuário digita
+    searchInput.addEventListener('keyup', function(e) {
+        // Pesquisar imediatamente ou se pressionar Enter
+        if (e.key === 'Enter' || this.value.length >= 2 || this.value.length === 0) {
+            performSearch();
+        }
+    });
 
-// Pesquisa em tempo real enquanto o usuário digita
-searchInput.addEventListener('keyup', function(e) {
-// Pesquisar imediatamente ou se pressionar Enter
-if (e.key === 'Enter' || this.value.length >= 2 || this.value.length === 0) {
-    performSearch();
-}
-});
-
-// Pesquisar quando o campo de pesquisa perder o foco
-searchInput.addEventListener('blur', performSearch);
+    // Pesquisar quando o campo de pesquisa perder o foco
+    searchInput.addEventListener('blur', performSearch);
 }
 
-
-
-// Modificar a função window.onload para incluir a inicialização da pesquisa
-window.onload = function() {
-loadProducts();
-updateCartCounter();
-setupSearch(); // Inicializar a funcionalidade de pesquisa
 // Função para alternar disponibilidade do produto
 function toggleAvailability(productId) {
-  const product = document.getElementById(`product-${productId}`);
-  const availabilityBadge = product.querySelector('.availability-badge');
-  
-  if (availabilityBadge.classList.contains('available')) {
-    // Tornar produto indisponível
-    availabilityBadge.classList.remove('available');
-    availabilityBadge.classList.add('unavailable');
-    availabilityBadge.textContent = 'Indisponível';
+    const product = document.getElementById(`product-${productId}`);
+    const availabilityBadge = product.querySelector('.availability-badge');
     
-    // Desabilitar botões de ação
-    const cartBtn = product.querySelector('.cart-btn');
-    cartBtn.disabled = true;
-    cartBtn.classList.add('disabled');
+    if (availabilityBadge.classList.contains('available')) {
+        // Tornar produto indisponível
+        availabilityBadge.classList.remove('available');
+        availabilityBadge.classList.add('unavailable');
+        availabilityBadge.textContent = 'Indisponível';
+        
+        // Desabilitar botões de ação
+        const cartBtn = product.querySelector('.cart-btn');
+        cartBtn.disabled = true;
+        cartBtn.classList.add('disabled');
+        
+        // Adicionar classe de produto indisponível
+        product.classList.add('product-unavailable');
+    } else {
+        // Tornar produto disponível
+        availabilityBadge.classList.remove('unavailable');
+        availabilityBadge.classList.add('available');
+        availabilityBadge.textContent = 'Disponível';
+        
+        // Habilitar botões de ação
+        const cartBtn = product.querySelector('.cart-btn');
+        cartBtn.disabled = false;
+        cartBtn.classList.remove('disabled');
+        
+        // Remover classe de produto indisponível
+        product.classList.remove('product-unavailable');
+    }
     
-    // Adicionar classe de produto indisponível
-    product.classList.add('product-unavailable');
-  } else {
-    // Tornar produto disponível
-    availabilityBadge.classList.remove('unavailable');
-    availabilityBadge.classList.add('available');
-    availabilityBadge.textContent = 'Disponível';
-    
-    // Habilitar botões de ação
-    const cartBtn = product.querySelector('.cart-btn');
-    cartBtn.disabled = false;
-    cartBtn.classList.remove('disabled');
-    
-    // Remover classe de produto indisponível
-    product.classList.remove('product-unavailable');
-  }
-  
-  // Salvar status no localStorage
-  saveAvailabilityStatus(productId, availabilityBadge.classList.contains('available'));
+    // Salvar status no localStorage
+    saveAvailabilityStatus(productId, availabilityBadge.classList.contains('available'));
 }
 
 // Função para salvar status de disponibilidade
 function saveAvailabilityStatus(productId, isAvailable) {
-  const availabilityData = JSON.parse(localStorage.getItem('productAvailability')) || {};
-  availabilityData[productId] = isAvailable;
-  localStorage.setItem('productAvailability', JSON.stringify(availabilityData));
+    const availabilityData = JSON.parse(localStorage.getItem('productAvailability')) || {};
+    availabilityData[productId] = isAvailable;
+    localStorage.setItem('productAvailability', JSON.stringify(availabilityData));
 }
 
 // Função para carregar status de disponibilidade
 function loadAvailabilityStatus() {
-  const availabilityData = JSON.parse(localStorage.getItem('productAvailability')) || {};
-  
-  // Aplicar status salvo a cada produto
-  Object.keys(availabilityData).forEach(productId => {
-    const product = document.getElementById(`product-${productId}`);
-    if (product) {
-      const availabilityBadge = product.querySelector('.availability-badge');
-      const cartBtn = product.querySelector('.cart-btn');
-      
-      if (!availabilityData[productId]) {
-        // Produto indisponível
-        availabilityBadge.classList.remove('available');
-        availabilityBadge.classList.add('unavailable');
-        availabilityBadge.textContent = 'Indisponível';
-        cartBtn.disabled = true;
-        cartBtn.classList.add('disabled');
-        product.classList.add('product-unavailable');
-      } else {
-        // Produto disponível
-        availabilityBadge.classList.remove('unavailable');
-        availabilityBadge.classList.add('available');
-        availabilityBadge.textContent = 'Disponível';
-        cartBtn.disabled = false;
-        cartBtn.classList.remove('disabled');
-        product.classList.remove('product-unavailable');
-      }
-    }
-  });
+    const availabilityData = JSON.parse(localStorage.getItem('productAvailability')) || {};
+    
+    // Aplicar status salvo a cada produto
+    Object.keys(availabilityData).forEach(productId => {
+        const product = document.getElementById(`product-${productId}`);
+        if (product) {
+            const availabilityBadge = product.querySelector('.availability-badge');
+            const cartBtn = product.querySelector('.cart-btn');
+            
+            if (!availabilityData[productId]) {
+                // Produto indisponível
+                availabilityBadge.classList.remove('available');
+                availabilityBadge.classList.add('unavailable');
+                availabilityBadge.textContent = 'Indisponível';
+                cartBtn.disabled = true;
+                cartBtn.classList.add('disabled');
+                product.classList.add('product-unavailable');
+            } else {
+                // Produto disponível
+                availabilityBadge.classList.remove('unavailable');
+                availabilityBadge.classList.add('available');
+                availabilityBadge.textContent = 'Disponível';
+                cartBtn.disabled = false;
+                cartBtn.classList.remove('disabled');
+                product.classList.remove('product-unavailable');
+            }
+        }
+    });
 }
 
 // Função para adicionar badges de disponibilidade aos produtos
 function initializeAvailabilityBadges() {
-  const products = document.querySelectorAll('.product');
-  
-  products.forEach((product, index) => {
-    // Garantir que cada produto tenha um ID
-    if (!product.id) {
-      product.id = `product-${index + 1}`;
-    }
+    const products = document.querySelectorAll('.product');
     
-    // Adicionar ícone de controle de disponibilidade (apenas para administradores)
-    const productActions = product.querySelector('.product-actions');
-    const availabilityToggle = document.createElement('button');
-    availabilityToggle.className = 'availability-toggle';
-    availabilityToggle.innerHTML = '<i class="fas fa-power-off"></i>';
-    availabilityToggle.setAttribute('title', 'Alternar disponibilidade');
-    availabilityToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleAvailability(index + 1);
+    products.forEach((product, index) => {
+        // Garantir que cada produto tenha um ID
+        if (!product.id) {
+            product.id = `product-${index + 1}`;
+        }
+        
+        // Adicionar ícone de controle de disponibilidade (apenas para administradores)
+        const productActions = product.querySelector('.product-actions');
+        const availabilityToggle = document.createElement('button');
+        availabilityToggle.className = 'availability-toggle';
+        availabilityToggle.innerHTML = '<i class="fas fa-power-off"></i>';
+        availabilityToggle.setAttribute('title', 'Alternar disponibilidade');
+        availabilityToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleAvailability(index + 1);
+        });
+        productActions.appendChild(availabilityToggle);
+        
+        // Adicionar badge de disponibilidade
+        const badge = document.createElement('div');
+        badge.className = 'availability-badge available';
+        badge.textContent = 'Disponível';
+        
+        // Inserir badge no container da imagem do produto
+        const imageContainer = product.querySelector('.product-image-container');
+        imageContainer.appendChild(badge);
     });
-    productActions.appendChild(availabilityToggle);
     
-    // Adicionar badge de disponibilidade
-    const badge = document.createElement('div');
-    badge.className = 'availability-badge available';
-    badge.textContent = 'Disponível';
-    
-    // Inserir badge no container da imagem do produto
-    const imageContainer = product.querySelector('.product-image-container');
-    imageContainer.appendChild(badge);
-  });
-  
-  // Carregar status de disponibilidade salvos
-  loadAvailabilityStatus();
+    // Carregar status de disponibilidade salvos
+    loadAvailabilityStatus();
 }
 
 // Inicializar quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
-  initializeAvailabilityBadges();
+    initializeAvailabilityBadges();
 });
 
+// Inicializar o catálogo
+window.onload = function() {
+    loadProducts();
+    updateCartCounter(); // Inicializar o contador do carrinho
+    setupSearch(); // Inicializar a funcionalidade de pesquisa
 };
