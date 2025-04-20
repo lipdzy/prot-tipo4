@@ -325,7 +325,7 @@ main {
 
 .product-image-container {
     width: 100%;
-    height: 76%; /* Altura aumentada para proporção vertical */
+    height: 72%; /* Altura reduzida para dar mais espaço aos detalhes */
     overflow: hidden;
     cursor: pointer;
     position: relative;
@@ -348,7 +348,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 24%; /* Aumentada a altura para mais espaço */
+    height: 28%; /* Aumentada a altura para mais espaço */
     border-top: none; /* Removido border para aproximar da imagem */
 }
 
@@ -363,24 +363,32 @@ main {
 .product-title-price {
     width: 100%; /* Garante que o título ocupe toda a largura */
     margin-bottom: 5px; /* Espaço entre título/preço e botões */
+    display: flex;
+    flex-direction: column;
+    height: 70%; /* Aumentado para dar mais espaço ao título */
 }
 
 .product-title {
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 2px; /* Reduzido espaço entre título e preço */
+    margin-bottom: 4px; /* Aumentado espaço entre título e preço */
     color: var(--accent-color);
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%; /* Título ocupa toda a largura disponível */
+    /* Alterado de nowrap para permitir 2 linhas */
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.2;
 }
 
 .product-price {
     font-size: 12px; /* Aumentado o tamanho da fonte do preço */
     font-weight: bold;
     color: var(--text-color);
-    margin-top: 1px; /* Reduzido espaço */
+    margin-top: 2px; /* Aumentado espaço */
 }
 
 /* AJUSTE: Movido os botões para baixo do título/preço */
@@ -388,7 +396,8 @@ main {
     display: flex;
     justify-content: flex-end; /* Alinha os botões à direita */
     gap: 6px;
-    margin-top: 1px; /* Espaço entre preço e botões */
+    margin-top: 2px; /* Espaço entre preço e botões */
+    height: 30%;
 }
 
 .favorite-btn, .cart-btn {
@@ -885,22 +894,25 @@ footer p {
     }
     
     .product-image-container {
-        height: 75%; /* Mantendo a proporção vertical */
+        height: 70%; /* Reduzido para dar mais espaço aos detalhes */
     }
     
     /* AJUSTE: Aumentada a altura dos detalhes para acomodar melhor em telas muito pequenas */
     .product-details {
-        height: 25%;
+        height: 30%;
         padding: 6px 8px;
+    }
+    
+    .product-title-price {
+        height: 75%; /* Aumentado para dar mais espaço ao título */
     }
     
     .product-title {
         font-size: 12px;
-        margin-bottom: 1px;
+        margin-bottom: 2px;
         /* Garantir que o texto não ultrapasse o container */
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        -webkit-line-clamp: 2; /* Limita a 2 linhas */
+        line-height: 1.2;
     }
     
     .product-price {
@@ -911,6 +923,7 @@ footer p {
     .product-actions {
         gap: 4px;
         margin-top: 2px;
+        height: 25%;
     }
     
     .favorite-btn, .cart-btn {

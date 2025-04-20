@@ -3,7 +3,7 @@ const products = [
     { name: "Base Líquida Matte", price: "R$ 69,90", image: "https://i.postimg.cc/QdZNfwTK/carmedhellokitty.jpg" },
     { name: "Paleta de Sombras 12 Cores", price: "R$ 89,90", image: "https://i.postimg.cc/wML6cQ0d/perfume-hello-Kitty.jpg" },
     { name: "Batom Matte Vermelho", price: "R$ 45,00", image: "https://i.postimg.cc/kXrV0pKC/shampoo.jpg" },
-    { name: "Máscara de Cílios Volume", price: "R$ 58,50", image: "/api/placeholder/400/300" },
+    { name: "Buquê de Rosas Vermeleha", price: "R$ 120,00", image: "https://i.postimg.cc/52HMdNWb/rosa.jpg" },
     { name: "Pó Compacto Translúcido", price: "R$ 62,00", image: "/api/placeholder/400/300" },
     { name: "Sérum Facial Hidratante", price: "R$ 79,90", image: "/api/placeholder/400/300" },
     { name: "Protetor Solar FPS 50", price: "R$ 72,00", image: "/api/placeholder/400/300" },
@@ -342,7 +342,7 @@ function shareCartOnWhatsApp() {
         return;
     }
     
-    let message = '*Meu Pedido na Glamour Cosméticos*\n\n';
+    let message = '*Olá, gostaria de fazer meu pedido:*\n\n';
     let total = 0;
     
     cartItems.forEach(item => {
@@ -354,7 +354,6 @@ function shareCartOnWhatsApp() {
     });
     
     message += `\n*Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
-    message += 'Gostaria de confirmar este pedido!';
     
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -453,122 +452,6 @@ function setupSearch() {
     searchInput.addEventListener('blur', performSearch);
 }
 
-// Função para alternar disponibilidade do produto
-function toggleAvailability(productId) {
-    const product = document.getElementById(`product-${productId}`);
-    const availabilityBadge = product.querySelector('.availability-badge');
-    
-    if (availabilityBadge.classList.contains('available')) {
-        // Tornar produto indisponível
-        availabilityBadge.classList.remove('available');
-        availabilityBadge.classList.add('unavailable');
-        availabilityBadge.textContent = 'Indisponível';
-        
-        // Desabilitar botões de ação
-        const cartBtn = product.querySelector('.cart-btn');
-        cartBtn.disabled = true;
-        cartBtn.classList.add('disabled');
-        
-        // Adicionar classe de produto indisponível
-        product.classList.add('product-unavailable');
-    } else {
-        // Tornar produto disponível
-        availabilityBadge.classList.remove('unavailable');
-        availabilityBadge.classList.add('available');
-        availabilityBadge.textContent = 'Disponível';
-        
-        // Habilitar botões de ação
-        const cartBtn = product.querySelector('.cart-btn');
-        cartBtn.disabled = false;
-        cartBtn.classList.remove('disabled');
-        
-        // Remover classe de produto indisponível
-        product.classList.remove('product-unavailable');
-    }
-    
-    // Salvar status no localStorage
-    saveAvailabilityStatus(productId, availabilityBadge.classList.contains('available'));
-}
-
-// Função para salvar status de disponibilidade
-function saveAvailabilityStatus(productId, isAvailable) {
-    const availabilityData = JSON.parse(localStorage.getItem('productAvailability')) || {};
-    availabilityData[productId] = isAvailable;
-    localStorage.setItem('productAvailability', JSON.stringify(availabilityData));
-}
-
-// Função para carregar status de disponibilidade
-function loadAvailabilityStatus() {
-    const availabilityData = JSON.parse(localStorage.getItem('productAvailability')) || {};
-    
-    // Aplicar status salvo a cada produto
-    Object.keys(availabilityData).forEach(productId => {
-        const product = document.getElementById(`product-${productId}`);
-        if (product) {
-            const availabilityBadge = product.querySelector('.availability-badge');
-            const cartBtn = product.querySelector('.cart-btn');
-            
-            if (!availabilityData[productId]) {
-                // Produto indisponível
-                availabilityBadge.classList.remove('available');
-                availabilityBadge.classList.add('unavailable');
-                availabilityBadge.textContent = 'Indisponível';
-                cartBtn.disabled = true;
-                cartBtn.classList.add('disabled');
-                product.classList.add('product-unavailable');
-            } else {
-                // Produto disponível
-                availabilityBadge.classList.remove('unavailable');
-                availabilityBadge.classList.add('available');
-                availabilityBadge.textContent = 'Disponível';
-                cartBtn.disabled = false;
-                cartBtn.classList.remove('disabled');
-                product.classList.remove('product-unavailable');
-            }
-        }
-    });
-}
-
-// Função para adicionar badges de disponibilidade aos produtos
-function initializeAvailabilityBadges() {
-    const products = document.querySelectorAll('.product');
-    
-    products.forEach((product, index) => {
-        // Garantir que cada produto tenha um ID
-        if (!product.id) {
-            product.id = `product-${index + 1}`;
-        }
-        
-        // Adicionar ícone de controle de disponibilidade (apenas para administradores)
-        const productActions = product.querySelector('.product-actions');
-        const availabilityToggle = document.createElement('button');
-        availabilityToggle.className = 'availability-toggle';
-        availabilityToggle.innerHTML = '<i class="fas fa-power-off"></i>';
-        availabilityToggle.setAttribute('title', 'Alternar disponibilidade');
-        availabilityToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleAvailability(index + 1);
-        });
-        productActions.appendChild(availabilityToggle);
-        
-        // Adicionar badge de disponibilidade
-        const badge = document.createElement('div');
-        badge.className = 'availability-badge available';
-        badge.textContent = 'Disponível';
-        
-        // Inserir badge no container da imagem do produto
-        const imageContainer = product.querySelector('.product-image-container');
-        imageContainer.appendChild(badge);
-    });
-    
-    // Carregar status de disponibilidade salvos
-    loadAvailabilityStatus();
-}
-
-// Inicializar quando o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', function() {
-    initializeAvailabilityBadges();
-});
 
 // Inicializar o catálogo
 window.onload = function() {
