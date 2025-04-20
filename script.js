@@ -1,9 +1,9 @@
   // Produtos de exemplo  
 const products = [
-    { name: "Base Líquida Matte", price: "R$ 69,90", image: "https://i.postimg.cc/QdZNfwTK/carmedhellokitty.jpg" },
-    { name: "Paleta de Sombras 12 Cores", price: "R$ 89,90", image: "https://i.postimg.cc/wML6cQ0d/perfume-hello-Kitty.jpg" },
-    { name: "Batom Matte Vermelho", price: "R$ 45,00", image: "https://i.postimg.cc/kXrV0pKC/shampoo.jpg" },
-    { name: "Buquê de Rosas Vermeleha", price: "R$ 120,00", image: "https://i.postimg.cc/52HMdNWb/rosa.jpg" },
+    { name: "Carmed da Hello Kitty", price: "R$ 30,90", image: "https://i.postimg.cc/QdZNfwTK/carmedhellokitty.jpg" },
+    { name: "Perfume da Hello Kitty", price: "R$ 89,90", image: "https://i.postimg.cc/wML6cQ0d/perfume-hello-Kitty.jpg" },
+    { name: "Adesivo de Unhas", price: "R$ 15,00", image: "https://i.postimg.cc/wM7KCzyn/Adesivos-para-Decora-o-das-Unhas.jpg" },
+    { name: "Buquê de Rosas Vermelhas", price: "R$ 120,00", image: "https://i.postimg.cc/52HMdNWb/rosa.jpg" },
     { name: "Pó Compacto Translúcido", price: "R$ 62,00", image: "/api/placeholder/400/300" },
     { name: "Sérum Facial Hidratante", price: "R$ 79,90", image: "/api/placeholder/400/300" },
     { name: "Protetor Solar FPS 50", price: "R$ 72,00", image: "/api/placeholder/400/300" },
