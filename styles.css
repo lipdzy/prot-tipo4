@@ -114,16 +114,23 @@ main {
     order: 0;
 }
 
+/* MODIFICADO: Ajustado o layout da lista de horários para ser mais largo que alto */
 .hours-list {
     list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    width: 100%;
 }
 
 .hours-list li {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
+    padding: 8px 15px;
     border-bottom: 1px dashed #eee;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
 }
 
 .social-links {
@@ -807,6 +814,11 @@ footer p {
         padding: 15px;
     }
     
+    /* MODIFICADO: Ajuste para a lista de horários em telas médias */
+    .hours-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
     /* Ajuste para o catálogo - responsivo */
     .catalog {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -884,6 +896,17 @@ footer p {
         font-size: 20px;
     }
     
+    /* MODIFICADO: Ajuste para a lista de horários em telas pequenas */
+    .hours-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .hours-list li {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 8px 10px;
+    }
+    
     .catalog {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
@@ -931,12 +954,6 @@ footer p {
         height: 22px;
         font-size: 11px;
         padding: 2px;
-    }
-    
-    .hours-list li {
-        flex-direction: column;
-        text-align: center;
-        gap: 5px;
     }
     
     .cart-button-counter {
