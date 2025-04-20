@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja de Cosméticos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo">
+                <img src="https://i.postimg.cc/MZ148p3T/hellospotify.jpg" alt="Logo da Loja">
+            </div>
+            <h1 class="company-name">Glamour Cosméticos</h1>
+            <p class="welcome-text">Seja bem-vindo. Entre em contato aqui!</p>
+        </div>
+        <nav>
+            <a href="#produtos">Produtos</a>
+            <a href="#horarios">Horários</a>
+            <a href="#contato">Contato</a>
+            <a href="#localizacao">Localização</a>
+        </nav>
+                
+        <!-- Botão do carrinho no canto superior direito -->
+        <div class="cart-button" id="cartButton">
+            <i class="fas fa-shopping-cart"></i>
+            <div class="cart-button-counter" id="cartButtonCounter">0</div>
+        </div>
+    </header>
+
+
+    <main>
+        <section class="section" id="horarios">
+            <h2 class="section-title">Horários de Atendimento</h2>
+            <ul class="hours-list">
+                <li><span>Segunda-feira:</span> <span>09:00 - 19:00</span></li>
+                <li><span>Terça-feira:</span> <span>09:00 - 19:00</span></li>
+                <li><span>Quarta-feira:</span> <span>09:00 - 19:00</span></li>
+                <li><span>Quinta-feira:</span> <span>09:00 - 19:00</span></li>
+                <li><span>Sexta-feira:</span> <span>09:00 - 20:00</span></li>
+                <li><span>Sábado:</span> <span>09:00 - 18:00</span></li>
+                <li><span>Domingo:</span> <span>Fechado</span></li>
+            </ul>
+        </section>
+
+
+        <section class="section" id="contato">
+            <h2 class="section-title">Redes Sociais</h2>
+            <div class="social-links">
+                <a href="#" class="social-button instagram">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="#" class="social-button tiktok">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+                <a href="#" class="social-button whatsapp">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="#localizacao" class="social-button location">
+                    <i class="fas fa-map-marker-alt"></i> Localização
+                </a>
+            </div>
+                        
+            <a href="#" class="share-button" id="shareButton">
+                <i class="fab fa-whatsapp"></i> Compartilhar no WhatsApp
+            </a>
+        </section>
+
+
+        <section class="section" id="produtos">
+            <h2 class="section-title">Nosso Cata</h2>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Pesquisar produtos...">
+                    <button id="searchButton">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="catalog" id="catalog">
+                <!-- Os produtos serão inseridos aqui via JavaScript -->
+            </div>
+        </section>
+
+
+        <section class="section" id="localizacao">
+            <h2 class="section-title">Nossa Localização</h2>
+            <div class="location-info">
+                <p>
+                    <i class="fas fa-map-marker-alt"></i> Av. Exemplo, 1234 - Centro, Cidade - Estado<br>
+                    <i class="fas fa-envelope"></i> CEP: 12345-678
+                </p>
+            </div>
+        </section>
+    </main>
+
+
+    <!-- Modal para visualização de produtos -->
+    <div id="productModal" class="product-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img id="modalImage" src="" alt="Imagem ampliada do produto">
+        </div>
+    </div>
+    
+    <!-- Carrinho de compras -->
+    <div id="cartOverlay" class="cart-overlay">
+        <div class="cart-container">
+            <div class="cart-header">
+                <h2 class="cart-title">Seu Carrinho</h2>
+                <span class="close-cart">&times;</span>
+            </div>
+            <div id="cartItems" class="cart-items">
+                <!-- Itens do carrinho serão inseridos aqui via JavaScript -->
+            </div>
+            <div id="cartTotal" class="cart-total">Total: R$ 0,00</div>
+            <div class="cart-actions">
+                <button id="clearCart" class="cart-clear">Limpar Carrinho</button>
+                <button id="shareCart" class="cart-share">
+                    <i class="fab fa-whatsapp"></i> Compartilhar no WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Glamour Cosméticos - Todos os direitos reservados</p>
+        <p>Sua loja especializada em produtos de beleza</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
