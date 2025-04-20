@@ -31,6 +31,7 @@
         </div>
     </header>
 
+
     <main>
         <section class="section" id="horarios">
             <h2 class="section-title">Horários de Atendimento</h2>
@@ -44,6 +45,7 @@
                 <li><span>Domingo:</span> <span>Fechado</span></li>
             </ul>
         </section>
+
 
         <section class="section" id="contato">
             <h2 class="section-title">Redes Sociais</h2>
@@ -61,11 +63,12 @@
                     <i class="fas fa-map-marker-alt"></i> Localização
                 </a>
             </div>
-                            
+                        
             <a href="https://wa.me/5583991816152" class="share-button" id="shareButton">
                 <i class="fab fa-whatsapp"></i> Compartilhar no WhatsApp
             </a>
         </section>
+
 
         <section class="section" id="produtos">
             <h2 class="section-title">Catálogo</h2>
@@ -82,6 +85,7 @@
             </div>
         </section>
 
+
         <section class="section" id="localizacao">
             <h2 class="section-title">Nossa Localização</h2>
             <div class="location-info">
@@ -93,6 +97,7 @@
             </div>
         </section>
     </main>
+
 
     <!-- Modal para visualização de produtos -->
     <div id="productModal" class="product-modal">
@@ -126,39 +131,6 @@
         <p>&copy; 2025 Closet Dellas - Todos os direitos reservados</p>
         <p>Sua loja especializada em roupas</p>
     </footer>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Código original do script.js permanece aqui
-            
-            // Adicionar funcionalidade ao botão de compartilhar carrinho
-            document.getElementById('shareCart').addEventListener('click', function() {
-                const cartItems = document.querySelectorAll('.cart-item');
-                const total = document.getElementById('cartTotal').textContent;
-                
-                let message = "🛒 *Meu pedido na Closet Dellas* 🛒\n\n";
-                
-                cartItems.forEach(item => {
-                    const name = item.querySelector('.cart-item-name').textContent;
-                    const price = item.querySelector('.cart-item-price').textContent;
-                    const quantity = item.querySelector('.cart-item-quantity').textContent;
-                    
-                    message += `• ${name} - ${price} x ${quantity}\n`;
-                });
-                
-                message += `\n${total}\n\nGostaria de finalizar meu pedido!`;
-                
-                // Número do WhatsApp do dono da loja
-                const phoneNumber = "https://wa.me/5583991816152";
-                
-                // Criar URL para o WhatsApp com a mensagem
-                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-                
-                // Abrir WhatsApp em uma nova janela
-                window.open(whatsappUrl, '_blank');
-            });
-        });
-    </script>
     
     <script src="script.js"></script>
 </body>
