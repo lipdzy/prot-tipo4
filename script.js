@@ -59,22 +59,34 @@ function loadCartFromStorage() {
 
 // Salvar carrinho no localStorage
 function saveCartToStorage() {
-    localStorage.setItem('glamourCart', JSON.stringify(cartItems));
+    try {
+        localStorage.setItem('glamourCart', JSON.stringify(cartItems));
+    } catch (error) {
+        console.error("Erro ao salvar o carrinho no localStorage:", error);
+    }
 }
 
 // Carregar favoritos do localStorage
 function loadFavoritesFromStorage() {
     const savedFavorites = localStorage.getItem('glamourFavorites');
     if (savedFavorites) {
-        // Converter o array salvo de volta para um Set
-        favorites = new Set(JSON.parse(savedFavorites));
+        try {
+            // Converter o array salvo de volta para um Set
+            favorites = new Set(JSON.parse(savedFavorites));
+        } catch (error) {
+            console.error("Erro ao carregar favoritos do localStorage:", error);
+        }
     }
 }
 
 // Salvar favoritos no localStorage
 function saveFavoritesToStorage() {
-    // Converter o Set para array para salvar no localStorage
-    localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
+    try {
+        // Converter o Set para array para salvar no localStorage
+        localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
+    } catch (error) {
+        console.error("Erro ao salvar favoritos no localStorage:", error);
+    }
 }
 
 // Função para mostrar notificação
