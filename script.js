@@ -45,6 +45,22 @@ const shareCartButton = document.getElementById('shareCart');
 const cartButton = document.getElementById('cartButton');
 const cartButtonCounter = document.getElementById('cartButtonCounter');
 
+// Inicialização do carrinho e favoritos com localStorage
+let cartItems = [];
+let favorites = new Set();
+
+// Carregar carrinho do sessionStorage
+function loadCartFromStorage() {
+    const savedCart = sessionStorage.getItem('glamourCart');
+    if (savedCart) {
+        try {
+            cartItems = JSON.parse(savedCart);
+        } catch (error) {
+            console.error("Erro ao carregar o carrinho do sessionStorage:", error);
+        }
+    }
+}
+
 // Salvar carrinho no sessionStorage
 function saveCartToStorage() {
     try {
