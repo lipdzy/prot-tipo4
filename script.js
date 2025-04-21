@@ -77,6 +77,29 @@ function saveFavoritesToStorage() {
     localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
 }
 
+// Função para mostrar notificação
+function showNotification(message) {
+    // Criar elemento de notificação se não existir
+    let notification = document.getElementById('notification');
+    if (!notification) {
+        notification = document.createElement('div');
+        notification.id = 'notification';
+        document.body.appendChild(notification);
+    }
+    
+    // Definir mensagem e mostrar notificação
+    notification.textContent = message;
+    notification.classList.add('show');
+    
+    // Esconder notificação após 3 segundos
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
+
+
+
 // Carregar produtos
 function loadProducts() {
     catalogContainer.innerHTML = '';
@@ -190,6 +213,9 @@ function addEventListeners() {
             setTimeout(() => {
                 this.querySelector('i').style.color = '';
             }, 300);
+            
+            // Mostrar notificação
+            showNotification(`${products[index].name} adicionado ao carrinho!`);
         });
     });
     
@@ -520,3 +546,5 @@ window.onload = function() {
     updateCartCounter(); // Inicializar o contador do carrinho
     setupSearch(); // Inicializar a funcionalidade de pesquisa
 };
+
+

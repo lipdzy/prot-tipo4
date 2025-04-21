@@ -932,6 +932,27 @@ footer p {
     font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+#notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #6d6c6c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-align: center;
+    min-width: 200px;
+    pointer-events: none;
+}
+
+#notification.show {
+    opacity: 1;
+}
 
 /* Media queries para responsividade */
 @media screen and (max-width: 768px) {
