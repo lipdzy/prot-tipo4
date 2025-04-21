@@ -45,43 +45,46 @@ const shareCartButton = document.getElementById('shareCart');
 const cartButton = document.getElementById('cartButton');
 const cartButtonCounter = document.getElementById('cartButtonCounter');
 
-// Função para atualizar a UI do carrinho
-function updateCartUI() {
-    // Lógica para atualizar a interface do usuário com os itens do carrinho
-    // Por exemplo, limpar a lista atual e adicionar os itens do cartItems
+// Função para adicionar um produto ao carrinho
+function addProductToCart(product) {
+    cartItems.push(product); // Adiciona o produto ao carrinho
+    saveCartToStorage(); // Salva o carrinho no localStorage
 }
 
-// Função para atualizar a UI dos favoritos
-function updateFavoritesUI() {
-    // Lógica para atualizar a interface do usuário com os itens favoritos
-    // Por exemplo, limpar a lista atual e adicionar os itens do Set favorites
-}
+// Inicialização do carrinho e favoritos com localStorage
+let cartItems = [];
+let favorites = new Set();
 
-// Carregar carrinho do localStorage e atualizar a UI
+// Carregar carrinho do localStorage
 function loadCartFromStorage() {
     const savedCart = localStorage.getItem('glamourCart');
     if (savedCart) {
-        try {
-            cartItems = JSON.parse(savedCart);
-            updateCartUI(); // Atualiza a UI após carregar o carrinho
-        } catch (error) {
-            console.error("Erro ao carregar o carrinho:", error);
-        }
+        cartItems = JSON.parse(savedCart);
     }
 }
 
-// Carregar favoritos do localStorage e atualizar a UI
+// Salvar carrinho no localStorage
+function saveCartToStorage() {
+    localStorage.setItem('glamourCart', JSON.stringify(cartItems));
+}
+
+// Carregar favoritos do localStorage
 function loadFavoritesFromStorage() {
     const savedFavorites = localStorage.getItem('glamourFavorites');
     if (savedFavorites) {
-        try {
-            favorites = new Set(JSON.parse(savedFavorites));
-            updateFavoritesUI(); // Atualiza a UI após carregar os favoritos
-        } catch (error) {
-            console.error("Erro ao carregar favoritos:", error);
-        }
+        // Converter o array salvo de volta para um Set
+        favorites = new Set(JSON.parse(savedFavorites));
     }
 }
+
+// Salvar favoritos no localStorage
+function saveFavoritesToStorage() {
+    // Converter o Set para array para salvar no localStorage
+    localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
+}
+
+// Chamada para carregar o carrinho ao iniciar a aplicação
+loadCartFromStorage();
 
 // Função para mostrar notificação
 function showNotification(message) {
