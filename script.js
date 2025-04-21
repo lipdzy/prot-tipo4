@@ -45,32 +45,30 @@ const shareCartButton = document.getElementById('shareCart');
 const cartButton = document.getElementById('cartButton');
 const cartButtonCounter = document.getElementById('cartButtonCounter');
 
-// Inicialização do carrinho e favoritos com localStorage
-let cartItems = [];
-let favorites = new Set();
-
-// Carregar carrinho do localStorage
-function loadCartFromStorage() {
-    const savedCart = localStorage.getItem('glamourCart');
-    if (savedCart) {
-        cartItems = JSON.parse(savedCart);
-    }
-}
-
-// Salvar carrinho no localStorage ou sessionStorage
+// Salvar carrinho no localStorage
 function saveCartToStorage() {
     try {
-        const storage = isMobile() ? sessionStorage : localStorage;
-        storage.setItem('glamourCart', JSON.stringify(cartItems));
+        localStorage.setItem('glamourCart', JSON.stringify(cartItems));
     } catch (error) {
         console.error("Erro ao salvar o carrinho:", error);
     }
 }
 
-// Carregar favoritos do localStorage ou sessionStorage
+// Carregar carrinho do localStorage
+function loadCartFromStorage() {
+    const savedCart = localStorage.getItem('glamourCart');
+    if (savedCart) {
+        try {
+            cartItems = JSON.parse(savedCart);
+        } catch (error) {
+            console.error("Erro ao carregar o carrinho:", error);
+        }
+    }
+}
+
+// Carregar favoritos do localStorage
 function loadFavoritesFromStorage() {
-    const storage = isMobile() ? sessionStorage : localStorage;
-    const savedFavorites = storage.getItem('glamourFavorites');
+    const savedFavorites = localStorage.getItem('glamourFavorites');
     if (savedFavorites) {
         try {
             // Converter o array salvo de volta para um Set
@@ -81,20 +79,14 @@ function loadFavoritesFromStorage() {
     }
 }
 
-// Salvar favoritos no localStorage ou sessionStorage
+// Salvar favoritos no localStorage
 function saveFavoritesToStorage() {
     try {
-        const storage = isMobile() ? sessionStorage : localStorage;
-        // Converter o Set para array para salvar
-        storage.setItem('glamourFavorites', JSON.stringify([...favorites]));
+        // Converter o Set para array para salvar no localStorage
+        localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
     } catch (error) {
         console.error("Erro ao salvar favoritos:", error);
     }
-}
-
-// Função para detectar se o dispositivo é móvel
-function isMobile() {
-    return /Mobi|Android/i.test(navigator.userAgent);
 }
 
 // Função para mostrar notificação
