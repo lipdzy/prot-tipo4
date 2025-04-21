@@ -45,37 +45,200 @@ const shareCartButton = document.getElementById('shareCart');
 const cartButton = document.getElementById('cartButton');
 const cartButtonCounter = document.getElementById('cartButtonCounter');
 
-// Inicialização do carrinho e favoritos com localStorage
+// Sistema aprimorado de armazenamento para mobile Android e iOS
 let cartItems = [];
 let favorites = new Set();
 
-// Carregar carrinho do localStorage
+// Inicialização com verificação de disponibilidade de localStorage
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar se localStorage está disponível
+    if (isStorageAvailable('localStorage')) {
+        loadCartFromStorage();
+        loadFavoritesFromStorage();
+        updateCartIcon();
+        renderCart();
+    } else {
+        console.warn("localStorage não está disponível. O carrinho e favoritos não serão persistentes.");
+        // Opcionalmente notificar o usuário
+        showNotification("Armazenamento local não disponível neste navegador.");
+    }
+});
+
+// Verificar se o storage está disponível e funcionando
+function isStorageAvailable(type) {
+    let storage;
+    try {
+        storage = window[type];
+        const x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    } catch(e) {
+        return e instanceof DOMException && (
+            // Tudo exceto Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // Código de erro de teste, caso códigos mudem no futuro
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // Verificar se já tem itens no armazenamento
+            (storage && storage.length !== 0);
+    }
+}
+
+// Carregar carrinho com tratamento de erros aprimorado
 function loadCartFromStorage() {
-    const savedCart = localStorage.getItem('glamourCart');
-    if (savedCart) {
-        cartItems = JSON.parse(savedCart);
+    try {
+        const savedCart = localStorage.getItem('glamourCart');
+        if (savedCart) {
+            const parsedCart = JSON.parse(savedCart);
+            
+            // Validar se o conteúdo é um array
+            if (Array.isArray(parsedCart)) {
+                cartItems = parsedCart;
+                console.log("Carrinho carregado com sucesso:", cartItems.length, "itens");
+            } else {
+                throw new Error("Formato de dados do carrinho inválido");
+            }
+        } else {
+            console.log("Nenhum carrinho encontrado no armazenamento");
+            cartItems = [];
+        }
+    } catch (error) {
+        console.error("Erro ao carregar carrinho:", error);
+        cartItems = [];
+        // Remover dados possivelmente corrompidos
+        localStorage.removeItem('glamourCart');
     }
 }
 
-// Salvar carrinho no localStorage
+// Salvar carrinho com verificação de tamanho e compressão
 function saveCartToStorage() {
-    localStorage.setItem('glamourCart', JSON.stringify(cartItems));
-}
-
-// Carregar favoritos do localStorage
-function loadFavoritesFromStorage() {
-    const savedFavorites = localStorage.getItem('glamourFavorites');
-    if (savedFavorites) {
-        // Converter o array salvo de volta para um Set
-        favorites = new Set(JSON.parse(savedFavorites));
+    try {
+        // Verificar tamanho dos dados antes de salvar
+        const cartString = JSON.stringify(cartItems);
+        const cartSize = new Blob([cartString]).size;
+        
+        if (cartSize > 4500000) { // ~4.5MB para ficar seguro (5MB é o limite típico)
+            console.warn("Carrinho muito grande para armazenamento local");
+            showNotification("Seu carrinho está muito grande e alguns itens podem não ser salvos.");
+        }
+        
+        localStorage.setItem('glamourCart', cartString);
+        
+        // Atualizar indicadores visuais
+        updateCartIcon();
+    } catch (error) {
+        console.error("Erro ao salvar carrinho:", error);
+        showNotification("Não foi possível salvar seu carrinho. Espaço de armazenamento insuficiente.");
     }
 }
 
-// Salvar favoritos no localStorage
-function saveFavoritesToStorage() {
-    // Converter o Set para array para salvar no localStorage
-    localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
+// Carregar favoritos com tratamento de erros
+function loadFavoritesFromStorage() {
+    try {
+        const savedFavorites = localStorage.getItem('glamourFavorites');
+        if (savedFavorites) {
+            const parsedFavorites = JSON.parse(savedFavorites);
+            
+            // Validar se o conteúdo é um array
+            if (Array.isArray(parsedFavorites)) {
+                favorites = new Set(parsedFavorites);
+                console.log("Favoritos carregados com sucesso:", favorites.size, "itens");
+            } else {
+                throw new Error("Formato de dados dos favoritos inválido");
+            }
+        } else {
+            console.log("Nenhum favorito encontrado no armazenamento");
+            favorites = new Set();
+        }
+    } catch (error) {
+        console.error("Erro ao carregar favoritos:", error);
+        favorites = new Set();
+        // Remover dados possivelmente corrompidos
+        localStorage.removeItem('glamourFavorites');
+    }
 }
+
+// Salvar favoritos com verificação
+function saveFavoritesToStorage() {
+    try {
+        // Verificar se há favoritos para salvar
+        if (favorites.size > 0) {
+            localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
+        } else {
+            // Se estiver vazio, remover do armazenamento para economizar espaço
+            localStorage.removeItem('glamourFavorites');
+        }
+    } catch (error) {
+        console.error("Erro ao salvar favoritos:", error);
+        showNotification("Não foi possível salvar seus favoritos. Espaço de armazenamento insuficiente.");
+    }
+}
+
+// Adicionar item ao carrinho com sincronização imediata
+function addToCart(product) {
+    // Verificar se o produto já existe no carrinho
+    const existingItem = cartItems.find(item => item.id === product.id);
+    
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cartItems.push({...product, quantity: 1});
+    }
+    
+    // Salvar imediatamente após cada alteração
+    saveCartToStorage();
+    showNotification("Item adicionado ao carrinho!");
+}
+
+// Remover item do carrinho com sincronização imediata
+function removeFromCart(productId) {
+    cartItems = cartItems.filter(item => item.id !== productId);
+    saveCartToStorage();
+    renderCart(); // Atualizar interface
+}
+
+// Alternar favorito com sincronização imediata
+function toggleFavorite(productId) {
+    if (favorites.has(productId)) {
+        favorites.delete(productId);
+    } else {
+        favorites.add(productId);
+    }
+    
+    saveFavoritesToStorage();
+    updateFavoriteIcons(); // Atualizar interface
+}
+
+// Função para exibir notificações ao usuário
+function showNotification(message) {
+    const notification = document.getElementById('notification') || createNotificationElement();
+    notification.textContent = message;
+    notification.classList.add('show');
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
+// Criar elemento de notificação se não existir
+function createNotificationElement() {
+    const notification = document.createElement('div');
+    notification.id = 'notification';
+    document.body.appendChild(notification);
+    return notification;
+}
+
+// Sincronização periódica para maior segurança
+setInterval(() => {
+    if (isStorageAvailable('localStorage')) {
+        saveCartToStorage();
+        saveFavoritesToStorage();
+    }
+}, 30000); // A cada 30 segundos
 
 // Função para mostrar notificação
 function showNotification(message) {
