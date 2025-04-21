@@ -1,4 +1,4 @@
-  // Produtos de exemplo  
+// Produtos de exemplo  
 const products = [
     { name: "Carmed da Hello Kitty", price: "R$ 30,90", image: "https://i.postimg.cc/QdZNfwTK/carmedhellokitty.jpg" },
     { name: "Perfume da Hello Kitty", price: "R$ 89,90", image: "https://i.postimg.cc/wML6cQ0d/perfume-hello-Kitty.jpg" },
@@ -44,8 +44,38 @@ const clearCartButton = document.getElementById('clearCart');
 const shareCartButton = document.getElementById('shareCart');
 const cartButton = document.getElementById('cartButton');
 const cartButtonCounter = document.getElementById('cartButtonCounter');
+
+// Inicialização do carrinho e favoritos com localStorage
 let cartItems = [];
-const favorites = new Set();
+let favorites = new Set();
+
+// Carregar carrinho do localStorage
+function loadCartFromStorage() {
+    const savedCart = localStorage.getItem('glamourCart');
+    if (savedCart) {
+        cartItems = JSON.parse(savedCart);
+    }
+}
+
+// Salvar carrinho no localStorage
+function saveCartToStorage() {
+    localStorage.setItem('glamourCart', JSON.stringify(cartItems));
+}
+
+// Carregar favoritos do localStorage
+function loadFavoritesFromStorage() {
+    const savedFavorites = localStorage.getItem('glamourFavorites');
+    if (savedFavorites) {
+        // Converter o array salvo de volta para um Set
+        favorites = new Set(JSON.parse(savedFavorites));
+    }
+}
+
+// Salvar favoritos no localStorage
+function saveFavoritesToStorage() {
+    // Converter o Set para array para salvar no localStorage
+    localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
+}
 
 // Carregar produtos
 function loadProducts() {
@@ -53,6 +83,11 @@ function loadProducts() {
     products.forEach((product, index) => {
         const productCard = document.createElement('div');
         productCard.classList.add('product');
+        
+        // Verificar se o produto está favoritado para mostrar o ícone correto
+        const isFavorite = favorites.has(index.toString());
+        const heartClass = isFavorite ? 'fas fa-heart favorite-active' : 'far fa-heart';
+        
         productCard.innerHTML = `
             <div class="product-image-container" data-index="${index}">
                 <img src="${product.image}" alt="${product.name}">
@@ -62,7 +97,7 @@ function loadProducts() {
                 <p class="product-price">${product.price}</p>
                 <div class="product-actions">
                     <button class="favorite-btn" data-index="${index}">
-                        <i class="far fa-heart"></i>
+                        <i class="${heartClass}"></i>
                     </button>
                     <button class="cart-btn" data-index="${index}">
                         <i class="fas fa-shopping-cart"></i>
@@ -73,6 +108,9 @@ function loadProducts() {
         
         catalogContainer.appendChild(productCard);
     });
+    
+    // Adicionar contadores aos produtos que já estão no carrinho
+    updateProductCounters();
     
     // Adicionar eventos após criar os elementos
     addEventListeners();
@@ -118,6 +156,9 @@ function addEventListeners() {
                 heartIcon.classList.remove('far');
                 heartIcon.classList.add('fas', 'favorite-active');
             }
+            
+            // Salvar favoritos no localStorage após cada alteração
+            saveFavoritesToStorage();
         });
     });
     
@@ -185,6 +226,9 @@ function addEventListeners() {
         document.querySelectorAll('.cart-counter').forEach(counter => {
             counter.remove();
         });
+        
+        // Limpar carrinho no localStorage
+        saveCartToStorage();
     });
     
     // Compartilhar carrinho no WhatsApp
@@ -221,6 +265,9 @@ function addToCart(productIndex) {
     
     updateCartDisplay();
     updateCartCounter();
+    
+    // Salvar carrinho no localStorage após cada alteração
+    saveCartToStorage();
 }
 
 // Função para remover produto do carrinho
@@ -231,6 +278,9 @@ function removeFromCart(index) {
     
     // Atualizar contadores nos produtos
     updateProductCounters();
+    
+    // Salvar carrinho no localStorage após remover item
+    saveCartToStorage();
 }
 
 // Função para atualizar contadores nos produtos
@@ -242,17 +292,20 @@ function updateProductCounters() {
     
     // Depois, adicionar contadores atualizados
     cartItems.forEach(item => {
-        const productElement = document.querySelector(`.product-image-container[data-index="${item.index}"]`).closest('.product');
-        let counterElem = productElement.querySelector('.cart-counter');
-        
-        if (!counterElem) {
-            counterElem = document.createElement('div');
-            counterElem.classList.add('cart-counter');
-            productElement.style.position = 'relative';
-            productElement.appendChild(counterElem);
+        const productElement = document.querySelector(`.product-image-container[data-index="${item.index}"]`);
+        if (productElement) {
+            const productCard = productElement.closest('.product');
+            let counterElem = productCard.querySelector('.cart-counter');
+            
+            if (!counterElem) {
+                counterElem = document.createElement('div');
+                counterElem.classList.add('cart-counter');
+                productCard.style.position = 'relative';
+                productCard.appendChild(counterElem);
+            }
+            
+            counterElem.textContent = item.quantity;
         }
-        
-        counterElem.textContent = item.quantity;
     });
 }
 
@@ -266,6 +319,9 @@ function updateItemQuantity(index, change) {
         updateCartDisplay();
         updateCartCounter();
         updateProductCounters();
+        
+        // Salvar carrinho no localStorage após atualizar quantidade
+        saveCartToStorage();
     }
 }
 
@@ -276,7 +332,6 @@ function updateCartDisplay() {
         cartTotalElement.textContent = 'Total: R$ 0,00';
         return;
     }
-    
     let cartHTML = '';
     let total = 0;
     
@@ -355,7 +410,10 @@ function shareCartOnWhatsApp() {
     
     message += `\n*Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
     
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+    // Número do WhatsApp do dono da empresa (substitua pelo número real)
+    const ownerPhoneNumber = "5583991816152"; // Exemplo: 5511999999999 (formato: código do país + DDD + número)
+    
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${ownerPhoneNumber}&text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 }
 
@@ -369,7 +427,6 @@ function setupSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
     const catalogContainer = document.getElementById('catalog');
-
     // Criar elemento para mensagem de "nenhum resultado"
     const noResultsMessage = document.createElement('div');
     noResultsMessage.className = 'no-results';
@@ -452,9 +509,13 @@ function setupSearch() {
     searchInput.addEventListener('blur', performSearch);
 }
 
-
 // Inicializar o catálogo
 window.onload = function() {
+    // Carregar dados salvos do localStorage
+    loadCartFromStorage();
+    loadFavoritesFromStorage();
+    
+    // Inicializar o catálogo com os dados carregados
     loadProducts();
     updateCartCounter(); // Inicializar o contador do carrinho
     setupSearch(); // Inicializar a funcionalidade de pesquisa
