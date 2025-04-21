@@ -8,6 +8,7 @@
     --whatsapp-color: #25D366;
     --instagram-color: #E1306C;
     --tiktok-color: #000000;
+    --shimmer-color: rgba(255, 255, 255, 0.5);
 }
 
 * {
@@ -22,12 +23,67 @@ body {
     color: var(--text-color);
 }
 
+/* Adicionando a animação de brilho */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Efeito de brilho para logo - AJUSTADO */
+.logo-shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.logo-shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0) 45%,
+        rgba(255,255,255,0.5) 50%,
+        rgba(255,255,255,0) 55%,
+        rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite linear;
+    z-index: 1;
+    border-radius: 50%;
+}
+
 header {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     padding: 20px;
     text-align: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: relative;
+    overflow: hidden; /* Adicionado para conter o efeito de brilho */
+}
+
+/* NOVO: Efeito de brilho para o fundo do header */
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0) 45%,
+        rgba(255,255,255,0.4) 50%,
+        rgba(255,255,255,0) 55%,
+        rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 4s infinite linear;
+    z-index: 1;
 }
 
 .logo-container {
@@ -35,8 +91,11 @@ header {
     flex-direction: column;
     align-items: center;
     margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
 }
 
+/* AJUSTADO: Adicionado efeito de brilho no fundo da logo */
 .logo {
     width: 120px;
     height: 120px;
@@ -48,12 +107,44 @@ header {
     overflow: hidden;
     margin-bottom: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+/* NOVO: Adicionado efeito de brilho animado no fundo da logo */
+.logo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.4) 25%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0.4) 75%,
+        transparent 100%);
+    animation: backgroundShimmer 3s infinite linear;
+    z-index: 1;
+}
+
+/* NOVO: Keyframes para animação do fundo */
+@keyframes backgroundShimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(50%);
+    }
 }
 
 .logo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    position: relative;
+    z-index: 2;
 }
 
 .company-name {
@@ -61,12 +152,16 @@ header {
     font-weight: bold;
     margin-bottom: 10px;
     color: var(--dark-color);
+    position: relative;
+    z-index: 2;
 }
 
 .welcome-text {
     font-size: 18px;
     color: var(--dark-color);
     margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
 }
 
 nav {
@@ -74,6 +169,8 @@ nav {
     justify-content: center;
     flex-wrap: nowrap;
     margin: 15px 0;
+    position: relative;
+    z-index: 2;
 }
 
 nav a {
@@ -131,8 +228,36 @@ main {
     border-bottom: 1px dashed #eee;
     background-color: var(--secondary-color);
     border-radius: 8px;
+    position: relative;
+    overflow: hidden; /* Adicionado para conter o efeito de brilho */
 }
 
+/* NOVO: Efeito de brilho para os horários */
+.hours-list li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0) 45%,
+        rgba(255,255,255,0.4) 50%,
+        rgba(255,255,255,0) 55%,
+        rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite linear;
+    z-index: 1;
+}
+
+/* Garantir que o texto dos horários fique acima do efeito de brilho */
+.hours-list li span {
+    position: relative;
+    z-index: 2;
+}
+
+/* Estilo modificado para botões sociais com efeito brilhante */
 .social-links {
     display: flex;
     justify-content: center;
@@ -155,6 +280,27 @@ main {
     transition: all 0.3s ease;
     width: 180px;
     border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito de brilho para botões sociais */
+.social-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0) 45%,
+        rgba(255,255,255,0.6) 50%,
+        rgba(255,255,255,0) 55%,
+        rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite linear;
+    z-index: 1;
 }
 
 .social-button:hover {
@@ -165,6 +311,13 @@ main {
 .social-button i {
     margin-right: 10px;
     font-size: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.social-button span {
+    position: relative;
+    z-index: 2;
 }
 
 .instagram {
@@ -513,16 +666,40 @@ main {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+/* Footer com efeito de brilho - APRIMORADO */
 footer {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: var(--dark-color);
     text-align: center;
     padding: 25px;
     margin-top: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito de brilho aprimorado para o footer */
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0) 45%,
+        rgba(255,255,255,0.5) 50%,
+        rgba(255,255,255,0) 55%,
+        rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 4s infinite linear;
+    z-index: 1;
 }
 
 footer p {
     margin: 8px 0;
+    position: relative;
+    z-index: 2;
 }
 
 /* Estilos para o carrinho */
@@ -973,3 +1150,4 @@ footer p {
         margin: 0 2px;
     }
 }
+
