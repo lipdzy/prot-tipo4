@@ -45,12 +45,6 @@ const shareCartButton = document.getElementById('shareCart');
 const cartButton = document.getElementById('cartButton');
 const cartButtonCounter = document.getElementById('cartButtonCounter');
 
-// Função para adicionar um produto ao carrinho
-function addProductToCart(product) {
-    cartItems.push(product); // Adiciona o produto ao carrinho
-    saveCartToStorage(); // Salva o carrinho no localStorage
-}
-
 // Inicialização do carrinho e favoritos com localStorage
 let cartItems = [];
 let favorites = new Set();
@@ -82,9 +76,6 @@ function saveFavoritesToStorage() {
     // Converter o Set para array para salvar no localStorage
     localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
 }
-
-// Chamada para carregar o carrinho ao iniciar a aplicação
-loadCartFromStorage();
 
 // Função para mostrar notificação
 function showNotification(message) {
