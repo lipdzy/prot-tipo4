@@ -45,47 +45,41 @@ const shareCartButton = document.getElementById('shareCart');
 const cartButton = document.getElementById('cartButton');
 const cartButtonCounter = document.getElementById('cartButtonCounter');
 
-// Salvar carrinho no localStorage
-function saveCartToStorage() {
-    try {
-        localStorage.setItem('glamourCart', JSON.stringify(cartItems));
-    } catch (error) {
-        console.error("Erro ao salvar o carrinho:", error);
-    }
+// Função para atualizar a UI do carrinho
+function updateCartUI() {
+    // Lógica para atualizar a interface do usuário com os itens do carrinho
+    // Por exemplo, limpar a lista atual e adicionar os itens do cartItems
 }
 
-// Carregar carrinho do localStorage
+// Função para atualizar a UI dos favoritos
+function updateFavoritesUI() {
+    // Lógica para atualizar a interface do usuário com os itens favoritos
+    // Por exemplo, limpar a lista atual e adicionar os itens do Set favorites
+}
+
+// Carregar carrinho do localStorage e atualizar a UI
 function loadCartFromStorage() {
     const savedCart = localStorage.getItem('glamourCart');
     if (savedCart) {
         try {
             cartItems = JSON.parse(savedCart);
+            updateCartUI(); // Atualiza a UI após carregar o carrinho
         } catch (error) {
             console.error("Erro ao carregar o carrinho:", error);
         }
     }
 }
 
-// Carregar favoritos do localStorage
+// Carregar favoritos do localStorage e atualizar a UI
 function loadFavoritesFromStorage() {
     const savedFavorites = localStorage.getItem('glamourFavorites');
     if (savedFavorites) {
         try {
-            // Converter o array salvo de volta para um Set
             favorites = new Set(JSON.parse(savedFavorites));
+            updateFavoritesUI(); // Atualiza a UI após carregar os favoritos
         } catch (error) {
             console.error("Erro ao carregar favoritos:", error);
         }
-    }
-}
-
-// Salvar favoritos no localStorage
-function saveFavoritesToStorage() {
-    try {
-        // Converter o Set para array para salvar no localStorage
-        localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
-    } catch (error) {
-        console.error("Erro ao salvar favoritos:", error);
     }
 }
 
