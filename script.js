@@ -45,50 +45,37 @@ const shareCartButton = document.getElementById('shareCart');
 const cartButton = document.getElementById('cartButton');
 const cartButtonCounter = document.getElementById('cartButtonCounter');
 
-// Inicialização do carrinho e favoritos com localStorage
-let cartItems = [];
-let favorites = new Set();
-
-// Carregar carrinho do localStorage
-function loadCartFromStorage() {
-    const savedCart = localStorage.getItem('glamourCart');
-    if (savedCart) {
-        cartItems = JSON.parse(savedCart);
-    }
-}
-
-// Salvar carrinho no localStorage
+// Salvar carrinho no sessionStorage
 function saveCartToStorage() {
     try {
-        localStorage.setItem('glamourCart', JSON.stringify(cartItems));
+        sessionStorage.setItem('glamourCart', JSON.stringify(cartItems));
     } catch (error) {
-        console.error("Erro ao salvar o carrinho no localStorage:", error);
+        console.error("Erro ao salvar o carrinho no sessionStorage:", error);
     }
 }
 
-// Carregar favoritos do localStorage
+// Carregar favoritos do sessionStorage
 function loadFavoritesFromStorage() {
-    const savedFavorites = localStorage.getItem('glamourFavorites');
+    const savedFavorites = sessionStorage.getItem('glamourFavorites');
     if (savedFavorites) {
         try {
             // Converter o array salvo de volta para um Set
             favorites = new Set(JSON.parse(savedFavorites));
         } catch (error) {
-            console.error("Erro ao carregar favoritos do localStorage:", error);
+            console.error("Erro ao carregar favoritos do sessionStorage:", error);
         }
     }
 }
 
-// Salvar favoritos no localStorage
+// Salvar favoritos no sessionStorage
 function saveFavoritesToStorage() {
     try {
-        // Converter o Set para array para salvar no localStorage
-        localStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
+        // Converter o Set para array para salvar no sessionStorage
+        sessionStorage.setItem('glamourFavorites', JSON.stringify([...favorites]));
     } catch (error) {
-        console.error("Erro ao salvar favoritos no localStorage:", error);
+        console.error("Erro ao salvar favoritos no sessionStorage:", error);
     }
 }
-
 // Função para mostrar notificação
 function showNotification(message) {
     // Criar elemento de notificação se não existir
