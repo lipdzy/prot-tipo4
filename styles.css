@@ -191,7 +191,26 @@ main {
     margin: 0 auto;
     padding: 30px;
 }
+main {
+    display: flex;
+    flex-direction: column;
+}
+/* Ajuste para reordenar seções - contatos antes de horários */
+#contato {
+    order: 1;
+}
 
+#horarios {
+    order: 2;
+}
+
+#produtos {
+    order: 3;
+}
+
+#localizacao {
+    order: 4;
+}
 .section {
     margin-bottom: 40px;
     background-color: var(--light-color);
