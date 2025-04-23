@@ -195,22 +195,23 @@ main {
     display: flex;
     flex-direction: column;
 }
-/* Ajuste para reordenar seções - contatos antes de horários */
-#contato {
+/* Ajuste para reordenar seções - horários, catálogo, contatos, localização */
+#horarios {
     order: 1;
 }
 
-#horarios {
+#produtos {
     order: 2;
 }
 
-#produtos {
+#contato {
     order: 3;
 }
 
 #localizacao {
     order: 4;
 }
+
 .section {
     margin-bottom: 40px;
     background-color: var(--light-color);
