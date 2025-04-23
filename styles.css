@@ -1,10 +1,13 @@
 :root {
-    --primary-color: #f5a0cb;
-    --secondary-color: #fde2f3;
-    --accent-color: #e66fac;
-    --text-color: #333;
-    --light-color: #fff;
-    --dark-color: #333;
+    --primary-color: #f4b8d1;      /* Rosa mais claro */
+    --secondary-color: #f9f2f5;    /* Branco com sutil tom rosado */
+    --accent-color: #c98b9e;       /* Rosa mais escuro/acentuado */
+    --text-color: #333333;         /* Quase preto para texto */
+    --light-color: #ffffff;        /* Branco puro */
+    --dark-color: #333333;         /* Quase preto */
+    --brown-color: #d2b48c;        /* Marrom claro/tan */
+    --brown-light: #e6d7c3;        /* Marrom mais claro */
+    --brown-dark: #a88566;         /* Marrom um pouco mais escuro */
     --whatsapp-color: #25D366;
     --instagram-color: #E1306C;
     --tiktok-color: #000000;
@@ -19,7 +22,7 @@
 }
 
 body {
-    background-color: #fff9fc;
+    background-color: #fdf7fa;    /* Fundo branco com leve tom rosa */
     color: var(--text-color);
 }
 
@@ -108,7 +111,7 @@ header::before {
     margin-bottom: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     position: relative;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--brown-light));
 }
 
 /* NOVO: Adicionado efeito de brilho animado no fundo da logo */
@@ -196,20 +199,21 @@ main {
     flex-direction: column;
 }
 /* Ajuste para reordenar seções - contatos antes de horários */
-#contato {
-    order: 1;
+/* Estilos específicos para cada título de seção */
+#contato .section-title {
+    color: #d2b48c;  /* Marrom claro para a seção de Redes Sociais */
 }
 
-#horarios {
-    order: 2;
+#horarios .section-title {
+    color: #d2b48c;  /* Marrom claro para a seção de Horários */
 }
 
-#produtos {
-    order: 3;
+#produtos .section-title {
+    color: #d2b48c;  /* Marrom claro para a seção de Catálogo */
 }
 
-#localizacao {
-    order: 4;
+#localizacao .section-title {
+    color: #d2b48c;  /* Marrom claro para a seção de Localização */
 }
 .section {
     margin-bottom: 40px;
@@ -224,8 +228,8 @@ main {
 .section-title {
     font-size: 24px;
     margin-bottom: 20px;
-    color: var(--accent-color);
-    border-bottom: 2px solid var(--secondary-color);
+    color: var(--brown-color);  /* Alterado para marrom claro */
+    border-bottom: 2px solid var(--brown-light);
     padding-bottom: 10px;
     order: 0;
 }
@@ -244,11 +248,11 @@ main {
     display: flex;
     justify-content: space-between;
     padding: 8px 15px;
-    border-bottom: 1px dashed #eee;
-    background-color: var(--secondary-color);
+    border-bottom: 1px dashed #f4e6d4;
+    background-color: var(--brown-light);
     border-radius: 8px;
     position: relative;
-    overflow: hidden; /* Adicionado para conter o efeito de brilho */
+    overflow: hidden;
 }
 
 /* NOVO: Efeito de brilho para os horários */
@@ -370,12 +374,12 @@ main {
 }
 
 .location {
-    color: #4285F4;
-    border-color: #4285F4;
+    color: var(--brown-dark);
+    border-color: var(--brown-dark);
 }
 
 .location:hover {
-    background-color: #4285F4;
+    background-color: var(--brown-dark);
     color: white;
 }
 
@@ -387,7 +391,7 @@ main {
     text-align: center;
     margin: 30px auto;
     padding: 15px 30px;
-    background-color: var(--whatsapp-color);
+    background-color: var(--brown-dark); /* Mudando para marrom escuro */
     border-radius: 30px;
     text-decoration: none;
     color: white;
@@ -397,7 +401,7 @@ main {
 }
 
 .share-button:hover {
-    background-color: #1da851;
+    background-color: #8d6e55; /* Marrom escuro ao passar o mouse */
     transform: translateY(-3px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
@@ -438,7 +442,7 @@ main {
 #searchInput {
     flex: 1;
     padding: 12px 20px;
-    border: 2px solid var(--secondary-color);
+    border: 2px solid #d2b48c;  /* Alterado para marrom claro */
     border-radius: 30px 0 0 30px;
     font-size: 16px;
     outline: none;
@@ -446,11 +450,11 @@ main {
 }
 
 #searchInput:focus {
-    border-color: var(--accent-color);
+    border-color: #a88566;  /* Marrom mais escuro quando em foco */
 }
 
 #searchButton {
-    background-color: var(--primary-color);
+    background-color: #d2b48c;  /* Alterado para marrom claro */
     border: none;
     padding: 0 20px;
     color: white;
@@ -460,7 +464,7 @@ main {
 }
 
 #searchButton:hover {
-    background-color: var(--accent-color);
+    background-color: #a88566;  /* Marrom mais escuro quando hover */
 }
 
 /* Estilos para os resultados de pesquisa */
@@ -478,7 +482,7 @@ main {
 
 /* Marca de destaque para resultados da pesquisa */
 .search-highlight {
-    background-color: var(--secondary-color);
+    background-color: var(--brown-light);
     padding: 2px 0;
     border-radius: 3px;
 }
@@ -595,25 +599,25 @@ main {
 }
 
 .favorite-btn {
-    background-color: #ffebee;
+    background-color: #f9e6ee; /* Rosa claro para botões de favorito */
     color: #888;
 }
 
 .favorite-btn:hover {
     color: #ff4d4d;
     transform: scale(1.1);
-    background-color: #ffe0e0;
+    background-color: #f9d8e5;
 }
 
 .cart-btn {
-    background-color: #e8f5e9;
+    background-color: #f0e6d9; /* Marrom bem claro para botões de carrinho */
     color: #333;
 }
 
 .cart-btn:hover {
-    color: var(--whatsapp-color);
+    color: var(--brown-dark);
     transform: scale(1.1);
-    background-color: #d5ecd8;
+    background-color: #e6d7c3;
 }
 
 .favorite-active {
@@ -687,7 +691,7 @@ main {
 
 /* Footer com efeito de brilho - APRIMORADO */
 footer {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--brown-light));
     color: var(--dark-color);
     text-align: center;
     padding: 25px;
@@ -780,7 +784,7 @@ footer p {
     display: flex;
     margin-bottom: 15px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #f0e6d9;
 }
 
 .cart-item-image {
@@ -819,7 +823,7 @@ footer p {
 }
 
 .quantity-btn {
-    background-color: var(--secondary-color);
+    background-color: var(--brown-light);
     border: none;
     width: 25px;
     height: 25px;
@@ -833,7 +837,8 @@ footer p {
 }
 
 .quantity-btn:hover {
-    background-color: var(--primary-color);
+    background-color: var(--accent-color);
+    color: white;
 }
 
 .item-quantity {
@@ -879,7 +884,7 @@ footer p {
 }
 
 .cart-share {
-    background-color: var(--whatsapp-color);
+    background-color: var(--brown-dark);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -896,7 +901,7 @@ footer p {
 }
 
 .cart-share:hover {
-    background-color: #1da851;
+    background-color: #8d6e55;
     transform: translateY(-2px);
 }
 
