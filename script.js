@@ -1,9 +1,9 @@
 // Produtos de exemplo  4
 const products = [
-    { name: "Carmed da Hello Kitty", price: "R$ 300,00", image: "https://i.postimg.cc/QdZNfwTK/carmedhellokitty.jpg" },
-    { name: "Perfume da Hello Kitty", price: "R$ 89,90", image: "https://i.postimg.cc/wML6cQ0d/perfume-hello-Kitty.jpg" },
-    { name: "Adesivo de Unhas", price: "R$ 15,00", image: "https://i.postimg.cc/wM7KCzyn/Adesivos-para-Decora-o-das-Unhas.jpg" },
-    { name: "Buquê de Rosas Vermelhas", price: "R$ 120,00", image: "https://i.postimg.cc/52HMdNWb/rosa.jpg" },
+    { name: "Corrente Ponto de Luz", price: "R$ 299,90", image: "https://i.postimg.cc/5yLPzdZc/corrente.jpg" },
+    { name: "Vestido Sarah", price: "R$ 390,90", image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg" },
+    { name: "Salto alto Preto", price: "R$ 299,90", image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg" },
+    { name: "Bolsa Branca Delicada", price: "R$ 199,90", image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg" },
     { name: "Pó Compacto Translúcido", price: "R$ 62,00", image: "/api/placeholder/400/300" },
     { name: "Sérum Facial Hidratante", price: "R$ 79,90", image: "/api/placeholder/400/300" },
     { name: "Protetor Solar FPS 50", price: "R$ 72,00", image: "/api/placeholder/400/300" },
