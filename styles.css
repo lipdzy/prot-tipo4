@@ -1,12 +1,12 @@
 :root {
-    --primary-color: #f5a0cb;
-    --secondary-color: #fde2f3;
-    --accent-color: #e66fac;
+    --primary-color: #d8a7b1;
+    --secondary-color: #f1e0e5;
+    --accent-color: #b3707e;
     --text-color: #333;
     --light-color: #fff;
     --dark-color: #333;
     --whatsapp-color: #25D366;
-    --instagram-color: #E1306C;
+    --instagram-color: #C13584;
     --tiktok-color: #000000;
     --shimmer-color: rgba(255, 255, 255, 0.5);
 }
@@ -67,7 +67,6 @@ header {
     overflow: hidden; /* Adicionado para conter o efeito de brilho */
 }
 
-/* NOVO: Efeito de brilho para o fundo do header */
 header::before {
     content: '';
     position: absolute;
@@ -78,11 +77,11 @@ header::before {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(255,255,255,0.4) 50%,
+        rgba(255,255,255,0.3) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
-    animation: shimmer 4s infinite linear;
+    animation: shimmer 5s infinite linear;
     z-index: 1;
 }
 
@@ -95,18 +94,13 @@ header::before {
     z-index: 2;
 }
 
-/* AJUSTADO: Adicionado efeito de brilho no fundo da logo */
 .logo {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background-color: var(--secondary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
     margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
     position: relative;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 }
@@ -174,12 +168,28 @@ nav {
 }
 
 nav a {
-    margin: 0 10px;
+    margin: 0 15px;
     text-decoration: none;
     color: var(--dark-color);
-    font-weight: bold;
+    font-weight: 500;
     transition: all 0.3s ease;
     padding: 5px 10px;
+    position: relative;
+
+}nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background-color: var(--accent-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+nav a:hover::after {
+    width: 80%;
 }
 
 nav a:hover {
@@ -215,19 +225,21 @@ main {
 .section {
     margin-bottom: 40px;
     background-color: var(--light-color);
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
     display: flex;
     flex-direction: column;
 }
 
 .section-title {
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     color: var(--accent-color);
-    border-bottom: 2px solid var(--secondary-color);
-    padding-bottom: 10px;
+    border-bottom: 1px solid var(--secondary-color);
+    padding-bottom: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     order: 0;
 }
 
@@ -244,12 +256,18 @@ main {
     margin-bottom: 5px;
     display: flex;
     justify-content: space-between;
-    padding: 8px 15px;
-    border-bottom: 1px dashed #eee;
+    padding: 10px 18px;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
     background-color: var(--secondary-color);
-    border-radius: 8px;
+    border-radius: 10px;
     position: relative;
-    overflow: hidden; /* Adicionado para conter o efeito de brilho */
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.hours-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
 }
 
 /* NOVO: Efeito de brilho para os horários */
@@ -295,16 +313,15 @@ main {
     border-radius: 30px;
     text-decoration: none;
     color: var(--text-color);
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     width: 180px;
-    border: 2px solid transparent;
+    border: 1px solid rgba(0,0,0,0.05);
     position: relative;
     overflow: hidden;
 }
 
-/* Efeito de brilho para botões sociais */
 .social-button::before {
     content: '';
     position: absolute;
@@ -315,17 +332,18 @@ main {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(255,255,255,0.6) 50%,
+        rgba(255,255,255,0.4) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
-    animation: shimmer 3s infinite linear;
+    animation: shimmer 4s infinite linear;
     z-index: 1;
 }
 
 .social-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    background-color: rgba(255,255,255,0.9);
 }
 
 .social-button i {
@@ -392,9 +410,16 @@ main {
     border-radius: 30px;
     text-decoration: none;
     color: white;
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+.share-button:hover {
+    background-color: #1da851;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
 .share-button:hover {
@@ -431,15 +456,15 @@ main {
     width: 100%;
     max-width: 500px;
     position: relative;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     border-radius: 30px;
     overflow: hidden;
 }
 
 #searchInput {
     flex: 1;
-    padding: 12px 20px;
-    border: 2px solid var(--secondary-color);
+    padding: 12px 22px;
+    border: 1px solid var(--secondary-color);
     border-radius: 30px 0 0 30px;
     font-size: 16px;
     outline: none;
@@ -484,23 +509,22 @@ main {
     border-radius: 3px;
 }
 
-/* Layout de produto ajustado para fotos verticais com informações mais próximas */
 .product {
     background-color: var(--light-color);
-    border-radius: 12px;
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     position: relative;
     width: 100%;
-    height: 350px; /* Altura ajustada */
+    height: 350px;
     display: flex;
     flex-direction: column;
 }
 
 .product:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
 .product-image-container {
@@ -628,10 +652,11 @@ main {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     z-index: 1000;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(3px);
 }
 
 .modal-content {
@@ -686,18 +711,16 @@ main {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Footer com efeito de brilho - APRIMORADO */
 footer {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: var(--dark-color);
     text-align: center;
-    padding: 25px;
+    padding: 28px;
     margin-top: 40px;
     position: relative;
     overflow: hidden;
 }
 
-/* Efeito de brilho aprimorado para o footer */
 footer::before {
     content: '';
     position: absolute;
@@ -708,11 +731,11 @@ footer::before {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(255,255,255,0.5) 50%,
+        rgba(255,255,255,0.3) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
-    animation: shimmer 4s infinite linear;
+    animation: shimmer 5s infinite linear;
     z-index: 1;
 }
 
@@ -741,10 +764,11 @@ footer p {
     width: 90%;
     max-width: 800px;
     max-height: 90vh;
-    border-radius: 15px;
-    padding: 20px;
+    border-radius: 18px;
+    padding: 25px;
     overflow-y: auto;
     position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .cart-header {
@@ -907,13 +931,12 @@ footer p {
     color: #888;
 }
 
-/* Botão do carrinho no canto direito */
 .cart-button {
     position: fixed;
     top: 20px;
     right: 20px;
     background-color: var(--light-color);
-    border: 2px solid var(--accent-color);
+    border: 1px solid var(--accent-color);
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -921,7 +944,7 @@ footer p {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
     z-index: 100;
 }
@@ -932,16 +955,21 @@ footer p {
 }
 
 .cart-button i {
-    font-size: 22px;
+    font-size: 20px;
     color: var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.cart-button:hover i {
+    transform: scale(1.1);
 }
 
 .cart-button-counter {
     position: absolute;
     top: -5px;
     right: -5px;
-    background-color: var(--accent-color);
-    color: white;
+    background-color: #ffb6c1; /* Dourado elegante para o contador */
+    color: #fff;
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -949,29 +977,39 @@ footer p {
     align-items: center;
     justify-content: center;
     font-size: 12px;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
 }
+
+.cart-button:hover .cart-button-counter {
+    transform: scale(1.1);
+}
+
 #notification {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #6d6c6c;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    background-color: rgba(45, 45, 45, 0.9); /* Fundo escuro mais sofisticado */
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     text-align: center;
-    min-width: 200px;
+    min-width: 220px;
     pointer-events: none;
+    border-left: 3px solid #d4af37; /* Borda dourada para elegância */
+    font-weight: 500;
+    letter-spacing: 0.3px;
 }
 
 #notification.show {
     opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
 }
 
 /* Media queries para responsividade */
@@ -980,27 +1018,47 @@ footer p {
     .logo {
         width: 100px;
         height: 100px;
+        transition: transform 0.3s ease;
+    }
+    
+    .logo:hover {
+        transform: scale(1.05);
     }
     
     .company-name {
         font-size: 24px;
+        letter-spacing: 0.5px;
+        color: #333; /* Cor mais elegante para o título */
     }
     
     .welcome-text {
         font-size: 16px;
+        font-weight: 300;
+        color: #555; /* Cinza mais sutil para o texto de boas-vindas */
+        font-style: italic;
     }
     
     nav {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 5px;
+        gap: 8px;
     }
     
     nav a {
         margin: 3px;
-        padding: 3px 8px;
+        padding: 5px 12px;
         font-size: 14px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        color: #333;
+    }
+    
+    nav a:hover {
+        background-color: rgba(212, 175, 55, 0.1); /* Dourado muito sutil ao passar o mouse */
+        border-color: rgba(212, 175, 55, 0.3);
+        transform: translateY(-2px);
     }
     
     /* Ajuste para o carrinho */
@@ -1009,6 +1067,14 @@ footer p {
         height: 45px;
         top: 15px;
         right: 15px;
+        background-color: #fff;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .cart-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     }
     
     /* Ajuste para os links sociais */
@@ -1021,30 +1087,88 @@ footer p {
     .social-button {
         width: 100%;
         max-width: 250px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 6px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        font-weight: 500;
+    }
+    
+    .social-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .instagram {
+        background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+    
+    .tiktok {
+        background: linear-gradient(45deg, #000, #69C9D0);
+    }
+    
+    .whatsapp {
+        background: linear-gradient(45deg, #25D366, #128C7E);
+    }
+    
+    .location {
+        background: linear-gradient(45deg, #3498db, #2980b9);
     }
     
     /* Ajuste para o conteúdo principal */
     main {
-        padding: 15px;
+        padding: 20px 15px;
     }
     
     .section {
-        padding: 15px;
+        padding: 25px 15px;
+        margin-bottom: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        background-color: #fff;
+        transition: transform 0.3s ease;
     }
     
-    /* MODIFICADO: Ajuste para a lista de horários em telas médias */
+    .section:hover {
+        transform: translateY(-5px);
+    }
+    
+    /* Ajuste para a lista de horários em telas médias */
     .hours-list {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+    }
+    
+    .hours-list li {
+        padding: 12px 15px;
+        border-radius: 6px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        border-left: 3px solid #d4af37; /* Borda dourada para elegância */
+        transition: transform 0.2s ease;
+    }
+    
+    .hours-list li:hover {
+        transform: translateX(3px);
     }
     
     /* Ajuste para o catálogo - responsivo */
     .catalog {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 10px;
+        gap: 15px;
     }
     
     .product {
         height: 300px; /* Menor altura para telas menores */
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .product:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
     }
     
     /* AJUSTE: Garantir que o layout se mantenha consistente em dispositivos móveis */
@@ -1060,42 +1184,124 @@ footer p {
     /* Ajustes para o carrinho */
     .cart-item {
         flex-direction: column;
+        padding: 15px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
     }
     
     .cart-item-image {
         margin-bottom: 10px;
         width: 100px;
         height: 100px;
+        border-radius: 6px;
+        object-fit: cover;
+        border: 1px solid rgba(0, 0, 0, 0.05);
     }
     
     .cart-container {
         width: 95%;
-        padding: 15px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     }
     
     .cart-actions {
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
+        margin-top: 20px;
     }
     
     .cart-clear, .cart-share {
         width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .cart-clear {
+        background-color: #f8f8f8;
+        color: #555;
+        border: 1px solid #ddd;
+    }
+    
+    .cart-clear:hover {
+        background-color: #eee;
+    }
+    
+    .cart-share {
+        background-color: #25D366;
+        color: #fff;
+    }
+    
+    .cart-share:hover {
+        background-color: #1ba84d;
+        transform: translateY(-2px);
     }
     
     /* Ajuste para o modal de produto */
     .modal-content {
         max-width: 95%;
+        border-radius: 10px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        padding: 15px;
     }
     
     /* Ajuste para o botão de compartilhar */
     .share-button {
         width: 100%;
         max-width: 250px;
+        padding: 12px 20px;
+        border-radius: 6px;
+        background-color: #25D366;
+        color: #fff;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+    }
+    
+    .share-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3);
     }
     
     /* Ajuste para a barra de pesquisa */
     .search-box {
         max-width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .search-box:focus-within {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+        border-color: rgba(212, 175, 55, 0.5);
+    }
+    
+    #searchInput {
+        padding: 12px 15px;
+        border: none;
+        font-size: 14px;
+        color: #333;
+    }
+    
+    #searchButton {
+        background-color: #d4af37;
+        color: #fff;
+        border: none;
+        padding: 0 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    #searchButton:hover {
+        background-color: #c17b2a;
     }
 }
 
@@ -1112,9 +1318,24 @@ footer p {
     
     .section-title {
         font-size: 20px;
+        position: relative;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
     }
     
-    /* MODIFICADO: Ajuste para a lista de horários em telas pequenas */
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(45deg, #d4af37, #f5e7aa);
+        border-radius: 3px;
+    }
+    
+    /* Ajuste para a lista de horários em telas pequenas */
     .hours-list {
         grid-template-columns: 1fr;
     }
@@ -1122,12 +1343,12 @@ footer p {
     .hours-list li {
         flex-direction: row;
         justify-content: space-between;
-        padding: 8px 10px;
+        padding: 10px 15px;
     }
     
     .catalog {
         grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        gap: 10px;
     }
     
     .product {
@@ -1141,7 +1362,8 @@ footer p {
     /* AJUSTE: Aumentada a altura dos detalhes para acomodar melhor em telas muito pequenas */
     .product-details {
         height: 30%;
-        padding: 6px 8px;
+        padding: 8px 10px;
+        background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.9));
     }
     
     .product-title-price {
@@ -1150,28 +1372,49 @@ footer p {
     
     .product-title {
         font-size: 12px;
-        margin-bottom: 2px;
+        margin-bottom: 3px;
         /* Garantir que o texto não ultrapasse o container */
         -webkit-line-clamp: 2; /* Limita a 2 linhas */
-        line-height: 1.2;
+        line-height: 1.3;
+        color: #333;
     }
     
     .product-price {
-        font-size: 11px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #d4af37; /* Preço com cor dourada elegante */
     }
     
     /* AJUSTE: Melhorar espaçamento e tamanho dos botões em telas pequenas */
     .product-actions {
-        gap: 4px;
-        margin-top: 2px;
+        gap: 6px;
+        margin-top: 3px;
         height: 25%;
     }
     
     .favorite-btn, .cart-btn {
-        width: 22px;
-        height: 22px;
-        font-size: 11px;
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
         padding: 2px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border: none;
+        transition: all 0.2s ease;
+    }
+    
+    .favorite-btn:hover, .cart-btn:hover {
+        transform: scale(1.15);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .favorite-btn {
+        color: #d4af37;
+    }
+    
+    .cart-btn {
+        color: #333;
     }
     
     .cart-button-counter {
@@ -1183,12 +1426,32 @@ footer p {
     nav {
         flex-wrap: nowrap;
         justify-content: space-between;
+        padding: 8px 5px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 25px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
     }
     
     nav a {
         font-size: 12px;
-        padding: 3px 5px;
+        padding: 5px 8px;
         margin: 0 2px;
+        position: relative;
+    }
+    
+    nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background-color: #d4af37;
+        transition: width 0.3s ease, left 0.3s ease;
+    }
+    
+    nav a:hover::after {
+        width: 80%;
+        left: 10%;
     }
 }
-
