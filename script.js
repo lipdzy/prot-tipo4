@@ -413,12 +413,23 @@ function openCart() {
     updateCartDisplay();
 }
 
-// Função para compartilhar o carrinho no WhatsApp
 function shareCartOnWhatsApp() {
     if (!Array.isArray(cartItems) || cartItems.length === 0) {
         alert('Adicione produtos ao carrinho antes de compartilhar!');
         return;
     }
+
+    // Add size and color prompts for each item
+    const cartItemsWithDetails = cartItems.map(item => {
+        const size = prompt(`Qual tamanho para ${item.name}?`);
+        const color = prompt(`Qual cor para ${item.name}?`);
+
+        return {
+            ...item,
+            size: size || 'Não especificado',
+            color: color || 'Não especificado'
+        };
+    });
 
     const endereco = prompt('Endereço: Digite seu endereço aqui');
     const formaPagamento = prompt('Digite sua forma de pagamento: cartão ou pix');
@@ -431,12 +442,14 @@ function shareCartOnWhatsApp() {
     let message = '*Olá, gostaria de fazer meu pedido:*\n\n';
     let total = 0;
 
-    cartItems.forEach(item => {
+    cartItemsWithDetails.forEach(item => {
         const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
         const itemTotal = priceValue * item.quantity;
         total += itemTotal;
 
         message += `• ${item.quantity}x ${item.name} - ${item.price} cada\n`;
+        message += `  - Tamanho: ${item.size}\n`;
+        message += `  - Cor: ${item.color}\n`;
     });
 
     message += `\n*Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
