@@ -634,20 +634,22 @@ main {
 }
 
 .product-title {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
-    margin-bottom: 2px;
     color: var(--accent-color);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-bottom: -4px; /* Pull the title down */
     line-height: 1.2;
 }
+
 
 .product-price {
     font-size: 12px;
     font-weight: bold;
     color: var(--text-color);
+    margin-top: 2px; /* Ensure some spacing from title */
 }
 
 .product-actions {
