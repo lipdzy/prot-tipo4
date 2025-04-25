@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja de Roupas</title>
+    <title>Closet Dellas - Sua loja de roupas</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
 <body>
     <header>
         <div class="logo-container">
-            <div class="logo">
+            <div class="logo logo-shimmer">
                 <img src="https://i.postimg.cc/65Wz3j7G/CLOSET-DELLAS-jpg.jpg" alt="Logo da Loja">
             </div>
             <h1 class="company-name">Closet Dellas</h1>
@@ -31,19 +31,26 @@
         </div>
     </header>
 
-
     <main>
+        <!-- Seção de Horários -->
         <section class="section" id="horarios">
-            <h2 class="section-title">Horários de Atendimento</h2>
+            <h2 class="section-title">Horários de Funcionamento</h2>
             <ul class="hours-list">
-                <li><span>Segunda a Sexta:</span> <span>09:00 - 18:00</span></li>
-                <li><span>Sábado</span> <span>09:00 - 13h</span></li>
-                <li><span>Domingo</span> <span> Fechado</span></li>
+                <li><span>Segunda-feira:</span> <span>09:00 - 18:00</span></li>
+                <li><span>Terça-feira:</span> <span>09:00 - 18:00</span></li>
+                <li><span>Quarta-feira:</span> <span>09:00 - 18:00</span></li>
+                <li><span>Quinta-feira:</span> <span>09:00 - 18:00</span></li>
+                <li><span>Sexta-feira:</span> <span>09:00 - 18:00</span></li>
+                <li><span>Sábado:</span> <span>09:00 - 13:00</span></li>
+                <li><span>Domingo:</span> <span>Fechado</span></li>
             </ul>
         </section>
-        
+
+        <!-- Seção de Produtos/Catálogo -->
         <section class="section" id="produtos">
-            <h2 class="section-title">Catálogo</h2>
+            <h2 class="section-title">Nossos Produtos</h2>
+            
+            <!-- Barra de pesquisa -->
             <div class="search-container">
                 <div class="search-box">
                     <input type="text" id="searchInput" placeholder="Pesquisar produtos...">
@@ -52,54 +59,59 @@
                     </button>
                 </div>
             </div>
+            
+            <!-- Catálogo de produtos -->
             <div class="catalog" id="catalog">
                 <!-- Os produtos serão inseridos aqui via JavaScript -->
             </div>
         </section>
 
+        <!-- Seção de Contato -->
         <section class="section" id="contato">
-            <h2 class="section-title">Redes Sociais</h2>
+            <h2 class="section-title">Entre em Contato</h2>
             <div class="social-links">
-                <a href="https://www.instagram.com/arthur.fellp" class="social-button instagram">
-                    <i class="fab fa-instagram"></i> Instagram
+                <a href="https://wa.me/+5583991816152" class="social-button whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
                 </a>
-                <a href="https://www.tiktok.com/@arthsntt" class="social-button tiktok">
-                    <i class="fab fa-tiktok"></i> TikTok
+                <a href="https://www.instagram.com/closetdellas/" class="social-button instagram" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
                 </a>
-                <a href="https://wa.me/+5583991816152" class="social-button whatsapp">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </a>
-                <a href="#localizacao" class="social-button location">
-                    <i class="fas fa-map-marker-alt"></i> Localização
+                <a href="https://www.tiktok.com/@closetdellas" class="social-button tiktok" target="_blank">
+                    <i class="fab fa-tiktok"></i>
+                    <span>TikTok</span>
                 </a>
             </div>
-                        
-            <a href="#" class="share-button" id="shareButton">
-                <i class="fab fa-whatsapp"></i> Compartilhar no WhatsApp
+            <a href="#" id="shareButton" class="share-button">
+                <i class="fas fa-share-alt"></i> Compartilhar Loja
             </a>
         </section>
 
+        <!-- Seção de Localização -->
         <section class="section" id="localizacao">
             <h2 class="section-title">Nossa Localização</h2>
             <div class="location-info">
-                <p>
-                    <i class="fas fa-map-marker-alt"></i>  Bessa, João Pessoa, Paraíba, Brasil 
-                    <br>
-                    <i class="fas fa-envelope"></i> CEP: 2345-678
-                </p>
+                <p>Estamos localizados na Rua da Praia, 123 - João Pessoa, PB.</p>
+                <p>Venha nos visitar e confira nossas peças exclusivas!</p>
+            </div>
+            <div class="social-links">
+                <a href="https://maps.app.goo.gl/bGNWmxNbjNZQTpjr5" class="social-button location" target="_blank">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Ver no Google Maps</span>
+                </a>
             </div>
         </section>
     </main>
 
-
-    <!-- Modal para visualização de produtos -->
+    <!-- Modal para visualização de imagem -->
     <div id="productModal" class="product-modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <img id="modalImage" src="" alt="Imagem ampliada do produto">
+            <img id="modalImage" src="" alt="">
         </div>
     </div>
-    
+
     <!-- Carrinho de compras -->
     <div id="cartOverlay" class="cart-overlay">
         <div class="cart-container">
@@ -121,7 +133,7 @@
     </div>
     
     <footer>
-        <p>&copy; 2025 closet Dellas - Todos os direitos reservados</p>
+        <p>&copy; 2025 Closet Dellas - Todos os direitos reservados</p>
         <p>Sua loja especializada em roupas</p>
     </footer>
     

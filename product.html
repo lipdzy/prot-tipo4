@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Produto - Closet Dellas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo logo-shimmer">
+                <img src="https://i.postimg.cc/65Wz3j7G/CLOSET-DELLAS-jpg.jpg" alt="Logo da Loja">
+            </div>
+            <h1 class="company-name">Closet Dellas</h1>
+            <p class="welcome-text">Bem-vindo à Closet Dellas! Faça já o seu pedido!</p>
+        </div>
+        <nav>
+            <a href="index.html#horarios">Horários</a>
+            <a href="index.html#produtos">Produtos</a>
+            <a href="index.html#contato">Contato</a>
+            <a href="index.html#localizacao">Localização</a>
+        </nav>
+                
+        <!-- Botão do carrinho no canto superior direito -->
+        <div class="cart-button" id="cartButton">
+            <i class="fas fa-shopping-cart"></i>
+            <div class="cart-button-counter" id="cartButtonCounter">0</div>
+        </div>
+    </header>
+
+    <main>
+        <section class="section" id="product-detail">
+            <div class="back-to-catalog">
+                <a href="index.html#produtos"><i class="fas fa-arrow-left"></i> Voltar ao catálogo</a>
+            </div>
+            <div class="product-detail-container">
+                <div class="product-detail-image">
+                    <img id="productImage" src="" alt="">
+                </div>
+                <div class="product-detail-info">
+                    <h1 id="productName" class="product-detail-title"></h1>
+                    <p id="productPrice" class="product-detail-price"></p>
+                    <div class="product-detail-description">
+                        <p id="productDescription">Descrição do produto não disponível.</p>
+                    </div>
+                    <div class="product-detail-actions">
+                        <div class="quantity-selector">
+                            <button id="decreaseQuantity">-</button>
+                            <span id="quantityValue">1</span>
+                            <button id="increaseQuantity">+</button>
+                        </div>
+                        <button id="addToCartBtn" class="add-to-cart-btn">
+                            <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Carrinho de compras -->
+    <div id="cartOverlay" class="cart-overlay">
+        <div class="cart-container">
+            <div class="cart-header">
+                <h2 class="cart-title">Seu Carrinho</h2>
+                <span class="close-cart">&times;</span>
+            </div>
+            <div id="cartItems" class="cart-items">
+                <!-- Itens do carrinho serão inseridos aqui via JavaScript -->
+            </div>
+            <div id="cartTotal" class="cart-total">Total: R$ 0,00</div>
+            <div class="cart-actions">
+                <button id="clearCart" class="cart-clear">Limpar Carrinho</button>
+                <button id="shareCart" class="cart-share">
+                    <i class="fab fa-whatsapp"></i> Compartilhar no WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Elemento de notificação -->
+    <div id="notification"></div>
+    
+    <footer>
+        <p>&copy; 2025 Closet Dellas - Todos os direitos reservados</p>
+        <p>Sua loja especializada em roupas</p>
+    </footer>
+    
+    <script src="script.js"></script>
+    <script src="product.js"></script>
+</body>
+</html>
