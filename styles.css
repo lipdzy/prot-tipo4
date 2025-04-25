@@ -578,7 +578,7 @@ main {
     transition: all 0.3s ease;
     position: relative;
     width: 100%;
-    height: 360px;
+    height: 380px;
     display: flex;
     flex-direction: column;
 }
@@ -590,7 +590,7 @@ main {
 
 .product-image-container {
     width: 100%;
-    height: 80%; /* Altura reduzida para dar mais espaço aos detalhes */
+    height: 72%; /* Altura reduzida para dar mais espaço aos detalhes */
     overflow: hidden;
     cursor: pointer;
     position: relative;
@@ -607,15 +607,15 @@ main {
     transform: scale(1.05);
 }
 
-/* Ajuste do espaçamento entre a imagem e os detalhes */
 .product-details {
-    padding: 8px 12px 10px; /* Reduzido o padding superior */
+    height: 28%;
+    padding: 10px 12px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 32%; /* Aumentada a altura para mais espaço */
-    border-top: none; /* Removido border para aproximar da imagem */
+    justify-content: flex-start;
+    gap: 6px; /* Espaçamento entre título e preço */
 }
+
 
 /* AJUSTE: Modificado o layout da área de informações do produto */
 .product-info {
@@ -625,34 +625,41 @@ main {
     height: 100%;
 }
 
-.product-title-price {
-    width: 100%; /* Garante que o título ocupe toda a largura */
-    margin-bottom: 5px; /* Espaço entre título/preço e botões */
+.product {
+    height: 400px; /* levemente maior para dar respiro */
+}
+
+.product-image-container {
+    height: 72%; /* reduzido para deixar mais espaço aos detalhes */
+}
+
+.product-details {
+    height: 28%;
+    padding: 10px 12px;
     display: flex;
     flex-direction: column;
-    height: 70%; /* Aumentado para dar mais espaço ao título */
+    justify-content: flex-start;
+    gap: 6px; /* Espaçamento entre título e preço */
+}
+
+.product-title-price {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
 }
 
 .product-title {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 4px; /* Aumentado espaço entre título e preço */
-    color: var(--accent-color);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%; /* Título ocupa toda a largura disponível */
-    white-space: normal;
-    display: -webkit-box;
+    font-size: 15px;
+    margin-bottom: 0; /* já tem gap acima */
+    line-height: 1.3;
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    line-height: 1.2;
 }
 
 .product-price {
-    font-size: 12px; /* Aumentado o tamanho da fonte do preço */
-    font-weight: bold;
-    color: var(--text-color);
-    margin-top: 2px; /* Aumentado espaço */
+    font-size: 13px;
+    margin-top: 0; /* já tem gap acima */
 }
 
 /* AJUSTE: Movido os botões para baixo do título/preço */
