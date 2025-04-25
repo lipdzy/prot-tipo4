@@ -613,7 +613,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 28%; /* Aumentada a altura para mais espaço */
+    height: 32%; /* Aumentada a altura para mais espaço */
     border-top: none; /* Removido border para aproximar da imagem */
 }
 
