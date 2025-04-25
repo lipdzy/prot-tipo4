@@ -4,7 +4,7 @@ const products = [
     { name: "Vestido Sarah", price: "R$ 390,90", image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg" },
     { name: "Salto alto Preto", price: "R$ 299,90", image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg" },
     { name: "Bolsa Branca Delicada", price: "R$ 199,90", image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg" },
-    { name: "Pó Compacto Translúcido", price: "R$ 60,00", image: "/api/placeholder/400/300" },
+    { name: "Pó Compacto Translúcido", price: "R$ 62,00", image: "/api/placeholder/400/300" },
     { name: "Sérum Facial Hidratante", price: "R$ 79,90", image: "/api/placeholder/400/300" },
     { name: "Protetor Solar FPS 50", price: "R$ 72,00", image: "/api/placeholder/400/300" },
     { name: "Demaquilante Bifásico", price: "R$ 48,00", image: "/api/placeholder/400/300" },
@@ -96,9 +96,6 @@ function showNotification(message) {
         notification.classList.remove('show');
     }, 3000);
 }
-
-
-
 
 // Carregar produtos
 function loadProducts() {
