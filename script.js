@@ -423,6 +423,16 @@ function shareCartOnWhatsApp() {
         return;
     }
     
+    // Pedir endereço e forma de pagamento ao usuário
+    const endereco = prompt('Endereço: Digite seu endereço aqui');
+    const formaPagamento = prompt('Digite sua forma de pagamento: cartão ou pix');
+    
+    // Verificar se o usuário forneceu as informações
+    if (!endereco || !formaPagamento) {
+        alert('Por favor, forneça seu endereço e forma de pagamento para continuar.');
+        return;
+    }
+    
     let message = '*Olá, gostaria de fazer meu pedido:*\n\n';
     let total = 0;
     
@@ -435,12 +445,14 @@ function shareCartOnWhatsApp() {
     });
     
     message += `\n*Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
+    message += `*Endereço:* ${endereco}\n`;
+    message += `*Forma de pagamento:* ${formaPagamento}`;
     
-    // Número do WhatsApp do dono da empresa (substitua pelo número real)
-    const ownerPhoneNumber = "5583991816152"; // Exemplo: 5511999999999 (formato: código do país + DDD + número)
+    // Codificar a mensagem para URL
+    const encodedMessage = encodeURIComponent(message);
     
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${ownerPhoneNumber}&text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    // Abrir WhatsApp com a mensagem preenchida
+    window.open(`https://wa.me/+5583991816152?text=${encodedMessage}`, '_blank');
 }
 
 // Função para remover acentos de uma string
