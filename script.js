@@ -418,40 +418,36 @@ function openCart() {
 
 // Função para compartilhar o carrinho no WhatsApp
 function shareCartOnWhatsApp() {
-    if (cartItems.length === 0) {
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
         alert('Adicione produtos ao carrinho antes de compartilhar!');
         return;
     }
-    
-    // Pedir endereço e forma de pagamento ao usuário
+
     const endereco = prompt('Endereço: Digite seu endereço aqui');
     const formaPagamento = prompt('Digite sua forma de pagamento: cartão ou pix');
-    
-    // Verificar se o usuário forneceu as informações
+
     if (!endereco || !formaPagamento) {
         alert('Por favor, forneça seu endereço e forma de pagamento para continuar.');
         return;
     }
-    
+
     let message = '*Olá, gostaria de fazer meu pedido:*\n\n';
     let total = 0;
-    
+
     cartItems.forEach(item => {
         const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
         const itemTotal = priceValue * item.quantity;
         total += itemTotal;
-        
+
         message += `• ${item.quantity}x ${item.name} - ${item.price} cada\n`;
     });
-    
+
     message += `\n*Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
     message += `*Endereço:* ${endereco}\n`;
     message += `*Forma de pagamento:* ${formaPagamento}`;
-    
-    // Codificar a mensagem para URL
+
     const encodedMessage = encodeURIComponent(message);
-    
-    // Abrir WhatsApp com a mensagem preenchida
+
     window.open(`https://wa.me/+5583991816152?text=${encodedMessage}`, '_blank');
 }
 
