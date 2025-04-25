@@ -11,7 +11,7 @@
     --shimmer-color: rgba(255, 255, 255, 0.5);
     --border-color: rgba(201, 168, 122, 0.2); /* Soft, elegant border color */
     --border-radius-soft: 12px; /* Softer border radius */
-    --border-radius-round: 30px; /* Rounded border radius */
+--border-radius-round: 30px; /* Rounded border radius */
 }
 
 * {
@@ -235,22 +235,15 @@ main {
     flex-direction: column;
 }
 
-/* Section Titles with Elegant Underline */
 .section-title {
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 10px;
+    font-size: 24px;
     margin-bottom: 25px;
-    position: relative;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 50px;
-    height: 3px;
-    background-color: var(--accent-color);
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--secondary-color);
+    padding-bottom: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    order: 0;
 }
 
 * Layout refinado para lista de horários */
@@ -600,7 +593,7 @@ main {
 
 .product-image-container {
     width: 100%;
-    height: 80%; /* Altura reduzida para dar mais espaço aos detalhes */
+    height: 85%; /* Increased image height */
     overflow: hidden;
     cursor: pointer;
     position: relative;
@@ -617,61 +610,70 @@ main {
     transform: scale(1.05);
 }
 
-/* Ajuste do espaçamento entre a imagem e os detalhes */
 .product-details {
-    padding: 8px 12px 10px; /* Reduzido o padding superior */
+    padding: 8px 12px 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 32%; /* Aumentada a altura para mais espaço */
-    border-top: none; /* Removido border para aproximar da imagem */
+    height: 15%; /* Reduced details height */
+    border-top: none;
 }
-
-/* AJUSTE: Modificado o layout da área de informações do produto */
 .product-info {
     display: flex;
-    flex-direction: column; /* Alterado para coluna para separar título dos botões */
+    flex-direction: column;
     justify-content: space-between;
     height: 100%;
 }
 
 .product-title-price {
-    width: 100%; /* Garante que o título ocupe toda a largura */
-    margin-bottom: 5px; /* Espaço entre título/preço e botões */
+    width: 100%;
     display: flex;
     flex-direction: column;
-    height: 70%; /* Aumentado para dar mais espaço ao título */
+    justify-content: flex-end; /* Align to bottom */
+    height: 100%;
 }
 
 .product-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
-    margin-bottom: 4px; /* Aumentado espaço entre título e preço */
+    margin-bottom: 2px;
     color: var(--accent-color);
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%; /* Título ocupa toda a largura disponível */
-    white-space: normal;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    white-space: nowrap;
     line-height: 1.2;
 }
 
 .product-price {
-    font-size: 12px; /* Aumentado o tamanho da fonte do preço */
+    font-size: 12px;
     font-weight: bold;
     color: var(--text-color);
-    margin-top: 2px; /* Aumentado espaço */
 }
 
-/* AJUSTE: Movido os botões para baixo do título/preço */
 .product-actions {
-    display: flex;
-    justify-content: flex-end; /* Alinha os botões à direita */
-    gap: 6px;
-    margin-top: 2px; /* Espaço entre preço e botões */
-    height: 30%;
+    display: none; /* Hide actions to maximize image space */
+}
+/* Media query adjustments for smaller screens */
+@media screen and (max-width: 480px) {
+    .product {
+        height: 320px; /* Slightly reduced for smaller screens */
+    }
+
+    .product-image-container {
+        height: 85%;
+    }
+
+    .product-details {
+        height: 15%;
+    }
+
+    .product-title {
+        font-size: 12px;
+    }
+
+    .product-price {
+        font-size: 11px;
+    }
 }
 
 .favorite-btn, .cart-btn {
