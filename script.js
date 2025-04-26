@@ -545,181 +545,9 @@ function shareCartOnWhatsApp() {
     }
     
     try {
-        // Perguntar tamanho e cor para cada item que precisa dessas informações
-        const cartItemsWithDetails = cartItems.map(item => {
-            // Valores padrão
-            let size = 'Único';
-            let color = 'Único';
-            
-            // Se for uma peça de roupa ou calçado, perguntar tamanho
-            if (item.name.toLowerCase().includes('vestido') || 
-                item.name.toLowerCase().includes('salto') || 
-                item.name.toLowerCase().includes('sapato') ||
-                item.name.toLowerCase().includes('roupa') ||
-                item.name.toLowerCase().includes('calça') ||
-                item.name.toLowerCase().includes('blusa')) {
-                
-                size = prompt(`Qual tamanho para ${item.name}?`, 'M');
-                // Se cancelar em qualquer prompt, interromper o processo
-                if (size === null) return null;
-            }
-            
-            // Se for um produto que normalmente tem opções de cor
-            if (item.name.toLowerCase().includes('bolsa') || 
-                item.name.toLowerCase().includes('esmalte') || 
-                item.name.toLowerCase().includes('sapato') ||
-                item.name.toLowerCase().includes('cor')) {
-                
-                color = prompt(`Qual cor para ${item.name}?`, 'Como na imagem');
-                // Se cancelar em qualquer prompt, interromper o processo
-                if (color === null) return null;
-            }
-            
-            return {
-                ...item,
-                size: size || 'Não especificado',
-                color: color || 'Não especificado'
-            };
-        });
-        
-        // Verificar se algum item retornou null (usuário cancelou)
-        if (cartItemsWithDetails.includes(null)) {
-            return;
-        }
-        
-        // Solicitar endereço
-        const endereco = prompt('Endereço de entrega completo:', '');
-        if (!endereco) {
-            alert('É necessário informar um endereço para continuar.');
-            return;
-        }
-        
-        // Validação básica de endereço
-        if (endereco.length < 10) {
-            if (!confirm('O endereço parece muito curto. Deseja continuar mesmo assim?')) {
-                return;
-            }
-        }
-        
-        // Solicitar forma de pagamento com opções pré-definidas
-        const opcoesFormaPagamento = ['PIX', 'Cartão de Crédito', 'Cartão de Débito', 'Dinheiro'];
-        let formaPagamento = '';
-        
-        // Criar mensagem com as opções numeradas
-        let mensagemOpcoes = 'Escolha a forma de pagamento:\n';
-        opcoesFormaPagamento.forEach((opcao, index) => {
-            mensagemOpcoes += `${index + 1} - ${opcao}\n`;
-        });
-        
-        // Solicitar escolha do usuário
-        const escolha = prompt(mensagemOpcoes, '1');
-        if (escolha === null) return;
-        
-        // Converter a escolha para o texto da opção
-        const indiceEscolhido = parseInt(escolha, 10) - 1;
-        if (indiceEscolhido >= 0 && indiceEscolhido < opcoesFormaPagamento.length) {
-            formaPagamento = opcoesFormaPagamento[indiceEscolhido];
-        } else {
-            // Se a entrada não for um número válido, usar o texto digitado como forma de pagamento
-            formaPagamento = escolha;
-        }
-        
-        // Verificar se temos uma forma de pagamento
-        if (!formaPagamento) {
-            alert('É necessário informar uma forma de pagamento para continuar.');
-            return;
-        }
-        
-        // Solicitar observações (opcional)
-        const observacoes = prompt('Observações adicionais para o pedido (opcional):', '');
-        
-        // Formatar a mensagem do pedido
-        let message = '*📋 NOVO PEDIDO:*\n\n';
-        let total = 0;
-        
-        // Adicionar detalhes de cada item
-        cartItemsWithDetails.forEach(item => {
-            // Calcular valor de cada item
-            const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
-            const itemTotal = priceValue * item.quantity;
-            total += itemTotal;
-            
-            // Adicionar item à mensagem
-            message += `• ${item.quantity}x ${item.name} - ${item.price} cada\n`;
-            
-            // Só incluir tamanho se não for "Único"
-            if (item.size !== 'Único') {
-                message += `  - Tamanho: ${item.size}\n`;
-            }
-            
-            // Só incluir cor se não for "Único"
-            if (item.color !== 'Único') {
-                message += `  - Cor: ${item.color}\n`;
-            }
-        });
-        
-        // Adicionar informações do pedido
-        message += `\n*💰 Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
-        message += `*🏠 Endereço:* ${endereco}\n`;
-        message += `*💳 Forma de pagamento:* ${formaPagamento}\n`;
-        
-        // Adicionar observações se houver
-        if (observacoes) {
-            message += `\n*📝 Observações:* ${observacoes}\n`;
-        }
-        
-        // Adicionar data e hora do pedido
-        const now = new Date();
-        const dataHora = now.toLocaleString('pt-BR');
-        message += `\n*⏰ Data/Hora:* ${dataHora}`;
-        
-        // Criar array para armazenar as URLs das imagens
-        const imageUrls = cartItemsWithDetails
-            .filter(item => item.image)
-            .map(item => ({
-                url: item.image,
-                name: item.name
-            }));
-        
-        // Verificar se há imagens para compartilhar
-        const hasImages = imageUrls.length > 0;
-        
-        // Adicionar fotos dos produtos à mensagem principal
-        if (hasImages) {
-            message += '\n\n*📸 Fotos dos produtos:*';
-            imageUrls.forEach((image, index) => {
-                message += `\n• ${image.name}: ${image.url}`;
-            });
-        }
-        
-        // Codificar a mensagem para URL
-        const encodedMessage = encodeURIComponent(message);
-        
-        // Número de telefone do dono da loja (sem o "+")
-        const phoneNumber = '5583991816152';
-        
-        // Armazenar as informações no localStorage para uso posterior
-        localStorage.setItem('lastOrderMessage', message);
-        localStorage.setItem('lastOrderPhone', phoneNumber);
-        
-        // Criar URL do WhatsApp
-        const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-        
-        // Preparar botões para uso na interface (não serão mostrados ainda)
-        createWhatsAppButtons(whatsappURL, message, phoneNumber);
-        
-        // Detectar se é mobile ou desktop
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        // Mostrar diferentes opções com base no dispositivo
-        if (isMobile) {
-            // Em dispositivos móveis, tentar abrir direto o app do WhatsApp
-            sendToWhatsAppMobile(whatsappURL, message, phoneNumber);
-        } else {
-            // Em desktop, mostrar opções para o usuário
-            showDesktopOptions(whatsappURL, message, phoneNumber);
-        }
-        
+        // Abordagem simplificada de coleta de dados em uma única etapa
+        // Criar um formulário para coletar todas as informações de uma vez
+        createOrderForm(cartItems);
     } catch (error) {
         console.error('Erro ao processar o pedido:', error);
         alert('Ocorreu um erro ao processar seu pedido. Por favor, tente novamente.');
@@ -727,132 +555,19 @@ function shareCartOnWhatsApp() {
 }
 
 /**
- * Função para criar botões WhatsApp na interface
- * @param {String} whatsappURL - URL para WhatsApp
- * @param {String} message - Mensagem do pedido
- * @param {String} phoneNumber - Número do telefone
+ * Cria um formulário modal para coletar todas as informações do pedido
+ * @param {Array} cartItems - Itens do carrinho
  */
-function createWhatsAppButtons(whatsappURL, message, phoneNumber) {
-    // Remover botões anteriores se existirem
-    const existingButtons = document.getElementById('whatsapp-buttons-container');
-    if (existingButtons) {
-        existingButtons.remove();
+function createOrderForm(cartItems) {
+    // Remover qualquer formulário existente
+    const existingForm = document.getElementById('order-form-modal');
+    if (existingForm) {
+        existingForm.remove();
     }
     
-    // Criar container para os botões
-    const buttonsContainer = document.createElement('div');
-    buttonsContainer.id = 'whatsapp-buttons-container';
-    buttonsContainer.style.position = 'fixed';
-    buttonsContainer.style.bottom = '20px';
-    buttonsContainer.style.right = '20px';
-    buttonsContainer.style.zIndex = '9999';
-    buttonsContainer.style.display = 'flex';
-    buttonsContainer.style.flexDirection = 'column';
-    buttonsContainer.style.gap = '10px';
-    
-    // Botão 1: Abrir WhatsApp Web
-    const webButton = document.createElement('button');
-    webButton.textContent = 'Enviar via WhatsApp Web';
-    webButton.style.padding = '10px 15px';
-    webButton.style.backgroundColor = '#25D366';
-    webButton.style.color = 'white';
-    webButton.style.border = 'none';
-    webButton.style.borderRadius = '5px';
-    webButton.style.cursor = 'pointer';
-    webButton.onclick = function() {
-        window.location.href = whatsappURL;
-    };
-    
-    // Botão 2: Abrir nova janela
-    const newWindowButton = document.createElement('button');
-    newWindowButton.textContent = 'Abrir em nova janela';
-    newWindowButton.style.padding = '10px 15px';
-    newWindowButton.style.backgroundColor = '#128C7E';
-    newWindowButton.style.color = 'white';
-    newWindowButton.style.border = 'none';
-    newWindowButton.style.borderRadius = '5px';
-    newWindowButton.style.cursor = 'pointer';
-    newWindowButton.onclick = function() {
-        window.open(whatsappURL, '_blank');
-    };
-    
-    // Botão 3: Copiar mensagem
-    const copyButton = document.createElement('button');
-    copyButton.textContent = 'Copiar mensagem';
-    copyButton.style.padding = '10px 15px';
-    copyButton.style.backgroundColor = '#075E54';
-    copyButton.style.color = 'white';
-    copyButton.style.border = 'none';
-    copyButton.style.borderRadius = '5px';
-    copyButton.style.cursor = 'pointer';
-    copyButton.onclick = function() {
-        copyTextToClipboard(message);
-        alert('Mensagem copiada! Você pode colar no WhatsApp.');
-    };
-    
-    // Adicionar botões ao container
-    buttonsContainer.appendChild(webButton);
-    buttonsContainer.appendChild(newWindowButton);
-    buttonsContainer.appendChild(copyButton);
-    
-    // Adicionar container ao corpo do documento
-    document.body.appendChild(buttonsContainer);
-    
-    // Botão para fechar
-    const closeButton = document.createElement('button');
-    closeButton.textContent = 'X';
-    closeButton.style.position = 'absolute';
-    closeButton.style.top = '-10px';
-    closeButton.style.right = '-10px';
-    closeButton.style.width = '25px';
-    closeButton.style.height = '25px';
-    closeButton.style.borderRadius = '50%';
-    closeButton.style.backgroundColor = '#FF5252';
-    closeButton.style.color = 'white';
-    closeButton.style.border = 'none';
-    closeButton.style.cursor = 'pointer';
-    closeButton.onclick = function() {
-        buttonsContainer.remove();
-    };
-    
-    buttonsContainer.appendChild(closeButton);
-}
-
-/**
- * Função para enviar mensagem pelo WhatsApp em dispositivos móveis
- * @param {String} whatsappURL - URL para WhatsApp
- * @param {String} message - Mensagem do pedido
- * @param {String} phoneNumber - Número do telefone
- */
-function sendToWhatsAppMobile(whatsappURL, message, phoneNumber) {
-    // Em dispositivo móvel, tentar usar o esquema deeplink whatsapp://
-    const deepLink = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-    
-    // Tentar abrir o aplicativo do WhatsApp
-    window.location.href = deepLink;
-    
-    // Verificar se o app foi aberto usando um timeout
-    setTimeout(function() {
-        // Se o usuário ainda estiver na página após o timeout, oferecer alternativa
-        alert('Enviando para o WhatsApp... Se nada acontecer, escolha uma das opções abaixo.');
-        
-        // Mostrar os botões na interface
-        const buttonsContainer = document.getElementById('whatsapp-buttons-container');
-        if (buttonsContainer) {
-            buttonsContainer.style.display = 'flex';
-        }
-    }, 2000);
-}
-
-/**
- * Função para mostrar opções em dispositivos desktop
- * @param {String} whatsappURL - URL para WhatsApp
- * @param {String} message - Mensagem do pedido
- * @param {String} phoneNumber - Número do telefone
- */
-function showDesktopOptions(whatsappURL, message, phoneNumber) {
-    // Criar modal explicativo
+    // Criar o container do modal
     const modal = document.createElement('div');
+    modal.id = 'order-form-modal';
     modal.style.position = 'fixed';
     modal.style.top = '0';
     modal.style.left = '0';
@@ -862,122 +577,642 @@ function showDesktopOptions(whatsappURL, message, phoneNumber) {
     modal.style.display = 'flex';
     modal.style.justifyContent = 'center';
     modal.style.alignItems = 'center';
-    modal.style.zIndex = '10000';
+    modal.style.zIndex = '9999';
     
-    // Conteúdo do modal
-    const modalContent = document.createElement('div');
-    modalContent.style.backgroundColor = 'white';
-    modalContent.style.padding = '20px';
-    modalContent.style.borderRadius = '10px';
-    modalContent.style.maxWidth = '500px';
-    modalContent.style.width = '90%';
-    modalContent.style.textAlign = 'center';
+    // Criar o conteúdo do formulário
+    const formContainer = document.createElement('div');
+    formContainer.style.backgroundColor = 'white';
+    formContainer.style.borderRadius = '10px';
+    formContainer.style.padding = '20px';
+    formContainer.style.width = '90%';
+    formContainer.style.maxWidth = '500px';
+    formContainer.style.maxHeight = '80vh';
+    formContainer.style.overflowY = 'auto';
     
-    // Título do modal
-    const title = document.createElement('h3');
-    title.textContent = 'Enviar pedido para o WhatsApp';
-    title.style.marginTop = '0';
+    // Título do formulário
+    const title = document.createElement('h2');
+    title.textContent = 'Finalizar Pedido';
+    title.style.textAlign = 'center';
+    title.style.marginBottom = '20px';
+    title.style.color = '#333';
     
-    // Texto explicativo
-    const explanation = document.createElement('p');
-    explanation.textContent = 'Escolha como deseja enviar seu pedido:';
+    // Formulário
+    const form = document.createElement('form');
+    form.id = 'checkout-form';
+    form.style.display = 'flex';
+    form.style.flexDirection = 'column';
+    form.style.gap = '15px';
     
-    // Botões de ação
+    // Adicionar detalhes dos produtos ao formulário
+    const productSection = document.createElement('div');
+    productSection.style.marginBottom = '20px';
+    
+    const productTitle = document.createElement('h3');
+    productTitle.textContent = 'Produtos no Carrinho';
+    productTitle.style.marginBottom = '10px';
+    productTitle.style.borderBottom = '1px solid #ddd';
+    productTitle.style.paddingBottom = '5px';
+    
+    productSection.appendChild(productTitle);
+    
+    // Calcular total
+    let total = 0;
+    
+    // Adicionar cada produto com opções
+    cartItems.forEach((item, index) => {
+        // Calcular valor do item
+        const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
+        const itemTotal = priceValue * item.quantity;
+        total += itemTotal;
+        
+        // Container do produto
+        const productItem = document.createElement('div');
+        productItem.style.marginBottom = '15px';
+        productItem.style.padding = '10px';
+        productItem.style.backgroundColor = '#f9f9f9';
+        productItem.style.borderRadius = '5px';
+        
+        // Informações do produto
+        const productInfo = document.createElement('div');
+        productInfo.innerHTML = `
+            <strong>${item.name}</strong> - ${item.quantity}x ${item.price}
+        `;
+        
+        productItem.appendChild(productInfo);
+        
+        // MODIFICAÇÃO: Sempre adicionar campo de tamanho para todos os itens
+        const sizeField = document.createElement('div');
+        sizeField.style.marginTop = '10px';
+        
+        const sizeLabel = document.createElement('label');
+        sizeLabel.htmlFor = `size-${index}`;
+        sizeLabel.textContent = 'Tamanho: ';
+        
+        const sizeInput = document.createElement('select');
+        sizeInput.id = `size-${index}`;
+        sizeInput.name = `size-${index}`;
+        sizeInput.className = 'form-control';
+        
+        // Opções de tamanho comuns
+        const sizes = ['PP', 'P', 'M', 'G', 'GG', '34', '35', '36', '37', '38', '39', '40', '41', '42', 'Único'];
+        sizes.forEach(size => {
+            const option = document.createElement('option');
+            option.value = size;
+            option.textContent = size;
+            // Selecionar tamanho padrão para cada tipo de produto
+            if ((item.name.toLowerCase().includes('roupa') || 
+                 item.name.toLowerCase().includes('vestido') || 
+                 item.name.toLowerCase().includes('blusa')) && size === 'M') {
+                option.selected = true;
+            } else if ((item.name.toLowerCase().includes('sapato') || 
+                       item.name.toLowerCase().includes('salto')) && size === '37') {
+                option.selected = true;
+            } else if (size === 'Único') {
+                option.selected = true;
+            }
+            sizeInput.appendChild(option);
+        });
+        
+        sizeField.appendChild(sizeLabel);
+        sizeField.appendChild(sizeInput);
+        productItem.appendChild(sizeField);
+        
+        // MODIFICAÇÃO: Sempre adicionar campo de cor para todos os itens
+        const colorField = document.createElement('div');
+        colorField.style.marginTop = '10px';
+        
+        const colorLabel = document.createElement('label');
+        colorLabel.htmlFor = `color-${index}`;
+        colorLabel.textContent = 'Cor: ';
+        
+        const colorInput = document.createElement('input');
+        colorInput.type = 'text';
+        colorInput.id = `color-${index}`;
+        colorInput.name = `color-${index}`;
+        colorInput.value = 'Como na imagem';
+        colorInput.className = 'form-control';
+        colorInput.style.width = '100%';
+        colorInput.style.padding = '8px';
+        colorInput.style.boxSizing = 'border-box';
+        
+        colorField.appendChild(colorLabel);
+        colorField.appendChild(colorInput);
+        productItem.appendChild(colorField);
+        
+        productSection.appendChild(productItem);
+    });
+    
+    // Mostrar total
+    const totalElement = document.createElement('div');
+    totalElement.style.fontSize = '18px';
+    totalElement.style.fontWeight = 'bold';
+    totalElement.style.textAlign = 'right';
+    totalElement.style.marginBottom = '20px';
+    totalElement.innerHTML = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+    
+    productSection.appendChild(totalElement);
+    
+    // Campo de Endereço
+    const addressField = createFormField('address', 'Endereço de entrega:', 'text', '', 'Digite seu endereço completo');
+    
+    // Campo de Forma de Pagamento
+    const paymentField = document.createElement('div');
+    paymentField.style.marginBottom = '15px';
+    
+    const paymentLabel = document.createElement('label');
+    paymentLabel.htmlFor = 'payment';
+    paymentLabel.textContent = 'Forma de Pagamento:';
+    paymentLabel.style.display = 'block';
+    paymentLabel.style.marginBottom = '5px';
+    paymentLabel.style.fontWeight = 'bold';
+    
+    const paymentSelect = document.createElement('select');
+    paymentSelect.id = 'payment';
+    paymentSelect.name = 'payment';
+    paymentSelect.style.width = '100%';
+    paymentSelect.style.padding = '10px';
+    paymentSelect.style.borderRadius = '5px';
+    paymentSelect.style.border = '1px solid #ddd';
+    
+    const paymentOptions = ['PIX', 'Cartão de Crédito', 'Cartão de Débito', 'Dinheiro'];
+    paymentOptions.forEach(option => {
+        const paymentOption = document.createElement('option');
+        paymentOption.value = option;
+        paymentOption.textContent = option;
+        paymentSelect.appendChild(paymentOption);
+    });
+    
+    paymentField.appendChild(paymentLabel);
+    paymentField.appendChild(paymentSelect);
+    
+    // Campo de Observações
+    const notesField = createFormField('notes', 'Observações (opcional):', 'textarea', '', 'Informações adicionais para o pedido');
+    notesField.querySelector('textarea').style.minHeight = '100px';
+    
+    // Botões
     const buttonGroup = document.createElement('div');
     buttonGroup.style.display = 'flex';
-    buttonGroup.style.flexDirection = 'column';
-    buttonGroup.style.gap = '10px';
+    buttonGroup.style.justifyContent = 'space-between';
     buttonGroup.style.marginTop = '20px';
     
-    // Botão 1: WhatsApp Web
-    const webButton = document.createElement('button');
-    webButton.textContent = 'Abrir WhatsApp Web';
-    webButton.style.padding = '12px 20px';
-    webButton.style.backgroundColor = '#25D366';
-    webButton.style.color = 'white';
-    webButton.style.border = 'none';
-    webButton.style.borderRadius = '5px';
-    webButton.style.cursor = 'pointer';
-    webButton.style.fontWeight = 'bold';
-    webButton.onclick = function() {
-        window.location.href = whatsappURL;
+    // Botão Cancelar
+    const cancelButton = document.createElement('button');
+    cancelButton.type = 'button';
+    cancelButton.textContent = 'Cancelar';
+    cancelButton.style.padding = '10px 20px';
+    cancelButton.style.backgroundColor = '#f44336';
+    cancelButton.style.color = 'white';
+    cancelButton.style.border = 'none';
+    cancelButton.style.borderRadius = '5px';
+    cancelButton.style.cursor = 'pointer';
+    cancelButton.onclick = function() {
         modal.remove();
     };
     
-    // Botão 2: Nova janela
-    const newWindowButton = document.createElement('button');
-    newWindowButton.textContent = 'Abrir em nova janela';
-    newWindowButton.style.padding = '12px 20px';
-    newWindowButton.style.backgroundColor = '#128C7E';
-    newWindowButton.style.color = 'white';
-    newWindowButton.style.border = 'none';
-    newWindowButton.style.borderRadius = '5px';
-    newWindowButton.style.cursor = 'pointer';
-    newWindowButton.onclick = function() {
-        window.open(whatsappURL, '_blank');
-        modal.remove();
+    // Botão Enviar Pedido
+    const submitButton = document.createElement('button');
+    submitButton.type = 'button';
+    submitButton.textContent = 'Enviar Pedido';
+    submitButton.style.padding = '10px 20px';
+    submitButton.style.backgroundColor = '#4CAF50';
+    submitButton.style.color = 'white';
+    submitButton.style.border = 'none';
+    submitButton.style.borderRadius = '5px';
+    submitButton.style.cursor = 'pointer';
+    submitButton.onclick = function() {
+        processFormData(form, cartItems);
     };
     
-    // Botão 3: Copiar mensagem
-    const copyButton = document.createElement('button');
-    copyButton.textContent = 'Copiar mensagem para colar manualmente';
-    copyButton.style.padding = '12px 20px';
-    copyButton.style.backgroundColor = '#075E54';
-    copyButton.style.color = 'white';
-    copyButton.style.border = 'none';
-    copyButton.style.borderRadius = '5px';
-    copyButton.style.cursor = 'pointer';
-    copyButton.onclick = function() {
-        copyTextToClipboard(message);
-        alert('Mensagem copiada! Abra o WhatsApp e cole a mensagem na conversa.');
-        
-        // Abrir WhatsApp Web em nova janela para facilitar
-        window.open('https://web.whatsapp.com', '_blank');
-        
-        modal.remove();
-    };
+    buttonGroup.appendChild(cancelButton);
+    buttonGroup.appendChild(submitButton);
     
-    // Botão para fechar o modal
-    const closeButton = document.createElement('button');
-    closeButton.textContent = 'Fechar';
-    closeButton.style.padding = '10px 15px';
-    closeButton.style.backgroundColor = '#f1f1f1';
-    closeButton.style.color = '#333';
-    closeButton.style.border = 'none';
-    closeButton.style.borderRadius = '5px';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.marginTop = '15px';
-    closeButton.onclick = function() {
-        modal.remove();
-        
-        // Mostrar os botões fixos como alternativa
-        const buttonsContainer = document.getElementById('whatsapp-buttons-container');
-        if (buttonsContainer) {
-            buttonsContainer.style.display = 'flex';
-        }
-    };
+    // Montar o formulário
+    form.appendChild(productSection);
+    form.appendChild(addressField);
+    form.appendChild(paymentField);
+    form.appendChild(notesField);
+    form.appendChild(buttonGroup);
     
-    // Montar a estrutura do modal
-    buttonGroup.appendChild(webButton);
-    buttonGroup.appendChild(newWindowButton);
-    buttonGroup.appendChild(copyButton);
+    // Adicionar o formulário ao container
+    formContainer.appendChild(title);
+    formContainer.appendChild(form);
     
-    modalContent.appendChild(title);
-    modalContent.appendChild(explanation);
-    modalContent.appendChild(buttonGroup);
-    modalContent.appendChild(closeButton);
+    // Adicionar o container ao modal
+    modal.appendChild(formContainer);
     
-    modal.appendChild(modalContent);
+    // Adicionar o modal à página
     document.body.appendChild(modal);
     
-    // Inicializar compartilhamento automático após um curto delay
-    setTimeout(function() {
-        // Tentar primeiro método (redirecionamento direto)
-        window.location.href = whatsappURL;
+    // Focar no primeiro campo
+    const firstInput = form.querySelector('input, select, textarea');
+    if (firstInput) {
+        firstInput.focus();
+    }
+}
+
+/**
+ * Cria um campo de formulário
+ * @param {String} id - ID do campo
+ * @param {String} label - Texto da label
+ * @param {String} type - Tipo do campo
+ * @param {String} value - Valor padrão
+ * @param {String} placeholder - Placeholder
+ * @returns {HTMLElement} - Campo de formulário
+ */
+function createFormField(id, label, type, value = '', placeholder = '') {
+    const field = document.createElement('div');
+    field.style.marginBottom = '15px';
+    
+    const fieldLabel = document.createElement('label');
+    fieldLabel.htmlFor = id;
+    fieldLabel.textContent = label;
+    fieldLabel.style.display = 'block';
+    fieldLabel.style.marginBottom = '5px';
+    fieldLabel.style.fontWeight = 'bold';
+    
+    let input;
+    if (type === 'textarea') {
+        input = document.createElement('textarea');
+    } else {
+        input = document.createElement('input');
+        input.type = type;
+    }
+    
+    input.id = id;
+    input.name = id;
+    input.value = value;
+    input.placeholder = placeholder;
+    input.style.width = '100%';
+    input.style.padding = '10px';
+    input.style.borderRadius = '5px';
+    input.style.border = '1px solid #ddd';
+    input.style.boxSizing = 'border-box';
+    
+    field.appendChild(fieldLabel);
+    field.appendChild(input);
+    
+    return field;
+}
+
+/**
+ * Processa os dados do formulário
+ * @param {HTMLFormElement} form - Formulário
+ * @param {Array} cartItems - Itens do carrinho
+ */
+function processFormData(form, cartItems) {
+    // Verificar campo de endereço
+    const addressInput = form.querySelector('#address');
+    if (!addressInput.value.trim()) {
+        alert('Por favor, informe o endereço de entrega.');
+        addressInput.focus();
+        return;
+    }
+    
+    // Validar se o endereço é muito curto
+    if (addressInput.value.trim().length < 10) {
+        if (!confirm('O endereço parece muito curto. Deseja continuar mesmo assim?')) {
+            addressInput.focus();
+            return;
+        }
+    }
+    
+    // Coletar dados do formulário
+    const address = addressInput.value.trim();
+    const payment = form.querySelector('#payment').value;
+    const notes = form.querySelector('#notes').value.trim();
+    
+    // Coletar detalhes de tamanho e cor
+    const cartItemsWithDetails = cartItems.map((item, index) => {
+        const newItem = { ...item };
         
-        // Se após um tempo o usuário ainda estiver na mesma página, o modal continuará visível
-        // para que ele possa escolher outra opção
-    }, 500);
+        // Obter tamanho (agora sempre presente)
+        const sizeField = form.querySelector(`#size-${index}`);
+        newItem.size = sizeField.value;
+        
+        // Obter cor (agora sempre presente)
+        const colorField = form.querySelector(`#color-${index}`);
+        newItem.color = colorField.value;
+        
+        return newItem;
+    });
+    
+    // Fechar o modal
+    const modal = document.getElementById('order-form-modal');
+    if (modal) {
+        modal.remove();
+    }
+    
+    // Formatar a mensagem do pedido
+    let message = '*📋 NOVO PEDIDO:*\n\n';
+    let total = 0;
+    
+    // Adicionar detalhes de cada item
+    cartItemsWithDetails.forEach(item => {
+        // Calcular valor de cada item
+        const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
+        const itemTotal = priceValue * item.quantity;
+        total += itemTotal;
+        
+        // Adicionar item à mensagem
+        message += `• ${item.quantity}x ${item.name} - ${item.price} cada\n`;
+        
+        // MODIFICAÇÃO: Sempre incluir tamanho
+        message += `  - Tamanho: ${item.size}\n`;
+        
+        // MODIFICAÇÃO: Sempre incluir cor
+        message += `  - Cor: ${item.color}\n`;
+    });
+    
+    // Adicionar informações do pedido
+    message += `\n*💰 Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
+    message += `*🏠 Endereço:* ${address}\n`;
+    message += `*💳 Forma de pagamento:* ${payment}\n`;
+    
+    // Adicionar observações se houver
+    if (notes) {
+        message += `\n*📝 Observações:* ${notes}\n`;
+    }
+    
+    // Adicionar data e hora do pedido
+    const now = new Date();
+    const dataHora = now.toLocaleString('pt-BR');
+    message += `\n*⏰ Data/Hora:* ${dataHora}`;
+    
+    // Adicionar fotos dos produtos à mensagem
+    const imageUrls = cartItemsWithDetails
+        .filter(item => item.image)
+        .map(item => ({
+            url: item.image,
+            name: item.name
+        }));
+    
+    // Verificar se há imagens para compartilhar
+    if (imageUrls.length > 0) {
+        message += '\n\n*📸 Fotos dos produtos:*';
+        imageUrls.forEach((image) => {
+            message += `\n• ${image.name}: ${image.url}`;
+        });
+    }
+    
+    // Número de telefone do dono da loja
+    const phoneNumber = '5583991816152';
+    
+    // Salvar no localStorage
+    localStorage.setItem('lastOrderMessage', message);
+    localStorage.setItem('lastOrderPhone', phoneNumber);
+    
+    // Enviar a mensagem
+    sendWhatsAppMessage(message, phoneNumber);
+}
+
+/**
+ * Envia mensagem para o WhatsApp sem problemas de popup
+ * @param {String} message - Mensagem a ser enviada
+ * @param {String} phoneNumber - Número do telefone
+ */
+function sendWhatsAppMessage(message, phoneNumber) {
+    // Criar um overlay de carregamento
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.style.position = 'fixed';
+    loadingOverlay.style.top = '0';
+    loadingOverlay.style.left = '0';
+    loadingOverlay.style.width = '100%';
+    loadingOverlay.style.height = '100%';
+    loadingOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    loadingOverlay.style.display = 'flex';
+    loadingOverlay.style.flexDirection = 'column';
+    loadingOverlay.style.justifyContent = 'center';
+    loadingOverlay.style.alignItems = 'center';
+    loadingOverlay.style.zIndex = '10000';
+    
+    // Mensagem de carregamento
+    const loadingText = document.createElement('div');
+    loadingText.textContent = 'Processando seu pedido...';
+    loadingText.style.color = 'white';
+    loadingText.style.fontSize = '20px';
+    loadingText.style.marginBottom = '20px';
+    
+    // Spinner de carregamento
+    const spinner = document.createElement('div');
+    spinner.style.border = '5px solid #f3f3f3';
+    spinner.style.borderTop = '5px solid #3498db';
+    spinner.style.borderRadius = '50%';
+    spinner.style.width = '50px';
+    spinner.style.height = '50px';
+    spinner.style.animation = 'spin 2s linear infinite';
+    
+    // Adicionar keyframes para animação
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Adicionar elementos ao overlay
+    loadingOverlay.appendChild(loadingText);
+    loadingOverlay.appendChild(spinner);
+    
+    // Adicionar overlay à página
+    document.body.appendChild(loadingOverlay);
+    
+    // Verificar se é dispositivo móvel
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // URL codificada para WhatsApp
+    const encodedMessage = encodeURIComponent(message);
+    
+    // Agora vamos usar um método que funciona de forma confiável
+    setTimeout(() => {
+        // Atualizar mensagem de carregamento
+        loadingText.textContent = 'Redirecionando para o WhatsApp...';
+        
+        // Remover o overlay após um curto tempo
+        setTimeout(() => {
+            loadingOverlay.remove();
+            
+            // URL do WhatsApp Web ou app
+            const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+            
+            if (isMobile) {
+                // Em dispositivos móveis, tentar primeiro o link direto para o app
+                const whatsappDeepLink = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
+                
+                // Abrir o link em um iframe oculto (evita problemas com bloqueadores de pop-up)
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = whatsappDeepLink;
+                document.body.appendChild(iframe);
+                
+                // Remover o iframe após um curto tempo
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                    
+                    // Verificar se o app abriu (não há uma forma 100% confiável, mas podemos tentar)
+                    setTimeout(() => {
+                        // Se ainda estiver na página, tentar o método de fallback
+                        showFallbackOptions(whatsappURL, message, phoneNumber);
+                    }, 1000);
+                }, 100);
+            } else {
+                // Em desktop, abrir em uma nova guia (mais confiável que window.location)
+                const newTab = window.open(whatsappURL, '_blank');
+                
+                // Se o navegador bloqueou a abertura da nova guia
+                if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+                    // Tentar redirecionamento direto
+                    window.location.href = whatsappURL;
+                    
+                    // Ainda oferecer opções alternativas após um tempo
+                    setTimeout(() => {
+                        showFallbackOptions(whatsappURL, message, phoneNumber);
+                    }, 3000);
+                }
+            }
+        }, 1500);
+    }, 1000);
+}
+
+/**
+ * Mostra opções alternativas caso o redirecionamento falhe
+ * @param {String} whatsappURL - URL do WhatsApp
+ * @param {String} message - Mensagem do pedido
+ * @param {String} phoneNumber - Número do telefone
+ */
+function showFallbackOptions(whatsappURL, message, phoneNumber) {
+    // Verificar se o usuário ainda está na página (indicando que o redirecionamento falhou)
+    const fallbackModal = document.createElement('div');
+    fallbackModal.style.position = 'fixed';
+    fallbackModal.style.top = '0';
+    fallbackModal.style.left = '0';
+    fallbackModal.style.width = '100%';
+    fallbackModal.style.height = '100%';
+    fallbackModal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    fallbackModal.style.display = 'flex';
+    fallbackModal.style.justifyContent = 'center';
+    fallbackModal.style.alignItems = 'center';
+    fallbackModal.style.zIndex = '10000';
+    
+    // Container para as opções
+    const optionsContainer = document.createElement('div');
+    optionsContainer.style.backgroundColor = 'white';
+    optionsContainer.style.borderRadius = '10px';
+    optionsContainer.style.padding = '20px';
+    optionsContainer.style.maxWidth = '450px';
+    optionsContainer.style.width = '90%';
+    optionsContainer.style.textAlign = 'center';
+    
+    // Título
+    const title = document.createElement('h3');
+    title.textContent = 'Não foi possível abrir o WhatsApp';
+    title.style.marginTop = '0';
+    title.style.color = '#333';
+    
+    // Mensagem
+    const text = document.createElement('p');
+    text.textContent = 'Escolha uma das opções abaixo para enviar seu pedido:';
+    
+    // Botões de opções alternativas
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.flexDirection = 'column';
+    buttonContainer.style.gap = '10px';
+    buttonContainer.style.marginTop = '20px';
+    
+    // Opção 1: Tentar novamente
+    const retryButton = createActionButton(
+        'Tentar Novamente', 
+        '#4CAF50',
+        () => {
+            fallbackModal.remove();
+            window.open(whatsappURL, '_blank');
+        }
+    );
+    
+    // Opção 2: Copiar mensagem
+    const copyButton = createActionButton(
+        'Copiar Mensagem', 
+        '#2196F3',
+        () => {
+            copyTextToClipboard(message);
+            alert('Mensagem copiada! Você pode colá-la no WhatsApp.');
+            
+            // Mostrar instruções
+            text.innerHTML = 'Mensagem copiada! Agora:<br>1. Abra o WhatsApp<br>2. Encontre ou inicie uma conversa com o número do vendedor<br>3. Cole a mensagem';
+            
+            // Mudar para botão que abre o WhatsApp manualmente
+            buttonContainer.innerHTML = '';
+            
+            // Adicionar botão para abrir WhatsApp Web
+            const openWhatsAppButton = createActionButton(
+                'Abrir WhatsApp Web', 
+                '#25D366',
+                () => {
+                    window.open('https://web.whatsapp.com/', '_blank');
+                }
+            );
+            
+            buttonContainer.appendChild(openWhatsAppButton);
+            
+            // Adicionar botão para fechar
+            const closeButton = createActionButton(
+                'Fechar', 
+                '#f44336',
+                () => {
+                    fallbackModal.remove();
+                }
+            );
+            
+            buttonContainer.appendChild(closeButton);
+        }
+    );
+    
+    // Opção 3: Fechar
+    const closeButton = createActionButton(
+        'Cancelar', 
+        '#f44336',
+        () => {
+            fallbackModal.remove();
+        }
+    );
+    
+    // Adicionar botões ao container
+    buttonContainer.appendChild(retryButton);
+    buttonContainer.appendChild(copyButton);
+    buttonContainer.appendChild(closeButton);
+    
+    // Montar o modal
+    optionsContainer.appendChild(title);
+    optionsContainer.appendChild(text);
+    optionsContainer.appendChild(buttonContainer);
+    
+    fallbackModal.appendChild(optionsContainer);
+    document.body.appendChild(fallbackModal);
+}
+
+/**
+ * Cria um botão de ação estilizado
+ * @param {String} text - Texto do botão
+ * @param {String} color - Cor de fundo
+ * @param {Function} onClick - Função de clique
+ * @returns {HTMLElement} - Botão criado
+ */
+function createActionButton(text, color, onClick) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.style.padding = '12px 20px';
+    button.style.backgroundColor = color;
+    button.style.color = 'white';
+    button.style.border = 'none';
+    button.style.borderRadius = '5px';
+    button.style.cursor = 'pointer';
+    button.style.fontWeight = 'bold';
+    button.style.width = '100%';
+    button.onclick = onClick;
+    
+    return button;
 }
 
 /**
