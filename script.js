@@ -330,232 +330,8 @@ function setupCartEvents() {
         });
     }
     
-    // Compartilhar carrinho no WhatsApp
-    if (shareCartButton) {
-        shareCartButton.addEventListener('click', function() {
-            shareCartOnWhatsApp();
-        });
-    }
-    
-    // Botão do carrinho no canto superior direito
-    if (cartButton) {
-        cartButton.addEventListener('click', function() {
-            openCart();
-        });
-    }
-}
-
-// Função para adicionar produto ao carrinho
-function addToCart(productIndex) {
-    const product = products[productIndex];
-    
-    // Verificar se o produto já está no carrinho
-    const existingItemIndex = cartItems.findIndex(item => item.index === productIndex);
-    
-    if (existingItemIndex !== -1) {
-        // Incrementar quantidade se já estiver no carrinho
-        cartItems[existingItemIndex].quantity++;
-    } else {
-        // Adicionar novo item ao carrinho
-        cartItems.push({
-            index: productIndex,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            quantity: 1
-        });
-    }
-    
-    updateCartDisplay();
-    updateCartCounter();
-    
-    // Salvar carrinho no localStorage após cada alteração
-    saveCartToStorage();
-}
-
-// Função para adicionar ao carrinho a partir da página de detalhes
-function addToCartFromDetails(productIndex, quantity) {
-    const product = products[productIndex];
-    
-    // Verificar se o produto já está no carrinho
-    const existingItemIndex = cartItems.findIndex(item => item.index === productIndex);
-    
-    if (existingItemIndex !== -1) {
-        // Incrementar quantidade se já estiver no carrinho
-        cartItems[existingItemIndex].quantity += quantity;
-    } else {
-        // Adicionar novo item ao carrinho
-        cartItems.push({
-            index: productIndex,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            quantity: quantity
-        });
-    }
-    
-    updateCartDisplay();
-    updateCartCounter();
-    
-    // Salvar carrinho no localStorage
-    saveCartToStorage();
-    
-    // Mostrar notificação
-    showNotification(`${quantity}x ${product.name} adicionado ao carrinho!`);
-}
-
-// Função para remover produto do carrinho
-function removeFromCart(index) {
-    cartItems.splice(index, 1);
-    updateCartDisplay();
-    updateCartCounter();
-    
-    // Atualizar contadores nos produtos
-    updateProductCounters();
-    
-    // Salvar carrinho no localStorage após remover item
-    saveCartToStorage();
-}
-
-// Função para atualizar contadores nos produtos
-function updateProductCounters() {
-    // Se não estiver na página principal, retornar
-    if (!document.getElementById('catalog')) return;
-    
-    // Primeiro, remover todos os contadores
-    document.querySelectorAll('.cart-counter').forEach(counter => {
-        counter.remove();
-    });
-    
-    // Depois, adicionar contadores atualizados
-    cartItems.forEach(item => {
-        const productElement = document.querySelector(`.product-image-container[data-index="${item.index}"]`);
-        if (productElement) {
-            const productCard = productElement.closest('.product');
-            let counterElem = productCard.querySelector('.cart-counter');
-            
-            if (!counterElem) {
-                counterElem = document.createElement('div');
-                counterElem.classList.add('cart-counter');
-                productCard.style.position = 'relative';
-                productCard.appendChild(counterElem);
-            }
-            
-            counterElem.textContent = item.quantity;
-        }
-    });
-}
-
-// Função para atualizar quantidade de um item no carrinho
-function updateItemQuantity(index, change) {
-    cartItems[index].quantity += change;
-    
-    if (cartItems[index].quantity <= 0) {
-        removeFromCart(index);
-    } else {
-        updateCartDisplay();
-        updateCartCounter();
-        updateProductCounters();
-        
-        // Salvar carrinho no localStorage após atualizar quantidade
-        saveCartToStorage();
-    }
-}
-
-// Função para atualizar a exibição do carrinho
-function updateCartDisplay() {
-    if (!cartItemsContainer) return;
-    
-    if (cartItems.length === 0) {
-        cartItemsContainer.innerHTML = '<p class="empty-cart-message">Seu carrinho está vazio</p>';
-        cartTotalElement.textContent = 'Total: R$ 0,00';
-        return;
-    }
-    let cartHTML = '';
-    let total = 0;
-    
-    cartItems.forEach((item, index) => {
-        // Extrair o valor numérico do preço (removendo "R$ " e substituindo vírgula por ponto)
-        const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
-        const itemTotal = priceValue * item.quantity;
-        total += itemTotal;
-        
-        cartHTML += `
-            <div class="cart-item">
-                <div class="cart-item-image">
-                    <img src="${item.image}" alt="${item.name}">
-                </div>
-                <div class="cart-item-details">
-                    <h3 class="cart-item-title">${item.name}</h3>
-                    <p class="cart-item-price">${item.price} x ${item.quantity}</p>
-                    <div class="cart-item-quantity">
-                        <button class="quantity-btn" onclick="updateItemQuantity(${index}, -1)">-</button>
-                        <span class="item-quantity">${item.quantity}</span>
-                        <button class="quantity-btn" onclick="updateItemQuantity(${index}, 1)">+</button>
-                        <span class="cart-item-remove" onclick="removeFromCart(${index})">
-                            <i class="fas fa-trash-alt"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-    
-    cartItemsContainer.innerHTML = cartHTML;
-    cartTotalElement.textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
-}
-
-// Função para atualizar o contador do botão do carrinho
-function updateCartCounter() {
-    if (!cartButtonCounter) return;
-    
-    let totalItems = 0;
-    
-    cartItems.forEach(item => {
-        totalItems += item.quantity;
-    });
-    
-    cartButtonCounter.textContent = totalItems;
-    
-    // Mostrar ou esconder o contador baseado na quantidade
-    if (totalItems > 0) {
-        cartButtonCounter.style.display = 'flex';
-    } else {
-        cartButtonCounter.style.display = 'none';
-    }
-}
-
-// Função para abrir o carrinho
-function openCart() {
-    if (!cartOverlay) return;
-    
-    cartOverlay.style.display = 'flex';
-    updateCartDisplay();
-}
-
-/**
- * Função para compartilhar carrinho de compras via WhatsApp
- * Inclui as fotos dos produtos junto com as informações
- */
-function shareCartOnWhatsApp() {
-    // Verificar se temos itens no carrinho
-    if (!Array.isArray(cartItems) || cartItems.length === 0) {
-        alert('Adicione produtos ao carrinho antes de compartilhar!');
-        return;
-    }
-    
-    try {
-        // Abordagem simplificada de coleta de dados em uma única etapa
-        // Criar um formulário para coletar todas as informações de uma vez
-        createOrderForm(cartItems);
-    } catch (error) {
-        console.error('Erro ao processar o pedido:', error);
-        alert('Ocorreu um erro ao processar seu pedido. Por favor, tente novamente.');
-    }
-}
-
-/**
- * Cria um formulário modal para coletar todas as informações do pedido
+    /**
+ * Cria um formulário modal para coletar todas as informações do pedido com melhorias de acessibilidade
  * @param {Array} cartItems - Itens do carrinho
  */
 function createOrderForm(cartItems) {
@@ -568,6 +344,9 @@ function createOrderForm(cartItems) {
     // Criar o container do modal
     const modal = document.createElement('div');
     modal.id = 'order-form-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-labelledby', 'order-form-title');
+    modal.setAttribute('aria-modal', 'true');
     modal.style.position = 'fixed';
     modal.style.top = '0';
     modal.style.left = '0';
@@ -578,6 +357,13 @@ function createOrderForm(cartItems) {
     modal.style.justifyContent = 'center';
     modal.style.alignItems = 'center';
     modal.style.zIndex = '9999';
+    
+    // Adicionar manipulador de tecla Escape para fechar o modal
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && document.getElementById('order-form-modal')) {
+            modal.remove();
+        }
+    });
     
     // Criar o conteúdo do formulário
     const formContainer = document.createElement('div');
@@ -591,10 +377,30 @@ function createOrderForm(cartItems) {
     
     // Título do formulário
     const title = document.createElement('h2');
+    title.id = 'order-form-title';
     title.textContent = 'Finalizar Pedido';
     title.style.textAlign = 'center';
     title.style.marginBottom = '20px';
     title.style.color = '#333';
+    
+    // Botão para fechar o modal (X no canto superior direito)
+    const closeButton = document.createElement('button');
+    closeButton.innerHTML = '&times;';
+    closeButton.setAttribute('aria-label', 'Fechar formulário');
+    closeButton.style.position = 'absolute';
+    closeButton.style.right = '15px';
+    closeButton.style.top = '10px';
+    closeButton.style.backgroundColor = 'transparent';
+    closeButton.style.border = 'none';
+    closeButton.style.fontSize = '24px';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.color = '#666';
+    closeButton.onclick = function() {
+        modal.remove();
+    };
+    
+    formContainer.style.position = 'relative'; // Para posicionar o botão de fechar
+    formContainer.appendChild(closeButton);
     
     // Formulário
     const form = document.createElement('form');
@@ -602,6 +408,12 @@ function createOrderForm(cartItems) {
     form.style.display = 'flex';
     form.style.flexDirection = 'column';
     form.style.gap = '15px';
+    
+    // Impedir o envio padrão do formulário
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        return false;
+    };
     
     // Adicionar detalhes dos produtos ao formulário
     const productSection = document.createElement('div');
@@ -615,105 +427,192 @@ function createOrderForm(cartItems) {
     
     productSection.appendChild(productTitle);
     
+    // Verificar se o carrinho tem itens
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+        const emptyCartMessage = document.createElement('p');
+        emptyCartMessage.textContent = 'Seu carrinho está vazio. Adicione produtos antes de finalizar o pedido.';
+        emptyCartMessage.style.color = '#f44336';
+        productSection.appendChild(emptyCartMessage);
+        
+        // Adicionar botão para continuar comprando
+        const continueShoppingButton = document.createElement('button');
+        continueShoppingButton.type = 'button';
+        continueShoppingButton.textContent = 'Continuar Comprando';
+        continueShoppingButton.style.padding = '10px 20px';
+        continueShoppingButton.style.backgroundColor = '#4CAF50';
+        continueShoppingButton.style.color = 'white';
+        continueShoppingButton.style.border = 'none';
+        continueShoppingButton.style.borderRadius = '5px';
+        continueShoppingButton.style.cursor = 'pointer';
+        continueShoppingButton.style.marginTop = '10px';
+        continueShoppingButton.onclick = function() {
+            modal.remove();
+        };
+        
+        productSection.appendChild(continueShoppingButton);
+        
+        // Montar o formulário com apenas a mensagem de carrinho vazio
+        formContainer.appendChild(title);
+        formContainer.appendChild(productSection);
+        modal.appendChild(formContainer);
+        document.body.appendChild(modal);
+        
+        return;
+    }
+    
     // Calcular total
     let total = 0;
     
     // Adicionar cada produto com opções
     cartItems.forEach((item, index) => {
-        // Calcular valor do item
-        const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
-        const itemTotal = priceValue * item.quantity;
-        total += itemTotal;
-        
-        // Container do produto
-        const productItem = document.createElement('div');
-        productItem.style.marginBottom = '15px';
-        productItem.style.padding = '10px';
-        productItem.style.backgroundColor = '#f9f9f9';
-        productItem.style.borderRadius = '5px';
-        
-        // Informações do produto
-        const productInfo = document.createElement('div');
-        productInfo.innerHTML = `
-            <strong>${item.name}</strong> - ${item.quantity}x ${item.price}
-        `;
-        
-        productItem.appendChild(productInfo);
-        
-        // MODIFICAÇÃO: Sempre adicionar campo de tamanho para todos os itens
-        const sizeField = document.createElement('div');
-        sizeField.style.marginTop = '10px';
-        
-        const sizeLabel = document.createElement('label');
-        sizeLabel.htmlFor = `size-${index}`;
-        sizeLabel.textContent = 'Tamanho: ';
-        
-        const sizeInput = document.createElement('select');
-        sizeInput.id = `size-${index}`;
-        sizeInput.name = `size-${index}`;
-        sizeInput.className = 'form-control';
-        
-        // Opções de tamanho comuns
-        const sizes = ['PP', 'P', 'M', 'G', 'GG', '34', '35', '36', '37', '38', '39', '40', '41', '42', 'Único'];
-        sizes.forEach(size => {
-            const option = document.createElement('option');
-            option.value = size;
-            option.textContent = size;
-            // Selecionar tamanho padrão para cada tipo de produto
-            if ((item.name.toLowerCase().includes('roupa') || 
-                 item.name.toLowerCase().includes('vestido') || 
-                 item.name.toLowerCase().includes('blusa')) && size === 'M') {
-                option.selected = true;
-            } else if ((item.name.toLowerCase().includes('sapato') || 
-                       item.name.toLowerCase().includes('salto')) && size === '37') {
-                option.selected = true;
-            } else if (size === 'Único') {
-                option.selected = true;
+        try {
+            // Calcular valor do item (com tratamento de erro)
+            const priceString = item.price.replace('R$ ', '').replace(',', '.');
+            const priceValue = parseFloat(priceString);
+            
+            if (isNaN(priceValue)) {
+                console.error('Preço inválido:', item.price);
+                throw new Error('Preço inválido');
             }
-            sizeInput.appendChild(option);
-        });
-        
-        sizeField.appendChild(sizeLabel);
-        sizeField.appendChild(sizeInput);
-        productItem.appendChild(sizeField);
-        
-        // MODIFICAÇÃO: Sempre adicionar campo de cor para todos os itens
-        const colorField = document.createElement('div');
-        colorField.style.marginTop = '10px';
-        
-        const colorLabel = document.createElement('label');
-        colorLabel.htmlFor = `color-${index}`;
-        colorLabel.textContent = 'Cor: ';
-        
-        const colorInput = document.createElement('input');
-        colorInput.type = 'text';
-        colorInput.id = `color-${index}`;
-        colorInput.name = `color-${index}`;
-        colorInput.value = 'Como na imagem';
-        colorInput.className = 'form-control';
-        colorInput.style.width = '100%';
-        colorInput.style.padding = '8px';
-        colorInput.style.boxSizing = 'border-box';
-        
-        colorField.appendChild(colorLabel);
-        colorField.appendChild(colorInput);
-        productItem.appendChild(colorField);
-        
-        productSection.appendChild(productItem);
+            
+            const itemTotal = priceValue * item.quantity;
+            total += itemTotal;
+            
+            // Container do produto
+            const productItem = document.createElement('div');
+            productItem.style.marginBottom = '15px';
+            productItem.style.padding = '10px';
+            productItem.style.backgroundColor = '#f9f9f9';
+            productItem.style.borderRadius = '5px';
+            
+            // Informações do produto
+            const productInfo = document.createElement('div');
+            productInfo.innerHTML = `
+                <strong>${item.name || 'Produto sem nome'}</strong> - ${item.quantity}x ${item.price}
+            `;
+            
+            productItem.appendChild(productInfo);
+            
+            // Campo de tamanho
+            const sizeField = document.createElement('div');
+            sizeField.style.marginTop = '10px';
+            
+            const sizeLabel = document.createElement('label');
+            sizeLabel.htmlFor = `size-${index}`;
+            sizeLabel.textContent = 'Tamanho: ';
+            
+            const sizeInput = document.createElement('select');
+            sizeInput.id = `size-${index}`;
+            sizeInput.name = `size-${index}`;
+            sizeInput.className = 'form-control';
+            sizeInput.setAttribute('aria-label', `Tamanho do produto ${item.name || 'Produto ' + (index + 1)}`);
+            
+            // Opções de tamanho comuns
+            const sizes = ['PP', 'P', 'M', 'G', 'GG', '34', '35', '36', '37', '38', '39', '40', '41', '42', 'Único'];
+            sizes.forEach(size => {
+                const option = document.createElement('option');
+                option.value = size;
+                option.textContent = size;
+                
+                // Selecionar tamanho padrão baseado no nome do produto
+                const productName = (item.name || '').toLowerCase();
+                if ((productName.includes('roupa') || 
+                     productName.includes('vestido') || 
+                     productName.includes('blusa')) && size === 'M') {
+                    option.selected = true;
+                } else if ((productName.includes('sapato') || 
+                           productName.includes('salto')) && size === '37') {
+                    option.selected = true;
+                } else if (size === 'Único') {
+                    option.selected = true;
+                }
+                
+                sizeInput.appendChild(option);
+            });
+            
+            sizeField.appendChild(sizeLabel);
+            sizeField.appendChild(sizeInput);
+            productItem.appendChild(sizeField);
+            
+            // Campo de cor
+            const colorField = document.createElement('div');
+            colorField.style.marginTop = '10px';
+            
+            const colorLabel = document.createElement('label');
+            colorLabel.htmlFor = `color-${index}`;
+            colorLabel.textContent = 'Cor: ';
+            
+            const colorInput = document.createElement('input');
+            colorInput.type = 'text';
+            colorInput.id = `color-${index}`;
+            colorInput.name = `color-${index}`;
+            colorInput.value = 'Como na imagem';
+            colorInput.className = 'form-control';
+            colorInput.setAttribute('aria-label', `Cor do produto ${item.name || 'Produto ' + (index + 1)}`);
+            colorInput.style.width = '100%';
+            colorInput.style.padding = '8px';
+            colorInput.style.boxSizing = 'border-box';
+            
+            colorField.appendChild(colorLabel);
+            colorField.appendChild(colorInput);
+            productItem.appendChild(colorField);
+            
+            productSection.appendChild(productItem);
+            
+        } catch (error) {
+            console.error('Erro ao processar item do carrinho:', error);
+            
+            // Criar uma versão simplificada do item em caso de erro
+            const errorItem = document.createElement('div');
+            errorItem.style.marginBottom = '15px';
+            errorItem.style.padding = '10px';
+            errorItem.style.backgroundColor = '#fff0f0';
+            errorItem.style.borderRadius = '5px';
+            errorItem.style.color = '#f44336';
+            
+            errorItem.textContent = `Produto ${index + 1}: Erro ao carregar detalhes. Por favor, entre em contato conosco.`;
+            
+            productSection.appendChild(errorItem);
+        }
     });
     
-    // Mostrar total
+    // Mostrar total com tratamento de erro
     const totalElement = document.createElement('div');
     totalElement.style.fontSize = '18px';
     totalElement.style.fontWeight = 'bold';
     totalElement.style.textAlign = 'right';
     totalElement.style.marginBottom = '20px';
-    totalElement.innerHTML = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+    
+    try {
+        totalElement.innerHTML = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+    } catch (error) {
+        totalElement.innerHTML = 'Total: Erro ao calcular. Por favor, verifique os itens.';
+        totalElement.style.color = '#f44336';
+    }
     
     productSection.appendChild(totalElement);
     
+    // Campo de Nome (novo campo)
+    const nameField = createFormField('customer-name', 'Nome Completo:', 'text', '', 'Digite seu nome completo', true);
+    
+    // Campo de Telefone (novo campo)
+    const phoneField = createFormField('phone', 'Telefone:', 'tel', '', '(00) 00000-0000', true);
+    phoneField.querySelector('input').pattern = '\\([0-9]{2}\\) [0-9]{4,5}-[0-9]{4}';
+    phoneField.querySelector('input').placeholder = '(00) 00000-0000';
+    
+    // Adicionar máscara ao campo de telefone
+    const phoneInput = phoneField.querySelector('input');
+    phoneInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length <= 11) {
+            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+            value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+            e.target.value = value;
+        }
+    });
+    
     // Campo de Endereço
-    const addressField = createFormField('address', 'Endereço de entrega:', 'text', '', 'Digite seu endereço completo');
+    const addressField = createFormField('address', 'Endereço de entrega:', 'text', '', 'Digite seu endereço completo', true);
     
     // Campo de Forma de Pagamento
     const paymentField = document.createElement('div');
@@ -729,6 +628,8 @@ function createOrderForm(cartItems) {
     const paymentSelect = document.createElement('select');
     paymentSelect.id = 'payment';
     paymentSelect.name = 'payment';
+    paymentSelect.required = true;
+    paymentSelect.setAttribute('aria-required', 'true');
     paymentSelect.style.width = '100%';
     paymentSelect.style.padding = '10px';
     paymentSelect.style.borderRadius = '5px';
@@ -746,8 +647,10 @@ function createOrderForm(cartItems) {
     paymentField.appendChild(paymentSelect);
     
     // Campo de Observações
-    const notesField = createFormField('notes', 'Observações (opcional):', 'textarea', '', 'Informações adicionais para o pedido');
-    notesField.querySelector('textarea').style.minHeight = '100px';
+    const notesField = createFormField('notes', 'Observações (opcional):', 'textarea', '', 'Informações adicionais para o pedido', false);
+    const notesTextarea = notesField.querySelector('textarea');
+    notesTextarea.style.minHeight = '100px';
+    notesTextarea.style.resize = 'vertical';
     
     // Botões
     const buttonGroup = document.createElement('div');
@@ -759,39 +662,95 @@ function createOrderForm(cartItems) {
     const cancelButton = document.createElement('button');
     cancelButton.type = 'button';
     cancelButton.textContent = 'Cancelar';
+    cancelButton.setAttribute('aria-label', 'Cancelar pedido');
     cancelButton.style.padding = '10px 20px';
     cancelButton.style.backgroundColor = '#f44336';
     cancelButton.style.color = 'white';
     cancelButton.style.border = 'none';
     cancelButton.style.borderRadius = '5px';
     cancelButton.style.cursor = 'pointer';
+    cancelButton.style.minWidth = '120px';
     cancelButton.onclick = function() {
-        modal.remove();
+        // Confirmar cancelamento se o formulário já estiver parcialmente preenchido
+        const nameValue = document.getElementById('customer-name')?.value;
+        const addressValue = document.getElementById('address')?.value;
+        
+        if (nameValue || addressValue) {
+            if (confirm('Tem certeza que deseja cancelar o pedido? Os dados preenchidos serão perdidos.')) {
+                modal.remove();
+            }
+        } else {
+            // Se não tem dados importantes, fechar sem confirmar
+            modal.remove();
+        }
     };
     
     // Botão Enviar Pedido
     const submitButton = document.createElement('button');
-    submitButton.type = 'button';
+    submitButton.type = 'submit';
     submitButton.textContent = 'Enviar Pedido';
+    submitButton.setAttribute('aria-label', 'Finalizar e enviar pedido');
     submitButton.style.padding = '10px 20px';
     submitButton.style.backgroundColor = '#4CAF50';
     submitButton.style.color = 'white';
     submitButton.style.border = 'none';
     submitButton.style.borderRadius = '5px';
     submitButton.style.cursor = 'pointer';
-    submitButton.onclick = function() {
-        processFormData(form, cartItems);
-    };
+    submitButton.style.minWidth = '120px';
+    submitButton.style.fontWeight = 'bold';
     
     buttonGroup.appendChild(cancelButton);
     buttonGroup.appendChild(submitButton);
     
     // Montar o formulário
     form.appendChild(productSection);
+    form.appendChild(nameField);
+    form.appendChild(phoneField);
     form.appendChild(addressField);
     form.appendChild(paymentField);
     form.appendChild(notesField);
     form.appendChild(buttonGroup);
+    
+    // Manipulador de envio do formulário
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validação básica
+        const customerName = document.getElementById('customer-name');
+        const phone = document.getElementById('phone');
+        const address = document.getElementById('address');
+        
+        // Verificar campos obrigatórios
+        if (!customerName.value.trim()) {
+            alert('Por favor, informe seu nome.');
+            customerName.focus();
+            return false;
+        }
+        
+        if (!phone.value.trim() || phone.value.replace(/\D/g, '').length < 10) {
+            alert('Por favor, informe um número de telefone válido.');
+            phone.focus();
+            return false;
+        }
+        
+        if (!address.value.trim()) {
+            alert('Por favor, informe o endereço de entrega.');
+            address.focus();
+            return false;
+        }
+        
+        // Validar se o endereço é muito curto
+        if (address.value.trim().length < 10) {
+            if (!confirm('O endereço parece muito curto. Deseja continuar mesmo assim?')) {
+                address.focus();
+                return false;
+            }
+        }
+        
+        // Se a validação passou, processar o formulário
+        processFormData(form, cartItems);
+        return false;
+    });
     
     // Adicionar o formulário ao container
     formContainer.appendChild(title);
@@ -803,7 +762,7 @@ function createOrderForm(cartItems) {
     // Adicionar o modal à página
     document.body.appendChild(modal);
     
-    // Focar no primeiro campo
+    // Focar no primeiro campo (nome)
     const firstInput = form.querySelector('input, select, textarea');
     if (firstInput) {
         firstInput.focus();
@@ -811,21 +770,22 @@ function createOrderForm(cartItems) {
 }
 
 /**
- * Cria um campo de formulário
+ * Cria um campo de formulário com acessibilidade melhorada
  * @param {String} id - ID do campo
  * @param {String} label - Texto da label
  * @param {String} type - Tipo do campo
  * @param {String} value - Valor padrão
  * @param {String} placeholder - Placeholder
+ * @param {Boolean} required - Se o campo é obrigatório
  * @returns {HTMLElement} - Campo de formulário
  */
-function createFormField(id, label, type, value = '', placeholder = '') {
+function createFormField(id, label, type, value = '', placeholder = '', required = false) {
     const field = document.createElement('div');
     field.style.marginBottom = '15px';
     
     const fieldLabel = document.createElement('label');
     fieldLabel.htmlFor = id;
-    fieldLabel.textContent = label;
+    fieldLabel.textContent = label + (required ? ' *' : '');
     fieldLabel.style.display = 'block';
     fieldLabel.style.marginBottom = '5px';
     fieldLabel.style.fontWeight = 'bold';
@@ -842,6 +802,12 @@ function createFormField(id, label, type, value = '', placeholder = '') {
     input.name = id;
     input.value = value;
     input.placeholder = placeholder;
+    input.required = required;
+    
+    if (required) {
+        input.setAttribute('aria-required', 'true');
+    }
+    
     input.style.width = '100%';
     input.style.padding = '10px';
     input.style.borderRadius = '5px';
@@ -855,124 +821,22 @@ function createFormField(id, label, type, value = '', placeholder = '') {
 }
 
 /**
- * Processa os dados do formulário
- * @param {HTMLFormElement} form - Formulário
- * @param {Array} cartItems - Itens do carrinho
- */
-function processFormData(form, cartItems) {
-    // Verificar campo de endereço
-    const addressInput = form.querySelector('#address');
-    if (!addressInput.value.trim()) {
-        alert('Por favor, informe o endereço de entrega.');
-        addressInput.focus();
-        return;
-    }
-    
-    // Validar se o endereço é muito curto
-    if (addressInput.value.trim().length < 10) {
-        if (!confirm('O endereço parece muito curto. Deseja continuar mesmo assim?')) {
-            addressInput.focus();
-            return;
-        }
-    }
-    
-    // Coletar dados do formulário
-    const address = addressInput.value.trim();
-    const payment = form.querySelector('#payment').value;
-    const notes = form.querySelector('#notes').value.trim();
-    
-    // Coletar detalhes de tamanho e cor
-    const cartItemsWithDetails = cartItems.map((item, index) => {
-        const newItem = { ...item };
-        
-        // Obter tamanho (agora sempre presente)
-        const sizeField = form.querySelector(`#size-${index}`);
-        newItem.size = sizeField.value;
-        
-        // Obter cor (agora sempre presente)
-        const colorField = form.querySelector(`#color-${index}`);
-        newItem.color = colorField.value;
-        
-        return newItem;
-    });
-    
-    // Fechar o modal
-    const modal = document.getElementById('order-form-modal');
-    if (modal) {
-        modal.remove();
-    }
-    
-    // Formatar a mensagem do pedido
-    let message = '*📋 NOVO PEDIDO:*\n\n';
-    let total = 0;
-    
-    // Adicionar detalhes de cada item
-    cartItemsWithDetails.forEach(item => {
-        // Calcular valor de cada item
-        const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
-        const itemTotal = priceValue * item.quantity;
-        total += itemTotal;
-        
-        // Adicionar item à mensagem
-        message += `• ${item.quantity}x ${item.name} - ${item.price} cada\n`;
-        
-        // MODIFICAÇÃO: Sempre incluir tamanho
-        message += `  - Tamanho: ${item.size}\n`;
-        
-        // MODIFICAÇÃO: Sempre incluir cor
-        message += `  - Cor: ${item.color}\n`;
-    });
-    
-    // Adicionar informações do pedido
-    message += `\n*💰 Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
-    message += `*🏠 Endereço:* ${address}\n`;
-    message += `*💳 Forma de pagamento:* ${payment}\n`;
-    
-    // Adicionar observações se houver
-    if (notes) {
-        message += `\n*📝 Observações:* ${notes}\n`;
-    }
-    
-    // Adicionar data e hora do pedido
-    const now = new Date();
-    const dataHora = now.toLocaleString('pt-BR');
-    message += `\n*⏰ Data/Hora:* ${dataHora}`;
-    
-    // Adicionar fotos dos produtos à mensagem
-    const imageUrls = cartItemsWithDetails
-        .filter(item => item.image)
-        .map(item => ({
-            url: item.image,
-            name: item.name
-        }));
-    
-    // Verificar se há imagens para compartilhar
-    if (imageUrls.length > 0) {
-        message += '\n\n*📸 Fotos dos produtos:*';
-        imageUrls.forEach((image) => {
-            message += `\n• ${image.name}: ${image.url}`;
-        });
-    }
-    
-    // Número de telefone do dono da loja
-    const phoneNumber = '5583991816152';
-    
-    // Salvar no localStorage
-    localStorage.setItem('lastOrderMessage', message);
-    localStorage.setItem('lastOrderPhone', phoneNumber);
-    
-    // Enviar a mensagem
-    sendWhatsAppMessage(message, phoneNumber);
-}
-
-/**
- * Envia mensagem para o WhatsApp sem problemas de popup
+ * Função melhorada para enviar mensagem para o WhatsApp
  * @param {String} message - Mensagem a ser enviada
  * @param {String} phoneNumber - Número do telefone
  */
 function sendWhatsAppMessage(message, phoneNumber) {
+    // Verificar entradas
+    if (!message || !phoneNumber) {
+        alert('Erro: Mensagem ou número de telefone inválidos.');
+        return;
+    }
+    
     // Criar um overlay de carregamento
     const loadingOverlay = document.createElement('div');
+    loadingOverlay.id = 'loading-overlay';
+    loadingOverlay.setAttribute('role', 'alert');
+    loadingOverlay.setAttribute('aria-busy', 'true');
     loadingOverlay.style.position = 'fixed';
     loadingOverlay.style.top = '0';
     loadingOverlay.style.left = '0';
@@ -988,6 +852,7 @@ function sendWhatsAppMessage(message, phoneNumber) {
     // Mensagem de carregamento
     const loadingText = document.createElement('div');
     loadingText.textContent = 'Processando seu pedido...';
+    loadingText.id = 'loading-text';
     loadingText.style.color = 'white';
     loadingText.style.fontSize = '20px';
     loadingText.style.marginBottom = '20px';
@@ -1001,15 +866,18 @@ function sendWhatsAppMessage(message, phoneNumber) {
     spinner.style.height = '50px';
     spinner.style.animation = 'spin 2s linear infinite';
     
-    // Adicionar keyframes para animação
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    `;
-    document.head.appendChild(style);
+    // Adicionar keyframes para animação (se ainda não existir)
+    if (!document.getElementById('spin-animation')) {
+        const style = document.createElement('style');
+        style.id = 'spin-animation';
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
     
     // Adicionar elementos ao overlay
     loadingOverlay.appendChild(loadingText);
@@ -1024,245 +892,107 @@ function sendWhatsAppMessage(message, phoneNumber) {
     // URL codificada para WhatsApp
     const encodedMessage = encodeURIComponent(message);
     
-    // Agora vamos usar um método que funciona de forma confiável
-    setTimeout(() => {
-        // Atualizar mensagem de carregamento
-        loadingText.textContent = 'Redirecionando para o WhatsApp...';
-        
-        // Remover o overlay após um curto tempo
-        setTimeout(() => {
-            loadingOverlay.remove();
-            
-            // URL do WhatsApp Web ou app
-            const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-            
-            if (isMobile) {
-                // Em dispositivos móveis, tentar primeiro o link direto para o app
-                const whatsappDeepLink = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
-                
-                // Abrir o link em um iframe oculto (evita problemas com bloqueadores de pop-up)
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = whatsappDeepLink;
-                document.body.appendChild(iframe);
-                
-                // Remover o iframe após um curto tempo
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                    
-                    // Verificar se o app abriu (não há uma forma 100% confiável, mas podemos tentar)
-                    setTimeout(() => {
-                        // Se ainda estiver na página, tentar o método de fallback
-                        showFallbackOptions(whatsappURL, message, phoneNumber);
-                    }, 1000);
-                }, 100);
-            } else {
-                // Em desktop, abrir em uma nova guia (mais confiável que window.location)
-                const newTab = window.open(whatsappURL, '_blank');
-                
-                // Se o navegador bloqueou a abertura da nova guia
-                if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
-                    // Tentar redirecionamento direto
-                    window.location.href = whatsappURL;
-                    
-                    // Ainda oferecer opções alternativas após um tempo
-                    setTimeout(() => {
-                        showFallbackOptions(whatsappURL, message, phoneNumber);
-                    }, 3000);
-                }
-            }
-        }, 1500);
-    }, 1000);
-}
-
-/**
- * Mostra opções alternativas caso o redirecionamento falhe
- * @param {String} whatsappURL - URL do WhatsApp
- * @param {String} message - Mensagem do pedido
- * @param {String} phoneNumber - Número do telefone
- */
-function showFallbackOptions(whatsappURL, message, phoneNumber) {
-    // Verificar se o usuário ainda está na página (indicando que o redirecionamento falhou)
-    const fallbackModal = document.createElement('div');
-    fallbackModal.style.position = 'fixed';
-    fallbackModal.style.top = '0';
-    fallbackModal.style.left = '0';
-    fallbackModal.style.width = '100%';
-    fallbackModal.style.height = '100%';
-    fallbackModal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-    fallbackModal.style.display = 'flex';
-    fallbackModal.style.justifyContent = 'center';
-    fallbackModal.style.alignItems = 'center';
-    fallbackModal.style.zIndex = '10000';
-    
-    // Container para as opções
-    const optionsContainer = document.createElement('div');
-    optionsContainer.style.backgroundColor = 'white';
-    optionsContainer.style.borderRadius = '10px';
-    optionsContainer.style.padding = '20px';
-    optionsContainer.style.maxWidth = '450px';
-    optionsContainer.style.width = '90%';
-    optionsContainer.style.textAlign = 'center';
-    
-    // Título
-    const title = document.createElement('h3');
-    title.textContent = 'Não foi possível abrir o WhatsApp';
-    title.style.marginTop = '0';
-    title.style.color = '#333';
-    
-    // Mensagem
-    const text = document.createElement('p');
-    text.textContent = 'Escolha uma das opções abaixo para enviar seu pedido:';
-    
-    // Botões de opções alternativas
-    const buttonContainer = document.createElement('div');
-    buttonContainer.style.display = 'flex';
-    buttonContainer.style.flexDirection = 'column';
-    buttonContainer.style.gap = '10px';
-    buttonContainer.style.marginTop = '20px';
-    
-    // Opção 1: Tentar novamente
-    const retryButton = createActionButton(
-        'Tentar Novamente', 
-        '#4CAF50',
-        () => {
-            fallbackModal.remove();
-            window.open(whatsappURL, '_blank');
-        }
-    );
-    
-    // Opção 2: Copiar mensagem
-    const copyButton = createActionButton(
-        'Copiar Mensagem', 
-        '#2196F3',
-        () => {
-            copyTextToClipboard(message);
-            alert('Mensagem copiada! Você pode colá-la no WhatsApp.');
-            
-            // Mostrar instruções
-            text.innerHTML = 'Mensagem copiada! Agora:<br>1. Abra o WhatsApp<br>2. Encontre ou inicie uma conversa com o número do vendedor<br>3. Cole a mensagem';
-            
-            // Mudar para botão que abre o WhatsApp manualmente
-            buttonContainer.innerHTML = '';
-            
-            // Adicionar botão para abrir WhatsApp Web
-            const openWhatsAppButton = createActionButton(
-                'Abrir WhatsApp Web', 
-                '#25D366',
-                () => {
-                    window.open('https://web.whatsapp.com/', '_blank');
-                }
-            );
-            
-            buttonContainer.appendChild(openWhatsAppButton);
-            
-            // Adicionar botão para fechar
-            const closeButton = createActionButton(
-                'Fechar', 
-                '#f44336',
-                () => {
-                    fallbackModal.remove();
-                }
-            );
-            
-            buttonContainer.appendChild(closeButton);
-        }
-    );
-    
-    // Opção 3: Fechar
-    const closeButton = createActionButton(
-        'Cancelar', 
-        '#f44336',
-        () => {
-            fallbackModal.remove();
-        }
-    );
-    
-    // Adicionar botões ao container
-    buttonContainer.appendChild(retryButton);
-    buttonContainer.appendChild(copyButton);
-    buttonContainer.appendChild(closeButton);
-    
-    // Montar o modal
-    optionsContainer.appendChild(title);
-    optionsContainer.appendChild(text);
-    optionsContainer.appendChild(buttonContainer);
-    
-    fallbackModal.appendChild(optionsContainer);
-    document.body.appendChild(fallbackModal);
-}
-
-/**
- * Cria um botão de ação estilizado
- * @param {String} text - Texto do botão
- * @param {String} color - Cor de fundo
- * @param {Function} onClick - Função de clique
- * @returns {HTMLElement} - Botão criado
- */
-function createActionButton(text, color, onClick) {
-    const button = document.createElement('button');
-    button.textContent = text;
-    button.style.padding = '12px 20px';
-    button.style.backgroundColor = color;
-    button.style.color = 'white';
-    button.style.border = 'none';
-    button.style.borderRadius = '5px';
-    button.style.cursor = 'pointer';
-    button.style.fontWeight = 'bold';
-    button.style.width = '100%';
-    button.onclick = onClick;
-    
-    return button;
-}
-
-/**
- * Função auxiliar para copiar texto para a área de transferência
- * @param {String} text - Texto a ser copiado
- */
-function copyTextToClipboard(text) {
-    // Tentar usar a API moderna Clipboard
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text)
-            .then(() => console.log('Texto copiado com sucesso usando Clipboard API'))
-            .catch(err => {
-                console.error('Erro ao copiar texto com Clipboard API:', err);
-                fallbackCopyTextToClipboard(text);
-            });
-    } else {
-        // Usar método alternativo para contextos não seguros
-        fallbackCopyTextToClipboard(text);
-    }
-}
-
-/**
- * Método alternativo para copiar texto
- * @param {String} text - Texto a ser copiado
- */
-function fallbackCopyTextToClipboard(text) {
-    // Criar elemento temporário
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    
-    // Garantir que o texto não seja visível
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
-    
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    
+    // Tentar abrir o WhatsApp com tratamento de erros
     try {
-        // Executar o comando de cópia
-        const successful = document.execCommand('copy');
-        const msg = successful ? 'bem-sucedido' : 'com falha';
-        console.log('Texto copiado ' + msg);
-    } catch (err) {
-        console.error('Erro ao copiar texto: ', err);
+        setTimeout(() => {
+            // Atualizar mensagem de carregamento
+            const loadingTextElement = document.getElementById('loading-text');
+            if (loadingTextElement) {
+                loadingTextElement.textContent = 'Redirecionando para o WhatsApp...';
+            }
+            
+            // Remover o overlay após um curto tempo
+            setTimeout(() => {
+                const overlay = document.getElementById('loading-overlay');
+                if (overlay) {
+                    overlay.remove();
+                }
+                
+                // URL do WhatsApp Web ou app
+                const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+                
+                // Armazenar a URL para possível recuperação posterior
+                localStorage.setItem('lastWhatsAppURL', whatsappURL);
+                
+                if (isMobile) {
+                    // Em dispositivos móveis, tentar primeiro o link direto para o app
+                    const whatsappDeepLink = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
+                    
+                    // Tentar abrir o app do WhatsApp
+                    const appOpened = tryOpenURL(whatsappDeepLink);
+                    
+                    // Se falhar, tentar a versão web
+                    setTimeout(() => {
+                        if (!appOpened) {
+                            window.open(whatsappURL, '_blank');
+                            
+                            // Mostrar opções de fallback após um tempo
+                            setTimeout(() => {
+                                showFallbackOptions(whatsappURL, message, phoneNumber);
+                            }, 3000);
+                        }
+                    }, 1500);
+                } else {
+                    // Em desktop, abrir em uma nova guia
+                    const newTab = window.open(whatsappURL, '_blank');
+                    
+                    // Se o navegador bloqueou a abertura da nova guia
+                    if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+                        // Tentar redirecionamento direto
+                        window.location.href = whatsappURL;
+                        
+                        // Ainda oferecer opções alternativas após um tempo
+                        setTimeout(() => {
+                            showFallbackOptions(whatsappURL, message, phoneNumber);
+                        }, 3000);
+                    }
+                }
+            }, 1500);
+        }, 1000);
+    } catch (error) {
+        console.error('Erro ao abrir WhatsApp:', error);
+        
+        // Remover overlay em caso de erro
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) {
+            overlay.remove();
+        }
+        
+        // Mostrar mensagem de erro e opções alternativas
+        alert('Não foi possível abrir o WhatsApp automaticamente. Tente as opções alternativas.');
+        showFallbackOptions(
+            `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`, 
+            message, 
+            phoneNumber
+        );
     }
-    
-    // Remover o elemento temporário
-    document.body.removeChild(textArea);
+}
+
+/**
+ * Tenta abrir uma URL e retorna se foi bem-sucedido
+ * @param {String} url - URL para abrir
+ * @returns {Boolean} - Se a tentativa de abrir foi iniciada
+ */
+function tryOpenURL(url) {
+    try {
+        // Criar iframe oculto (evita problemas com bloqueadores de pop-up)
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = url;
+        document.body.appendChild(iframe);
+        
+        // Remover o iframe após um curto tempo
+        setTimeout(() => {
+            if (iframe && iframe.parentNode) {
+                iframe.parentNode.removeChild(iframe);
+            }
+        }, 100);
+        
+        return true;
+    } catch (error) {
+        console.error('Erro ao abrir URL:', error);
+        return false;
+    }
 }
 
 // Função para remover acentos de uma string (para pesquisa)
