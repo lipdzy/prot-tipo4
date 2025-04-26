@@ -1,108 +1,106 @@
 // Produtos
-const products = [
+const produtos = [
     { 
-        name: "Corrente Ponto de Luz", 
+        nome: "Corrente Ponto de Luz", 
         price: "R$ 299,90", 
         image: "https://i.postimg.cc/5yLPzdZc/corrente.jpg",
         description: "Elegante corrente banhada a ouro com pingente de cristal que reflete a luz de forma única. Perfeita para ocasiões especiais e uso diário."
     },
     { 
-        name: "Vestido Sarah", 
+        nome: "Vestido Sarah", 
         price: "R$ 390,90", 
         image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg",
         description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado."
     },
     { 
-        name: "Salto alto Preto", 
+        nome: "Salto alto Preto", 
         price: "R$ 299,90", 
         image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
         description: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto."
     },
     { 
-        name: "Bolsa Branca Delicada", 
+        nome: "Bolsa Branca Delicada", 
         price: "R$ 199,90", 
         image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg",
         description: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. O acessório perfeito para complementar seu visual."
     },
     { 
-        name: "Pó Compacto Translúcido", 
+        nome: "Pó Compacto", 
         price: "R$ 62,00", 
         image: "/api/placeholder/400/300",
         description: "Pó compacto de textura fina e acabamento translúcido que controla a oleosidade da pele sem ressecar. Perfeito para todos os tipos de pele."
     },
     { 
-        name: "Sérum Facial Hidratante", 
+        nome: "Sérum Facial Hidratante", 
         price: "R$ 79,90", 
         image: "/api/placeholder/400/300",
         description: "Sérum hidratante com ácido hialurônico e vitaminas que restaura a barreira de hidratação da pele, proporcionando luminosidade e maciez."
     },
     { 
-        name: "Protetor Solar FPS 50", 
+        nome: "Protetor Solar FPS 50", 
         price: "R$ 72,00", 
         image: "/api/placeholder/400/300",
         description: "Protetor solar de amplo espectro com FPS 50, textura leve e toque seco. Protege contra os raios UVA e UVB, além de prevenir o envelhecimento precoce."
     },
     { 
-        name: "Demaquilante Bifásico", 
+        nome: "Demaquilante Bifásico", 
         price: "R$ 48,00", 
         image: "/api/placeholder/400/300",
         description: "Demaquilante bifásico que remove até as maquiagens mais resistentes sem ressecar a pele. Fórmula suave e com ingredientes hidratantes."
     },
     { 
-        name: "Kit Pincéis Maquiagem", 
+        nome: "Kit Pincéis Maquiagem", 
         price: "R$ 115,90", 
         image: "/api/placeholder/400/300",
         description: "Kit completo com 12 pincéis profissionais para maquiagem. Cerdas macias e cabos ergonômicos que facilitam a aplicação de produtos diversos."
     },
     { 
-        name: "Blush Rosado", 
+        nome: "Blush Rosado", 
         price: "R$ 42,50", 
         image: "/api/placeholder/400/300",
         description: "Blush em pó com acabamento matte e tonalidade rosada natural. Proporciona um rubor delicado e duradouro com fácil aplicação."
     },
     { 
-        name: "Iluminador Facial", 
+        nome: "Iluminador Facial", 
         price: "R$ 54,90", 
         image: "/api/placeholder/400/300",
         description: "Iluminador em pó com partículas microfinas que proporcionam um brilho natural e luminoso à pele. Ideal para destacar os pontos altos do rosto."
     },
     { 
-        name: "Contorno Facial em Pó", 
+        nome: "Contorno Facial em Pó", 
         price: "R$ 65,90", 
         image: "/api/placeholder/400/300",
         description: "Pó compacto para contorno facial que realça e define os traços do rosto. Textura aveludada e fácil de esfumar."
     },
     { 
-        name: "Esmalte Gel Rosê", 
+        nome: "Esmalte Gel Rosê", 
         price: "R$ 24,90", 
         image: "/api/placeholder/400/300",
         description: "Esmalte em tom rosê com acabamento gel que proporciona brilho intenso e durabilidade excepcional. Fórmula hipoalergênica e de secagem rápida."
     },
     { 
-        name: "Hidratante Corporal", 
+        nome: "Hidratante Corporal", 
         price: "R$ 49,90", 
         image: "/api/placeholder/400/300",
         description: "Hidratante corporal de rápida absorção com manteiga de karité e vitamina E. Proporciona hidratação profunda e deixa a pele macia o dia todo."
     },
     { 
-        name: "Óleo de Argan para Cabelos", 
+        nome: "Óleo de Argan para Cabelos", 
         price: "R$ 55,00", 
         image: "/api/placeholder/400/300",
         description: "Óleo capilar com argan puro que nutre, repara e protege os fios do calor. Devolve o brilho e maciez aos cabelos danificados."
     },
     { 
-        name: "Shampoo Anti-Queda", 
+        nome: "Shampoo Anti-Queda", 
         price: "R$ 39,90", 
         image: "/api/placeholder/400/300",
         description: "Shampoo formulado com ativos que combatem a queda e estimulam o crescimento capilar. Limpa suavemente sem ressecar os fios."
     }
-
 ];
-
 
 // Variáveis globais
 let cartItems = [];
-let favorites = new Set();
+let favoritos = new Set();
 
 // Elementos DOM comuns
 const cartOverlay = document.getElementById('cartOverlay');
@@ -131,13 +129,13 @@ function saveCartToStorage() {
 function loadFavoritesFromStorage() {
     const savedFavorites = localStorage.getItem('closetDellasFavorites');
     if (savedFavorites) {
-        favorites = new Set(JSON.parse(savedFavorites));
+        favoritos = new Set(JSON.parse(savedFavorites));
     }
 }
 
 // Salvar favoritos no localStorage
 function saveFavoritesToStorage() {
-    localStorage.setItem('closetDellasFavorites', JSON.stringify([...favorites]));
+    localStorage.setItem('closetDellasFavorites', JSON.stringify([...favoritos]));
 }
 
 // Função para mostrar notificação
@@ -166,23 +164,23 @@ function loadProducts() {
     if (!catalogContainer) return; // Se não estiver na página principal
     
     catalogContainer.innerHTML = '';
-    products.forEach((product, index) => {
+    produtos.forEach((produto, index) => {
         const productCard = document.createElement('div');
         productCard.classList.add('product');
         
         // Verificar se o produto está favoritado para mostrar o ícone correto
-        const isFavorite = favorites.has(index.toString());
+        const isFavorite = favoritos.has(index.toString());
         const heartClass = isFavorite ? 'fas fa-heart favorite-active' : 'far fa-heart';
         
         productCard.innerHTML = `
             <div class="product-image-container" data-index="${index}">
-                <img src="${product.image}" alt="${product.name}">
+                <img src="${produto.image}" alt="${produto.nome}">
             </div>
             <div class="product-details">
                 <div class="product-info">
                     <div class="product-title-price">
-                        <h3 class="product-title">${product.name}</h3>
-                        <p class="product-price">${product.price}</p>
+                        <h3 class="product-title">${produto.nome}</h3>
+                        <p class="product-price">${produto.price}</p>
                     </div>
                     <div class="product-actions">
                         <button class="favorite-btn" data-index="${index}">

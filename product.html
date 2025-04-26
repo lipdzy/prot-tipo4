@@ -7,6 +7,46 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos específicos para navegação de imagens */
+        .image-navigation {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            width: 100%;
+            gap: 15px;
+        }
+        
+        .image-counter {
+            font-size: 14px;
+            color: #666;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .nav-button {
+            background-color: #e9e9e9;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-button:hover {
+            background-color: #d1d1d1;
+        }
+        
+        .nav-button i {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -14,7 +54,7 @@
             <div class="logo logo-shimmer">
                 <img src="https://i.postimg.cc/65Wz3j7G/CLOSET-DELLAS-jpg.jpg" alt="Logo da Loja">
             </div>
-            <h1 class="company-name">Closet Dellas</h1>
+            <h1 class="nome-da-empresa">Closet Dellas</h1>
             <p class="welcome-text">Bem-vindo à Closet Dellas! Faça já o seu pedido!</p>
         </div>
         <nav>
@@ -23,7 +63,7 @@
             <a href="index.html#contato">Contato</a>
             <a href="index.html#localizacao">Localização</a>
         </nav>
-                
+        
         <!-- Botão do carrinho no canto superior direito -->
         <div class="cart-button" id="cartButton">
             <i class="fas fa-shopping-cart"></i>
@@ -32,7 +72,7 @@
     </header>
 
     <main>
-        <section class="section" id="product-detail">
+        <section class="section" id="product-details">
             <div class="back-to-catalog">
                 <a href="index.html#produtos"><i class="fas fa-arrow-left"></i> Voltar ao catálogo</a>
             </div>
@@ -40,6 +80,18 @@
                 <div class="product-detail-image">
                     <img id="productImage" src="" alt="">
                 </div>
+                
+                <!-- Botões de navegação de imagem - Já implementados no HTML -->
+                <div id="imageNavigation" class="image-navigation">
+                    <button id="prevImageBtn" class="nav-button">
+                        <i class="fas fa-arrow-left"></i> Foto Anterior
+                    </button>
+                    <div id="imageCounter" class="image-counter">1/3</div>
+                    <button id="nextImageBtn" class="nav-button">
+                        Próxima Foto <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                
                 <div class="product-detail-info">
                     <h1 id="productName" class="product-detail-title"></h1>
                     <p id="productPrice" class="product-detail-price"></p>
@@ -80,15 +132,15 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Elemento de notificação -->
     <div id="notification"></div>
-    
+
     <footer>
         <p>&copy; 2025 Closet Dellas - Todos os direitos reservados</p>
         <p>Sua loja especializada em roupas</p>
     </footer>
-    
+
     <script src="script.js"></script>
     <script src="product.js"></script>
 </body>
