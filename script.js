@@ -535,7 +535,7 @@ function openCart() {
 
 /**
  * Função para compartilhar carrinho de compras via WhatsApp
- * Encaminha diretamente para o chat do WhatsApp com as informações do pedido
+ * Inclui as fotos dos produtos junto com as informações
  */
 function shareCartOnWhatsApp() {
     // Verificar se temos itens no carrinho
@@ -673,38 +673,361 @@ function shareCartOnWhatsApp() {
         const dataHora = now.toLocaleString('pt-BR');
         message += `\n*⏰ Data/Hora:* ${dataHora}`;
         
+        // Criar array para armazenar as URLs das imagens
+        const imageUrls = cartItemsWithDetails
+            .filter(item => item.image)
+            .map(item => ({
+                url: item.image,
+                name: item.name
+            }));
+        
+        // Verificar se há imagens para compartilhar
+        const hasImages = imageUrls.length > 0;
+        
+        // Adicionar fotos dos produtos à mensagem principal
+        if (hasImages) {
+            message += '\n\n*📸 Fotos dos produtos:*';
+            imageUrls.forEach((image, index) => {
+                message += `\n• ${image.name}: ${image.url}`;
+            });
+        }
+        
         // Codificar a mensagem para URL
         const encodedMessage = encodeURIComponent(message);
         
-        // Remover o "+" do número do telefone para evitar problemas de codificação
-        const phoneNumber = '5583991816152'; // Removido o "+" do início
+        // Número de telefone do dono da loja (sem o "+")
+        const phoneNumber = '5583991816152';
         
-        // Criar botão visível que abre o WhatsApp
-        const whatsappLink = document.createElement('a');
-        whatsappLink.href = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-        whatsappLink.target = '_blank';
-        whatsappLink.style.display = 'none'; // Esconder o elemento
-        document.body.appendChild(whatsappLink);
+        // Armazenar as informações no localStorage para uso posterior
+        localStorage.setItem('lastOrderMessage', message);
+        localStorage.setItem('lastOrderPhone', phoneNumber);
         
-        // Mostrar feedback ao usuário
-        alert('Seu pedido foi processado! Clique em OK para ser direcionado ao WhatsApp.');
+        // Criar URL do WhatsApp
+        const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
         
-        // Clicar no link para forçar a abertura
-        whatsappLink.click();
+        // Preparar botões para uso na interface (não serão mostrados ainda)
+        createWhatsAppButtons(whatsappURL, message, phoneNumber);
         
-        // Remover o elemento após o clique
-        setTimeout(() => {
-            document.body.removeChild(whatsappLink);
-            
-            // Como backup, tentar redirecionar diretamente após um curto delay
-            setTimeout(() => {
-                window.location.href = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-            }, 500);
-        }, 100);
+        // Detectar se é mobile ou desktop
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        // Mostrar diferentes opções com base no dispositivo
+        if (isMobile) {
+            // Em dispositivos móveis, tentar abrir direto o app do WhatsApp
+            sendToWhatsAppMobile(whatsappURL, message, phoneNumber);
+        } else {
+            // Em desktop, mostrar opções para o usuário
+            showDesktopOptions(whatsappURL, message, phoneNumber);
+        }
+        
     } catch (error) {
         console.error('Erro ao processar o pedido:', error);
         alert('Ocorreu um erro ao processar seu pedido. Por favor, tente novamente.');
     }
+}
+
+/**
+ * Função para criar botões WhatsApp na interface
+ * @param {String} whatsappURL - URL para WhatsApp
+ * @param {String} message - Mensagem do pedido
+ * @param {String} phoneNumber - Número do telefone
+ */
+function createWhatsAppButtons(whatsappURL, message, phoneNumber) {
+    // Remover botões anteriores se existirem
+    const existingButtons = document.getElementById('whatsapp-buttons-container');
+    if (existingButtons) {
+        existingButtons.remove();
+    }
+    
+    // Criar container para os botões
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.id = 'whatsapp-buttons-container';
+    buttonsContainer.style.position = 'fixed';
+    buttonsContainer.style.bottom = '20px';
+    buttonsContainer.style.right = '20px';
+    buttonsContainer.style.zIndex = '9999';
+    buttonsContainer.style.display = 'flex';
+    buttonsContainer.style.flexDirection = 'column';
+    buttonsContainer.style.gap = '10px';
+    
+    // Botão 1: Abrir WhatsApp Web
+    const webButton = document.createElement('button');
+    webButton.textContent = 'Enviar via WhatsApp Web';
+    webButton.style.padding = '10px 15px';
+    webButton.style.backgroundColor = '#25D366';
+    webButton.style.color = 'white';
+    webButton.style.border = 'none';
+    webButton.style.borderRadius = '5px';
+    webButton.style.cursor = 'pointer';
+    webButton.onclick = function() {
+        window.location.href = whatsappURL;
+    };
+    
+    // Botão 2: Abrir nova janela
+    const newWindowButton = document.createElement('button');
+    newWindowButton.textContent = 'Abrir em nova janela';
+    newWindowButton.style.padding = '10px 15px';
+    newWindowButton.style.backgroundColor = '#128C7E';
+    newWindowButton.style.color = 'white';
+    newWindowButton.style.border = 'none';
+    newWindowButton.style.borderRadius = '5px';
+    newWindowButton.style.cursor = 'pointer';
+    newWindowButton.onclick = function() {
+        window.open(whatsappURL, '_blank');
+    };
+    
+    // Botão 3: Copiar mensagem
+    const copyButton = document.createElement('button');
+    copyButton.textContent = 'Copiar mensagem';
+    copyButton.style.padding = '10px 15px';
+    copyButton.style.backgroundColor = '#075E54';
+    copyButton.style.color = 'white';
+    copyButton.style.border = 'none';
+    copyButton.style.borderRadius = '5px';
+    copyButton.style.cursor = 'pointer';
+    copyButton.onclick = function() {
+        copyTextToClipboard(message);
+        alert('Mensagem copiada! Você pode colar no WhatsApp.');
+    };
+    
+    // Adicionar botões ao container
+    buttonsContainer.appendChild(webButton);
+    buttonsContainer.appendChild(newWindowButton);
+    buttonsContainer.appendChild(copyButton);
+    
+    // Adicionar container ao corpo do documento
+    document.body.appendChild(buttonsContainer);
+    
+    // Botão para fechar
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'X';
+    closeButton.style.position = 'absolute';
+    closeButton.style.top = '-10px';
+    closeButton.style.right = '-10px';
+    closeButton.style.width = '25px';
+    closeButton.style.height = '25px';
+    closeButton.style.borderRadius = '50%';
+    closeButton.style.backgroundColor = '#FF5252';
+    closeButton.style.color = 'white';
+    closeButton.style.border = 'none';
+    closeButton.style.cursor = 'pointer';
+    closeButton.onclick = function() {
+        buttonsContainer.remove();
+    };
+    
+    buttonsContainer.appendChild(closeButton);
+}
+
+/**
+ * Função para enviar mensagem pelo WhatsApp em dispositivos móveis
+ * @param {String} whatsappURL - URL para WhatsApp
+ * @param {String} message - Mensagem do pedido
+ * @param {String} phoneNumber - Número do telefone
+ */
+function sendToWhatsAppMobile(whatsappURL, message, phoneNumber) {
+    // Em dispositivo móvel, tentar usar o esquema deeplink whatsapp://
+    const deepLink = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+    
+    // Tentar abrir o aplicativo do WhatsApp
+    window.location.href = deepLink;
+    
+    // Verificar se o app foi aberto usando um timeout
+    setTimeout(function() {
+        // Se o usuário ainda estiver na página após o timeout, oferecer alternativa
+        alert('Enviando para o WhatsApp... Se nada acontecer, escolha uma das opções abaixo.');
+        
+        // Mostrar os botões na interface
+        const buttonsContainer = document.getElementById('whatsapp-buttons-container');
+        if (buttonsContainer) {
+            buttonsContainer.style.display = 'flex';
+        }
+    }, 2000);
+}
+
+/**
+ * Função para mostrar opções em dispositivos desktop
+ * @param {String} whatsappURL - URL para WhatsApp
+ * @param {String} message - Mensagem do pedido
+ * @param {String} phoneNumber - Número do telefone
+ */
+function showDesktopOptions(whatsappURL, message, phoneNumber) {
+    // Criar modal explicativo
+    const modal = document.createElement('div');
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100%';
+    modal.style.height = '100%';
+    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    modal.style.display = 'flex';
+    modal.style.justifyContent = 'center';
+    modal.style.alignItems = 'center';
+    modal.style.zIndex = '10000';
+    
+    // Conteúdo do modal
+    const modalContent = document.createElement('div');
+    modalContent.style.backgroundColor = 'white';
+    modalContent.style.padding = '20px';
+    modalContent.style.borderRadius = '10px';
+    modalContent.style.maxWidth = '500px';
+    modalContent.style.width = '90%';
+    modalContent.style.textAlign = 'center';
+    
+    // Título do modal
+    const title = document.createElement('h3');
+    title.textContent = 'Enviar pedido para o WhatsApp';
+    title.style.marginTop = '0';
+    
+    // Texto explicativo
+    const explanation = document.createElement('p');
+    explanation.textContent = 'Escolha como deseja enviar seu pedido:';
+    
+    // Botões de ação
+    const buttonGroup = document.createElement('div');
+    buttonGroup.style.display = 'flex';
+    buttonGroup.style.flexDirection = 'column';
+    buttonGroup.style.gap = '10px';
+    buttonGroup.style.marginTop = '20px';
+    
+    // Botão 1: WhatsApp Web
+    const webButton = document.createElement('button');
+    webButton.textContent = 'Abrir WhatsApp Web';
+    webButton.style.padding = '12px 20px';
+    webButton.style.backgroundColor = '#25D366';
+    webButton.style.color = 'white';
+    webButton.style.border = 'none';
+    webButton.style.borderRadius = '5px';
+    webButton.style.cursor = 'pointer';
+    webButton.style.fontWeight = 'bold';
+    webButton.onclick = function() {
+        window.location.href = whatsappURL;
+        modal.remove();
+    };
+    
+    // Botão 2: Nova janela
+    const newWindowButton = document.createElement('button');
+    newWindowButton.textContent = 'Abrir em nova janela';
+    newWindowButton.style.padding = '12px 20px';
+    newWindowButton.style.backgroundColor = '#128C7E';
+    newWindowButton.style.color = 'white';
+    newWindowButton.style.border = 'none';
+    newWindowButton.style.borderRadius = '5px';
+    newWindowButton.style.cursor = 'pointer';
+    newWindowButton.onclick = function() {
+        window.open(whatsappURL, '_blank');
+        modal.remove();
+    };
+    
+    // Botão 3: Copiar mensagem
+    const copyButton = document.createElement('button');
+    copyButton.textContent = 'Copiar mensagem para colar manualmente';
+    copyButton.style.padding = '12px 20px';
+    copyButton.style.backgroundColor = '#075E54';
+    copyButton.style.color = 'white';
+    copyButton.style.border = 'none';
+    copyButton.style.borderRadius = '5px';
+    copyButton.style.cursor = 'pointer';
+    copyButton.onclick = function() {
+        copyTextToClipboard(message);
+        alert('Mensagem copiada! Abra o WhatsApp e cole a mensagem na conversa.');
+        
+        // Abrir WhatsApp Web em nova janela para facilitar
+        window.open('https://web.whatsapp.com', '_blank');
+        
+        modal.remove();
+    };
+    
+    // Botão para fechar o modal
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'Fechar';
+    closeButton.style.padding = '10px 15px';
+    closeButton.style.backgroundColor = '#f1f1f1';
+    closeButton.style.color = '#333';
+    closeButton.style.border = 'none';
+    closeButton.style.borderRadius = '5px';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.marginTop = '15px';
+    closeButton.onclick = function() {
+        modal.remove();
+        
+        // Mostrar os botões fixos como alternativa
+        const buttonsContainer = document.getElementById('whatsapp-buttons-container');
+        if (buttonsContainer) {
+            buttonsContainer.style.display = 'flex';
+        }
+    };
+    
+    // Montar a estrutura do modal
+    buttonGroup.appendChild(webButton);
+    buttonGroup.appendChild(newWindowButton);
+    buttonGroup.appendChild(copyButton);
+    
+    modalContent.appendChild(title);
+    modalContent.appendChild(explanation);
+    modalContent.appendChild(buttonGroup);
+    modalContent.appendChild(closeButton);
+    
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // Inicializar compartilhamento automático após um curto delay
+    setTimeout(function() {
+        // Tentar primeiro método (redirecionamento direto)
+        window.location.href = whatsappURL;
+        
+        // Se após um tempo o usuário ainda estiver na mesma página, o modal continuará visível
+        // para que ele possa escolher outra opção
+    }, 500);
+}
+
+/**
+ * Função auxiliar para copiar texto para a área de transferência
+ * @param {String} text - Texto a ser copiado
+ */
+function copyTextToClipboard(text) {
+    // Tentar usar a API moderna Clipboard
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+            .then(() => console.log('Texto copiado com sucesso usando Clipboard API'))
+            .catch(err => {
+                console.error('Erro ao copiar texto com Clipboard API:', err);
+                fallbackCopyTextToClipboard(text);
+            });
+    } else {
+        // Usar método alternativo para contextos não seguros
+        fallbackCopyTextToClipboard(text);
+    }
+}
+
+/**
+ * Método alternativo para copiar texto
+ * @param {String} text - Texto a ser copiado
+ */
+function fallbackCopyTextToClipboard(text) {
+    // Criar elemento temporário
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    
+    // Garantir que o texto não seja visível
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        // Executar o comando de cópia
+        const successful = document.execCommand('copy');
+        const msg = successful ? 'bem-sucedido' : 'com falha';
+        console.log('Texto copiado ' + msg);
+    } catch (err) {
+        console.error('Erro ao copiar texto: ', err);
+    }
+    
+    // Remover o elemento temporário
+    document.body.removeChild(textArea);
 }
 
 // Função para remover acentos de uma string (para pesquisa)
