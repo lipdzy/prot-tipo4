@@ -116,7 +116,12 @@ const cartButtonCounter = document.getElementById('cartButtonCounter');
 function loadCartFromStorage() {
     const savedCart = localStorage.getItem('closetDellasCart');
     if (savedCart) {
-        cartItems = JSON.parse(savedCart);
+        try {
+            cartItems = JSON.parse(savedCart);
+        } catch (e) {
+            console.error('Erro ao carregar carrinho:', e);
+            cartItems = [];
+        }
     }
 }
 
@@ -129,7 +134,12 @@ function saveCartToStorage() {
 function loadFavoritesFromStorage() {
     const savedFavorites = localStorage.getItem('closetDellasFavorites');
     if (savedFavorites) {
-        favoritos = new Set(JSON.parse(savedFavorites));
+        try {
+            favoritos = new Set(JSON.parse(savedFavorites));
+        } catch (e) {
+            console.error('Erro ao carregar favoritos:', e);
+            favoritos = new Set();
+        }
     }
 }
 
@@ -145,16 +155,28 @@ function showNotification(message) {
     if (!notification) {
         notification = document.createElement('div');
         notification.id = 'notification';
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.left = '50%';
+        notification.style.transform = 'translateX(-50%)';
+        notification.style.backgroundColor = '#4CAF50';
+        notification.style.color = 'white';
+        notification.style.padding = '15px 25px';
+        notification.style.borderRadius = '5px';
+        notification.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+        notification.style.zIndex = '10000';
+        notification.style.opacity = '0';
+        notification.style.transition = 'opacity 0.3s ease-in-out';
         document.body.appendChild(notification);
     }
     
     // Definir mensagem e mostrar notificação
     notification.textContent = message;
-    notification.classList.add('show');
+    notification.style.opacity = '1';
     
     // Esconder notificação após 3 segundos
     setTimeout(() => {
-        notification.classList.remove('show');
+        notification.style.opacity = '0';
     }, 3000);
 }
 
@@ -225,12 +247,12 @@ function addEventListeners() {
             const index = this.getAttribute('data-index');
             const heartIcon = this.querySelector('i');
             
-            if (favorites.has(index)) {
-                favorites.delete(index);
+            if (favoritos.has(index)) {
+                favoritos.delete(index);
                 heartIcon.classList.remove('fas', 'favorite-active');
                 heartIcon.classList.add('far');
             } else {
-                favorites.add(index);
+                favoritos.add(index);
                 heartIcon.classList.remove('far');
                 heartIcon.classList.add('fas', 'favorite-active');
             }
@@ -270,7 +292,7 @@ function addEventListeners() {
             }, 300);
             
             // Mostrar notificação
-            showNotification(`${products[index].name} adicionado ao carrinho!`);
+            showNotification(`${produtos[index].nome} adicionado ao carrinho!`);
         });
     });
     
@@ -347,7 +369,11 @@ function setupCartEvents() {
 
 // Função para adicionar produto ao carrinho
 function addToCart(productIndex) {
-    const product = products[productIndex];
+    const product = produtos[productIndex];
+    if (!product) {
+        console.error(`Produto com índice ${productIndex} não encontrado`);
+        return;
+    }
     
     // Verificar se o produto já está no carrinho
     const existingItemIndex = cartItems.findIndex(item => item.index === productIndex);
@@ -359,7 +385,7 @@ function addToCart(productIndex) {
         // Adicionar novo item ao carrinho
         cartItems.push({
             index: productIndex,
-            name: product.name,
+            name: product.nome,
             price: product.price,
             image: product.image,
             quantity: 1
@@ -375,7 +401,11 @@ function addToCart(productIndex) {
 
 // Função para adicionar ao carrinho a partir da página de detalhes
 function addToCartFromDetails(productIndex, quantity) {
-    const product = products[productIndex];
+    const product = produtos[productIndex];
+    if (!product) {
+        console.error(`Produto com índice ${productIndex} não encontrado`);
+        return;
+    }
     
     // Verificar se o produto já está no carrinho
     const existingItemIndex = cartItems.findIndex(item => item.index === productIndex);
@@ -387,7 +417,7 @@ function addToCartFromDetails(productIndex, quantity) {
         // Adicionar novo item ao carrinho
         cartItems.push({
             index: productIndex,
-            name: product.name,
+            name: product.nome,
             price: product.price,
             image: product.image,
             quantity: quantity
@@ -401,7 +431,7 @@ function addToCartFromDetails(productIndex, quantity) {
     saveCartToStorage();
     
     // Mostrar notificação
-    showNotification(`${quantity}x ${product.name} adicionado ao carrinho!`);
+    showNotification(`${quantity}x ${product.nome} adicionado ao carrinho!`);
 }
 
 // Função para remover produto do carrinho
@@ -448,6 +478,11 @@ function updateProductCounters() {
 
 // Função para atualizar quantidade de um item no carrinho
 function updateItemQuantity(index, change) {
+    if (index < 0 || index >= cartItems.length) {
+        console.error(`Índice de item inválido: ${index}`);
+        return;
+    }
+    
     cartItems[index].quantity += change;
     
     if (cartItems[index].quantity <= 0) {
@@ -468,7 +503,7 @@ function updateCartDisplay() {
     
     if (cartItems.length === 0) {
         cartItemsContainer.innerHTML = '<p class="empty-cart-message">Seu carrinho está vazio</p>';
-        cartTotalElement.textContent = 'Total: R$ 0,00';
+        if (cartTotalElement) cartTotalElement.textContent = 'Total: R$ 0,00';
         return;
     }
     let cartHTML = '';
@@ -502,7 +537,7 @@ function updateCartDisplay() {
     });
     
     cartItemsContainer.innerHTML = cartHTML;
-    cartTotalElement.textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+    if (cartTotalElement) cartTotalElement.textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
 }
 
 // Função para atualizar o contador do botão do carrinho
@@ -545,7 +580,6 @@ function shareCartOnWhatsApp() {
     }
     
     try {
-        // Abordagem simplificada de coleta de dados em uma única etapa
         // Criar um formulário para coletar todas as informações de uma vez
         createOrderForm(cartItems);
     } catch (error) {
@@ -652,6 +686,10 @@ function createOrderForm(cartItems) {
         sizeInput.id = `size-${index}`;
         sizeInput.name = `size-${index}`;
         sizeInput.className = 'form-control';
+        sizeInput.style.width = '100%';
+        sizeInput.style.padding = '8px';
+        sizeInput.style.boxSizing = 'border-box';
+        sizeInput.style.marginTop = '5px';
         
         // Opções de tamanho comuns
         const sizes = ['PP', 'P', 'M', 'G', 'GG', '34', '35', '36', '37', '38', '39', '40', '41', '42', 'Único'];
@@ -660,8 +698,7 @@ function createOrderForm(cartItems) {
             option.value = size;
             option.textContent = size;
             // Selecionar tamanho padrão para cada tipo de produto
-            if ((item.name.toLowerCase().includes('roupa') || 
-                 item.name.toLowerCase().includes('vestido') || 
+            if ((item.name.toLowerCase().includes('vestido') || 
                  item.name.toLowerCase().includes('blusa')) && size === 'M') {
                 option.selected = true;
             } else if ((item.name.toLowerCase().includes('sapato') || 
@@ -694,6 +731,7 @@ function createOrderForm(cartItems) {
         colorInput.style.width = '100%';
         colorInput.style.padding = '8px';
         colorInput.style.boxSizing = 'border-box';
+        colorInput.style.marginTop = '5px';
         
         colorField.appendChild(colorLabel);
         colorField.appendChild(colorInput);
@@ -727,7 +765,6 @@ function createOrderForm(cartItems) {
     paymentLabel.style.fontWeight = 'bold';
     
     const paymentSelect = document.createElement('select');
-    paymentSelect.id = 'payment';
     paymentSelect.name = 'payment';
     paymentSelect.style.width = '100%';
     paymentSelect.style.padding = '10px';
@@ -747,7 +784,10 @@ function createOrderForm(cartItems) {
     
     // Campo de Observações
     const notesField = createFormField('notes', 'Observações (opcional):', 'textarea', '', 'Informações adicionais para o pedido');
-    notesField.querySelector('textarea').style.minHeight = '100px';
+    const notesTextarea = notesField.querySelector('textarea');
+    if (notesTextarea) {
+        notesTextarea.style.minHeight = '100px';
+    }
     
     // Botões
     const buttonGroup = document.createElement('div');
@@ -862,9 +902,9 @@ function createFormField(id, label, type, value = '', placeholder = '') {
 function processFormData(form, cartItems) {
     // Verificar campo de endereço
     const addressInput = form.querySelector('#address');
-    if (!addressInput.value.trim()) {
+    if (!addressInput || !addressInput.value.trim()) {
         alert('Por favor, informe o endereço de entrega.');
-        addressInput.focus();
+        if (addressInput) addressInput.focus();
         return;
     }
     
@@ -878,20 +918,22 @@ function processFormData(form, cartItems) {
     
     // Coletar dados do formulário
     const address = addressInput.value.trim();
-    const payment = form.querySelector('#payment').value;
-    const notes = form.querySelector('#notes').value.trim();
+    const paymentSelect = form.querySelector('#payment');
+    const payment = paymentSelect ? paymentSelect.value : 'PIX';
+    const notesInput = form.querySelector('#notes');
+    const notes = notesInput ? notesInput.value.trim() : '';
     
     // Coletar detalhes de tamanho e cor
     const cartItemsWithDetails = cartItems.map((item, index) => {
         const newItem = { ...item };
         
-        // Obter tamanho (agora sempre presente)
+        // Obter tamanho
         const sizeField = form.querySelector(`#size-${index}`);
-        newItem.size = sizeField.value;
+        newItem.size = sizeField ? sizeField.value : 'Único';
         
-        // Obter cor (agora sempre presente)
+        // Obter cor
         const colorField = form.querySelector(`#color-${index}`);
-        newItem.color = colorField.value;
+        newItem.color = colorField ? colorField.value : 'Como na imagem';
         
         return newItem;
     });
@@ -915,11 +957,7 @@ function processFormData(form, cartItems) {
         
         // Adicionar item à mensagem
         message += `• ${item.quantity}x ${item.name} - ${item.price} cada\n`;
-        
-        // MODIFICAÇÃO: Sempre incluir tamanho
         message += `  - Tamanho: ${item.size}\n`;
-        
-        // MODIFICAÇÃO: Sempre incluir cor
         message += `  - Cor: ${item.color}\n`;
     });
     
@@ -938,9 +976,9 @@ function processFormData(form, cartItems) {
     const dataHora = now.toLocaleString('pt-BR');
     message += `\n*⏰ Data/Hora:* ${dataHora}`;
     
-    // Adicionar fotos dos produtos à mensagem
+    // Adicionar referências às fotos dos produtos
     const imageUrls = cartItemsWithDetails
-        .filter(item => item.image)
+        .filter(item => item.image && !item.image.includes('/api/placeholder/'))
         .map(item => ({
             url: item.image,
             name: item.name
@@ -973,6 +1011,7 @@ function processFormData(form, cartItems) {
 function sendWhatsAppMessage(message, phoneNumber) {
     // Criar um overlay de carregamento
     const loadingOverlay = document.createElement('div');
+    loadingOverlay.id = 'loading-overlay';
     loadingOverlay.style.position = 'fixed';
     loadingOverlay.style.top = '0';
     loadingOverlay.style.left = '0';
@@ -1003,7 +1042,7 @@ function sendWhatsAppMessage(message, phoneNumber) {
     
     // Adicionar keyframes para animação
     const style = document.createElement('style');
-    style.textContent = `
+    style.innerHTML = `
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -1023,55 +1062,51 @@ function sendWhatsAppMessage(message, phoneNumber) {
     
     // URL codificada para WhatsApp
     const encodedMessage = encodeURIComponent(message);
+    const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
     
-    // Agora vamos usar um método que funciona de forma confiável
+    // Atraso para garantir que o overlay seja exibido
     setTimeout(() => {
         // Atualizar mensagem de carregamento
         loadingText.textContent = 'Redirecionando para o WhatsApp...';
         
-        // Remover o overlay após um curto tempo
-        setTimeout(() => {
-            loadingOverlay.remove();
-            
-            // URL do WhatsApp Web ou app
-            const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
-            
+        try {
+            // Em dispositivos móveis, tentar primeiro abrir o app
             if (isMobile) {
-                // Em dispositivos móveis, tentar primeiro o link direto para o app
-                const whatsappDeepLink = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
-                
-                // Abrir o link em um iframe oculto (evita problemas com bloqueadores de pop-up)
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = whatsappDeepLink;
-                document.body.appendChild(iframe);
-                
-                // Remover o iframe após um curto tempo
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                    
-                    // Verificar se o app abriu (não há uma forma 100% confiável, mas podemos tentar)
-                    setTimeout(() => {
-                        // Se ainda estiver na página, tentar o método de fallback
-                        showFallbackOptions(whatsappURL, message, phoneNumber);
-                    }, 1000);
-                }, 100);
+                // Abrir em nova guia (mais compatível em dispositivos móveis)
+                window.open(whatsappURL, '_blank');
             } else {
-                // Em desktop, abrir em uma nova guia (mais confiável que window.location)
+                // Em desktop, abrir em uma nova guia
                 const newTab = window.open(whatsappURL, '_blank');
                 
                 // Se o navegador bloqueou a abertura da nova guia
                 if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
                     // Tentar redirecionamento direto
                     window.location.href = whatsappURL;
-                    
-                    // Ainda oferecer opções alternativas após um tempo
-                    setTimeout(() => {
-                        showFallbackOptions(whatsappURL, message, phoneNumber);
-                    }, 3000);
                 }
             }
-        }, 1500);
+            
+            // Remover o overlay após um curto tempo
+            setTimeout(() => {
+                if (document.getElementById('loading-overlay')) {
+                    document.getElementById('loading-overlay').remove();
+                }
+                
+                // Verificar se ainda estamos na mesma página após tentativa de redirecionamento
+                setTimeout(() => {
+                    // Se ainda não houver um modal de fallback na tela
+                    if (!document.getElementById('fallback-modal')) {
+                        showFallbackOptions(whatsappURL, message, phoneNumber);
+                    }
+                }, 2000);
+            }, 1500);
+        } catch (error) {
+            console.error('Erro ao abrir WhatsApp:', error);
+            if (document.getElementById('loading-overlay')) {
+                document.getElementById('loading-overlay').remove();
+            }
+            // Mostrar opções alternativas imediatamente em caso de erro
+            showFallbackOptions(whatsappURL, message, phoneNumber);
+        }
     }, 1000);
 }
 
@@ -1082,8 +1117,14 @@ function sendWhatsAppMessage(message, phoneNumber) {
  * @param {String} phoneNumber - Número do telefone
  */
 function showFallbackOptions(whatsappURL, message, phoneNumber) {
-    // Verificar se o usuário ainda está na página (indicando que o redirecionamento falhou)
+    // Verificar se já existe um modal de fallback
+    if (document.getElementById('fallback-modal')) {
+        return;
+    }
+    
+    // Criar o modal de opções alternativas
     const fallbackModal = document.createElement('div');
+    fallbackModal.id = 'fallback-modal';
     fallbackModal.style.position = 'fixed';
     fallbackModal.style.top = '0';
     fallbackModal.style.left = '0';
@@ -1127,6 +1168,7 @@ function showFallbackOptions(whatsappURL, message, phoneNumber) {
         '#4CAF50',
         () => {
             fallbackModal.remove();
+            // Usar window.open para maior compatibilidade
             window.open(whatsappURL, '_blank');
         }
     );
@@ -1142,15 +1184,16 @@ function showFallbackOptions(whatsappURL, message, phoneNumber) {
             // Mostrar instruções
             text.innerHTML = 'Mensagem copiada! Agora:<br>1. Abra o WhatsApp<br>2. Encontre ou inicie uma conversa com o número do vendedor<br>3. Cole a mensagem';
             
-            // Mudar para botão que abre o WhatsApp manualmente
+            // Atualizar os botões
             buttonContainer.innerHTML = '';
             
-            // Adicionar botão para abrir WhatsApp Web
+            // Adicionar botão para abrir WhatsApp diretamente
             const openWhatsAppButton = createActionButton(
-                'Abrir WhatsApp Web', 
+                'Abrir WhatsApp', 
                 '#25D366',
                 () => {
-                    window.open('https://web.whatsapp.com/', '_blank');
+                    const whatsappDirectURL = `https://wa.me/${phoneNumber}`;
+                    window.open(whatsappDirectURL, '_blank');
                 }
             );
             
