@@ -4,7 +4,7 @@ const produtos = [
         nome: "Vestido Sarah", 
         price: "R$ 390,90", 
         image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg",
-        description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado. *Tamanhos disponiveis: p, m, g*"
+        description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado. *Cores disponiveis: branco, preto, vermelho*"
     },
     { 
         nome: "Salto alto Preto", 
