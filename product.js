@@ -46,16 +46,6 @@ const PRODUTOS_CONFIG = {
         ]
     },
     
-    // Corrente Ponto de Luz (índice 0)
-    "corrente-ponto-luz": {
-        nome: "Corrente Ponto de Luz",
-        preco: "R$ 299,90",
-        descricao: "Elegante corrente banhada a ouro com pingente de cristal que reflete a luz de forma única. Perfeita para ocasiões especiais e uso diário.",
-        imagens: [
-            "https://i.postimg.cc/5yLPzdZc/corrente.jpg",
-            "https://i.postimg.cc/5yLPzdZc/corrente.jpg"
-        ]
-    }
 };
 
 // NÃO MODIFIQUE NADA ABAIXO DESTA LINHA A MENOS QUE VOCÊ SAIBA O QUE ESTÁ FAZENDO
