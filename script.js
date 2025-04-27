@@ -1,101 +1,23 @@
 // Produtos
 const produtos = [
     { 
-        nome: "Corrente Ponto de Luz", 
-        price: "R$ 299,90", 
-        image: "https://i.postimg.cc/5yLPzdZc/corrente.jpg",
-        description: "Elegante corrente banhada a ouro com pingente de cristal que reflete a luz de forma única. Perfeita para ocasiões especiais e uso diário."
-    },
-    { 
         nome: "Vestido Sarah", 
         price: "R$ 390,90", 
         image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg",
-        description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado."
+        description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado. *Cores disponiveis: branco, preto,*"
     },
     { 
         nome: "Salto alto Preto", 
         price: "R$ 299,90", 
         image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
-        description: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto."
+        description: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto. *Tamanhos disponiveis: 37, 38, 41*"
     },
     { 
         nome: "Bolsa Branca Delicada", 
         price: "R$ 199,90", 
         image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg",
-        description: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. O acessório perfeito para complementar seu visual."
+        description: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. *Cores disponiveis: rosa, azul, preto*"
     },
-    { 
-        nome: "Pó Compacto", 
-        price: "R$ 62,00", 
-        image: "/api/placeholder/400/300",
-        description: "Pó compacto de textura fina e acabamento translúcido que controla a oleosidade da pele sem ressecar. Perfeito para todos os tipos de pele."
-    },
-    { 
-        nome: "Sérum Facial Hidratante", 
-        price: "R$ 79,90", 
-        image: "/api/placeholder/400/300",
-        description: "Sérum hidratante com ácido hialurônico e vitaminas que restaura a barreira de hidratação da pele, proporcionando luminosidade e maciez."
-    },
-    { 
-        nome: "Protetor Solar FPS 50", 
-        price: "R$ 72,00", 
-        image: "/api/placeholder/400/300",
-        description: "Protetor solar de amplo espectro com FPS 50, textura leve e toque seco. Protege contra os raios UVA e UVB, além de prevenir o envelhecimento precoce."
-    },
-    { 
-        nome: "Demaquilante Bifásico", 
-        price: "R$ 48,00", 
-        image: "/api/placeholder/400/300",
-        description: "Demaquilante bifásico que remove até as maquiagens mais resistentes sem ressecar a pele. Fórmula suave e com ingredientes hidratantes."
-    },
-    { 
-        nome: "Kit Pincéis Maquiagem", 
-        price: "R$ 115,90", 
-        image: "/api/placeholder/400/300",
-        description: "Kit completo com 12 pincéis profissionais para maquiagem. Cerdas macias e cabos ergonômicos que facilitam a aplicação de produtos diversos."
-    },
-    { 
-        nome: "Blush Rosado", 
-        price: "R$ 42,50", 
-        image: "/api/placeholder/400/300",
-        description: "Blush em pó com acabamento matte e tonalidade rosada natural. Proporciona um rubor delicado e duradouro com fácil aplicação."
-    },
-    { 
-        nome: "Iluminador Facial", 
-        price: "R$ 54,90", 
-        image: "/api/placeholder/400/300",
-        description: "Iluminador em pó com partículas microfinas que proporcionam um brilho natural e luminoso à pele. Ideal para destacar os pontos altos do rosto."
-    },
-    { 
-        nome: "Contorno Facial em Pó", 
-        price: "R$ 65,90", 
-        image: "/api/placeholder/400/300",
-        description: "Pó compacto para contorno facial que realça e define os traços do rosto. Textura aveludada e fácil de esfumar."
-    },
-    { 
-        nome: "Esmalte Gel Rosê", 
-        price: "R$ 24,90", 
-        image: "/api/placeholder/400/300",
-        description: "Esmalte em tom rosê com acabamento gel que proporciona brilho intenso e durabilidade excepcional. Fórmula hipoalergênica e de secagem rápida."
-    },
-    { 
-        nome: "Hidratante Corporal", 
-        price: "R$ 49,90", 
-        image: "/api/placeholder/400/300",
-        description: "Hidratante corporal de rápida absorção com manteiga de karité e vitamina E. Proporciona hidratação profunda e deixa a pele macia o dia todo."
-    },
-    { 
-        nome: "Óleo de Argan para Cabelos", 
-        price: "R$ 55,00", 
-        image: "/api/placeholder/400/300",
-        description: "Óleo capilar com argan puro que nutre, repara e protege os fios do calor. Devolve o brilho e maciez aos cabelos danificados."
-    },
-    { 
-        nome: "Shampoo Anti-Queda", 
-        price: "R$ 39,90", 
-        image: "/api/placeholder/400/300",
-        description: "Shampoo formulado com ativos que combatem a queda e estimulam o crescimento capilar. Limpa suavemente sem ressecar os fios."
-    }
 ];
 
 // Variáveis globais
@@ -568,938 +490,744 @@ function openCart() {
     updateCartDisplay();
 }
 
- // Compartilhar carrinho no WhatsApp
- if (shareCartButton) {
-    shareCartButton.addEventListener('click', function() {
-        shareCartOnWhatsApp();
-    });
-}
-
-// Botão do carrinho no canto superior direito
-if (cartButton) {
-    cartButton.addEventListener('click', function() {
-        openCart();
-    });
-}
-
-// Função para adicionar produto ao carrinho
-function addToCart(productIndex) {
-const product = products[productIndex];
-
-// Verificar se o produto já está no carrinho
-const existingItemIndex = cartItems.findIndex(item => item.index === productIndex);
-
-if (existingItemIndex !== -1) {
-    // Incrementar quantidade se já estiver no carrinho
-    cartItems[existingItemIndex].quantity++;
-} else {
-    // Adicionar novo item ao carrinho
-    cartItems.push({
-        index: productIndex,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        quantity: 1
-    });
-}
-
-updateCartDisplay();
-updateCartCounter();
-
-// Salvar carrinho no localStorage após cada alteração
-saveCartToStorage();
-}
-
-// Função para adicionar ao carrinho a partir da página de detalhes
-function addToCartFromDetails(productIndex, quantity) {
-const product = products[productIndex];
-
-// Verificar se o produto já está no carrinho
-const existingItemIndex = cartItems.findIndex(item => item.index === productIndex);
-
-if (existingItemIndex !== -1) {
-    // Incrementar quantidade se já estiver no carrinho
-    cartItems[existingItemIndex].quantity += quantity;
-} else {
-    // Adicionar novo item ao carrinho
-    cartItems.push({
-        index: productIndex,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        quantity: quantity
-    });
-}
-
-updateCartDisplay();
-updateCartCounter();
-
-// Salvar carrinho no localStorage
-saveCartToStorage();
-
-// Mostrar notificação
-showNotification(`${quantity}x ${product.name} adicionado ao carrinho!`);
-}
-
-// Função para remover produto do carrinho
-function removeFromCart(index) {
-cartItems.splice(index, 1);
-updateCartDisplay();
-updateCartCounter();
-
-// Atualizar contadores nos produtos
-updateProductCounters();
-
-// Salvar carrinho no localStorage após remover item
-saveCartToStorage();
-}
-
-// Função para atualizar contadores nos produtos
-function updateProductCounters() {
-// Se não estiver na página principal, retornar
-if (!document.getElementById('catalog')) return;
-
-// Primeiro, remover todos os contadores
-document.querySelectorAll('.cart-counter').forEach(counter => {
-    counter.remove();
-});
-
-// Depois, adicionar contadores atualizados
-cartItems.forEach(item => {
-    const productElement = document.querySelector(`.product-image-container[data-index="${item.index}"]`);
-    if (productElement) {
-        const productCard = productElement.closest('.product');
-        let counterElem = productCard.querySelector('.cart-counter');
-        
-        if (!counterElem) {
-            counterElem = document.createElement('div');
-            counterElem.classList.add('cart-counter');
-            productCard.style.position = 'relative';
-            productCard.appendChild(counterElem);
-        }
-        
-        counterElem.textContent = item.quantity;
-    }
-});
-}
-
-// Função para atualizar quantidade de um item no carrinho
-function updateItemQuantity(index, change) {
-cartItems[index].quantity += change;
-
-if (cartItems[index].quantity <= 0) {
-    removeFromCart(index);
-} else {
-    updateCartDisplay();
-    updateCartCounter();
-    updateProductCounters();
-    
-    // Salvar carrinho no localStorage após atualizar quantidade
-    saveCartToStorage();
-}
-}
-
-// Função para atualizar a exibição do carrinho
-function updateCartDisplay() {
-if (!cartItemsContainer) return;
-
-if (cartItems.length === 0) {
-    cartItemsContainer.innerHTML = '<p class="empty-cart-message">Seu carrinho está vazio</p>';
-    cartTotalElement.textContent = 'Total: R$ 0,00';
-    return;
-}
-let cartHTML = '';
-let total = 0;
-
-cartItems.forEach((item, index) => {
-    // Extrair o valor numérico do preço (removendo "R$ " e substituindo vírgula por ponto)
-    const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
-    const itemTotal = priceValue * item.quantity;
-    total += itemTotal;
-    
-    cartHTML += `
-        <div class="cart-item">
-            <div class="cart-item-image">
-                <img src="${item.image}" alt="${item.name}">
-            </div>
-            <div class="cart-item-details">
-                <h3 class="cart-item-title">${item.name}</h3>
-                <p class="cart-item-price">${item.price} x ${item.quantity}</p>
-                <div class="cart-item-quantity">
-                    <button class="quantity-btn" onclick="updateItemQuantity(${index}, -1)">-</button>
-                    <span class="item-quantity">${item.quantity}</span>
-                    <button class="quantity-btn" onclick="updateItemQuantity(${index}, 1)">+</button>
-                    <span class="cart-item-remove" onclick="removeFromCart(${index})">
-                        <i class="fas fa-trash-alt"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-    `;
-});
-
-cartItemsContainer.innerHTML = cartHTML;
-cartTotalElement.textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
-}
-
-// Função para atualizar o contador do botão do carrinho
-function updateCartCounter() {
-if (!cartButtonCounter) return;
-
-let totalItems = 0;
-
-cartItems.forEach(item => {
-    totalItems += item.quantity;
-});
-
-cartButtonCounter.textContent = totalItems;
-
-// Mostrar ou esconder o contador baseado na quantidade
-if (totalItems > 0) {
-    cartButtonCounter.style.display = 'flex';
-} else {
-    cartButtonCounter.style.display = 'none';
-}
-}
-
-// Função para abrir o carrinho
-function openCart() {
-if (!cartOverlay) return;
-
-cartOverlay.style.display = 'flex';
-updateCartDisplay();
-}
-
 /**
-* Função para compartilhar carrinho de compras via WhatsApp
-* Inclui as fotos dos produtos junto com as informações
-*/
+ * Função para compartilhar carrinho de compras via WhatsApp
+ * Inclui as fotos dos produtos junto com as informações
+ */
 function shareCartOnWhatsApp() {
-// Verificar se temos itens no carrinho
-if (!Array.isArray(cartItems) || cartItems.length === 0) {
-    alert('Adicione produtos ao carrinho antes de compartilhar!');
-    return;
-}
-
-try {
-    // Abordagem simplificada de coleta de dados em uma única etapa
-    // Criar um formulário para coletar todas as informações de uma vez
-    createOrderForm(cartItems);
-} catch (error) {
-    console.error('Erro ao processar o pedido:', error);
-    alert('Ocorreu um erro ao processar seu pedido. Por favor, tente novamente.');
-}
-}
-
-/**
-* Cria um formulário modal para coletar todas as informações do pedido
-* @param {Array} cartItems - Itens do carrinho
-*/
-function createOrderForm(cartItems) {
-// Remover qualquer formulário existente
-const existingForm = document.getElementById('order-form-modal');
-if (existingForm) {
-    existingForm.remove();
-}
-
-// Criar o container do modal
-const modal = document.createElement('div');
-modal.id = 'order-form-modal';
-modal.style.position = 'fixed';
-modal.style.top = '0';
-modal.style.left = '0';
-modal.style.width = '100%';
-modal.style.height = '100%';
-modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-modal.style.display = 'flex';
-modal.style.justifyContent = 'center';
-modal.style.alignItems = 'center';
-modal.style.zIndex = '9999';
-
-// Criar o conteúdo do formulário
-const formContainer = document.createElement('div');
-formContainer.style.backgroundColor = 'white';
-formContainer.style.borderRadius = '10px';
-formContainer.style.padding = '20px';
-formContainer.style.width = '90%';
-formContainer.style.maxWidth = '500px';
-formContainer.style.maxHeight = '80vh';
-formContainer.style.overflowY = 'auto';
-
-// Título do formulário
-const title = document.createElement('h2');
-title.textContent = 'Finalizar Pedido';
-title.style.textAlign = 'center';
-title.style.marginBottom = '20px';
-title.style.color = '#333';
-
-// Formulário
-const form = document.createElement('form');
-form.id = 'checkout-form';
-form.style.display = 'flex';
-form.style.flexDirection = 'column';
-form.style.gap = '15px';
-
-// Adicionar detalhes dos produtos ao formulário
-const productSection = document.createElement('div');
-productSection.style.marginBottom = '20px';
-
-const productTitle = document.createElement('h3');
-productTitle.textContent = 'Produtos no Carrinho';
-productTitle.style.marginBottom = '10px';
-productTitle.style.borderBottom = '1px solid #ddd';
-productTitle.style.paddingBottom = '5px';
-
-productSection.appendChild(productTitle);
-
-// Calcular total
-let total = 0;
-
-// Adicionar cada produto com opções
-cartItems.forEach((item, index) => {
-    // Calcular valor do item
-    const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
-    const itemTotal = priceValue * item.quantity;
-    total += itemTotal;
-    
-    // Container do produto
-    const productItem = document.createElement('div');
-    productItem.style.marginBottom = '15px';
-    productItem.style.padding = '10px';
-    productItem.style.backgroundColor = '#f9f9f9';
-    productItem.style.borderRadius = '5px';
-    
-    // Informações do produto
-    const productInfo = document.createElement('div');
-    productInfo.innerHTML = `
-        <strong>${item.name}</strong> - ${item.quantity}x ${item.price}
-    `;
-    
-    productItem.appendChild(productInfo);
-    
-    // MODIFICAÇÃO: Sempre adicionar campo de tamanho para todos os itens
-    const sizeField = document.createElement('div');
-    sizeField.style.marginTop = '10px';
-    
-    const sizeLabel = document.createElement('label');
-    sizeLabel.htmlFor = `size-${index}`;
-    sizeLabel.textContent = 'Tamanho: ';
-    
-    const sizeInput = document.createElement('select');
-    sizeInput.id = `size-${index}`;
-    sizeInput.name = `size-${index}`;
-    sizeInput.className = 'form-control';
-    
-    // Opções de tamanho comuns
-    const sizes = ['PP', 'P', 'M', 'G', 'GG', '34', '35', '36', '37', '38', '39', '40', '41', '42', 'Único'];
-    sizes.forEach(size => {
-        const option = document.createElement('option');
-        option.value = size;
-        option.textContent = size;
-        // Selecionar tamanho padrão para cada tipo de produto
-        if ((item.name.toLowerCase().includes('roupa') || 
-             item.name.toLowerCase().includes('vestido') || 
-             item.name.toLowerCase().includes('blusa')) && size === 'M') {
-            option.selected = true;
-        } else if ((item.name.toLowerCase().includes('sapato') || 
-                   item.name.toLowerCase().includes('salto')) && size === '37') {
-            option.selected = true;
-        } else if (size === 'Único') {
-            option.selected = true;
-        }
-        sizeInput.appendChild(option);
-    });
-    
-    sizeField.appendChild(sizeLabel);
-    sizeField.appendChild(sizeInput);
-    productItem.appendChild(sizeField);
-    
-    // MODIFICAÇÃO: Sempre adicionar campo de cor para todos os itens
-    const colorField = document.createElement('div');
-    colorField.style.marginTop = '10px';
-    
-    const colorLabel = document.createElement('label');
-    colorLabel.htmlFor = `color-${index}`;
-    colorLabel.textContent = 'Cor: ';
-    
-    const colorInput = document.createElement('input');
-    colorInput.type = 'text';
-    colorInput.id = `color-${index}`;
-    colorInput.name = `color-${index}`;
-    colorInput.value = 'Como na imagem';
-    colorInput.className = 'form-control';
-    colorInput.style.width = '100%';
-    colorInput.style.padding = '8px';
-    colorInput.style.boxSizing = 'border-box';
-    
-    colorField.appendChild(colorLabel);
-    colorField.appendChild(colorInput);
-    productItem.appendChild(colorField);
-    
-    productSection.appendChild(productItem);
-});
-
-// Mostrar total
-const totalElement = document.createElement('div');
-totalElement.style.fontSize = '18px';
-totalElement.style.fontWeight = 'bold';
-totalElement.style.textAlign = 'right';
-totalElement.style.marginBottom = '20px';
-totalElement.innerHTML = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
-
-productSection.appendChild(totalElement);
-
-// Campo de Endereço
-const addressField = createFormField('address', 'Endereço de entrega:', 'text', '', 'Digite seu endereço completo');
-
-// Campo de Forma de Pagamento
-const paymentField = document.createElement('div');
-paymentField.style.marginBottom = '15px';
-
-const paymentLabel = document.createElement('label');
-paymentLabel.htmlFor = 'payment';
-paymentLabel.textContent = 'Forma de Pagamento:';
-paymentLabel.style.display = 'block';
-paymentLabel.style.marginBottom = '5px';
-paymentLabel.style.fontWeight = 'bold';
-
-const paymentSelect = document.createElement('select');
-paymentSelect.id = 'payment';
-paymentSelect.name = 'payment';
-paymentSelect.style.width = '100%';
-paymentSelect.style.padding = '10px';
-paymentSelect.style.borderRadius = '5px';
-paymentSelect.style.border = '1px solid #ddd';
-
-const paymentOptions = ['PIX', 'Cartão de Crédito', 'Cartão de Débito', 'Dinheiro'];
-paymentOptions.forEach(option => {
-    const paymentOption = document.createElement('option');
-    paymentOption.value = option;
-    paymentOption.textContent = option;
-    paymentSelect.appendChild(paymentOption);
-});
-
-paymentField.appendChild(paymentLabel);
-paymentField.appendChild(paymentSelect);
-
-// Campo de Observações
-const notesField = createFormField('notes', 'Observações (opcional):', 'textarea', '', 'Informações adicionais para o pedido');
-notesField.querySelector('textarea').style.minHeight = '100px';
-
-// Botões
-const buttonGroup = document.createElement('div');
-buttonGroup.style.display = 'flex';
-buttonGroup.style.justifyContent = 'space-between';
-buttonGroup.style.marginTop = '20px';
-
-// Botão Cancelar
-const cancelButton = document.createElement('button');
-cancelButton.type = 'button';
-cancelButton.textContent = 'Cancelar';
-cancelButton.style.padding = '10px 20px';
-cancelButton.style.backgroundColor = '#f44336';
-cancelButton.style.color = 'white';
-cancelButton.style.border = 'none';
-cancelButton.style.borderRadius = '5px';
-cancelButton.style.cursor = 'pointer';
-cancelButton.onclick = function() {
-    modal.remove();
-};
-
-// Botão Enviar Pedido
-const submitButton = document.createElement('button');
-submitButton.type = 'button';
-submitButton.textContent = 'Enviar Pedido';
-submitButton.style.padding = '10px 20px';
-submitButton.style.backgroundColor = '#4CAF50';
-submitButton.style.color = 'white';
-submitButton.style.border = 'none';
-submitButton.style.borderRadius = '5px';
-submitButton.style.cursor = 'pointer';
-submitButton.onclick = function() {
-    processFormData(form, cartItems);
-};
-
-buttonGroup.appendChild(cancelButton);
-buttonGroup.appendChild(submitButton);
-
-// Montar o formulário
-form.appendChild(productSection);
-form.appendChild(addressField);
-form.appendChild(paymentField);
-form.appendChild(notesField);
-form.appendChild(buttonGroup);
-
-// Adicionar o formulário ao container
-formContainer.appendChild(title);
-formContainer.appendChild(form);
-
-// Adicionar o container ao modal
-modal.appendChild(formContainer);
-
-// Adicionar o modal à página
-document.body.appendChild(modal);
-
-// Focar no primeiro campo
-const firstInput = form.querySelector('input, select, textarea');
-if (firstInput) {
-    firstInput.focus();
-}
-}
-
-/**
-* Cria um campo de formulário
-* @param {String} id - ID do campo
-* @param {String} label - Texto da label
-* @param {String} type - Tipo do campo
-* @param {String} value - Valor padrão
-* @param {String} placeholder - Placeholder
-* @returns {HTMLElement} - Campo de formulário
-*/
-function createFormField(id, label, type, value = '', placeholder = '') {
-const field = document.createElement('div');
-field.style.marginBottom = '15px';
-
-const fieldLabel = document.createElement('label');
-fieldLabel.htmlFor = id;
-fieldLabel.textContent = label;
-fieldLabel.style.display = 'block';
-fieldLabel.style.marginBottom = '5px';
-fieldLabel.style.fontWeight = 'bold';
-
-let input;
-if (type === 'textarea') {
-    input = document.createElement('textarea');
-} else {
-    input = document.createElement('input');
-    input.type = type;
-}
-
-input.id = id;
-input.name = id;
-input.value = value;
-input.placeholder = placeholder;
-input.style.width = '100%';
-input.style.padding = '10px';
-input.style.borderRadius = '5px';
-input.style.border = '1px solid #ddd';
-input.style.boxSizing = 'border-box';
-
-field.appendChild(fieldLabel);
-field.appendChild(input);
-
-return field;
-}
-
-/**
-* Processa os dados do formulário
-* @param {HTMLFormElement} form - Formulário
-* @param {Array} cartItems - Itens do carrinho
-*/
-function processFormData(form, cartItems) {
-// Verificar campo de endereço
-const addressInput = form.querySelector('#address');
-if (!addressInput.value.trim()) {
-    alert('Por favor, informe o endereço de entrega.');
-    addressInput.focus();
-    return;
-}
-
-// Validar se o endereço é muito curto
-if (addressInput.value.trim().length < 10) {
-    if (!confirm('O endereço parece muito curto. Deseja continuar mesmo assim?')) {
-        addressInput.focus();
+    // Verificar se temos itens no carrinho
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+        alert('Adicione produtos ao carrinho antes de compartilhar!');
         return;
     }
-}
-
-// Coletar dados do formulário
-const address = addressInput.value.trim();
-const payment = form.querySelector('#payment').value;
-const notes = form.querySelector('#notes').value.trim();
-
-// Coletar detalhes de tamanho e cor
-const cartItemsWithDetails = cartItems.map((item, index) => {
-    const newItem = { ...item };
     
-    // Obter tamanho (agora sempre presente)
-    const sizeField = form.querySelector(`#size-${index}`);
-    newItem.size = sizeField.value;
-    
-    // Obter cor (agora sempre presente)
-    const colorField = form.querySelector(`#color-${index}`);
-    newItem.color = colorField.value;
-    
-    return newItem;
-});
-
-// Fechar o modal
-const modal = document.getElementById('order-form-modal');
-if (modal) {
-    modal.remove();
-}
-
-// Formatar a mensagem do pedido
-let message = '*📋 NOVO PEDIDO:*\n\n';
-let total = 0;
-
-// Adicionar detalhes de cada item
-cartItemsWithDetails.forEach(item => {
-    // Calcular valor de cada item
-    const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
-    const itemTotal = priceValue * item.quantity;
-    total += itemTotal;
-    
-    // Adicionar item à mensagem
-    message += `• ${item.quantity}x ${item.name} - ${item.price} cada\n`;
-    
-    // MODIFICAÇÃO: Sempre incluir tamanho
-    message += `  - Tamanho: ${item.size}\n`;
-    
-    // MODIFICAÇÃO: Sempre incluir cor
-    message += `  - Cor: ${item.color}\n`;
-});
-
-// Adicionar informações do pedido
-message += `\n*💰 Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
-message += `*🏠 Endereço:* ${address}\n`;
-message += `*💳 Forma de pagamento:* ${payment}\n`;
-
-// Adicionar observações se houver
-if (notes) {
-    message += `\n*📝 Observações:* ${notes}\n`;
-}
-
-// Adicionar data e hora do pedido
-const now = new Date();
-const dataHora = now.toLocaleString('pt-BR');
-message += `\n*⏰ Data/Hora:* ${dataHora}`;
-
-// Adicionar fotos dos produtos à mensagem
-const imageUrls = cartItemsWithDetails
-    .filter(item => item.image)
-    .map(item => ({
-        url: item.image,
-        name: item.name
-    }));
-
-// Verificar se há imagens para compartilhar
-if (imageUrls.length > 0) {
-    message += '\n\n*📸 Fotos dos produtos:*';
-    imageUrls.forEach((image) => {
-        message += `\n• ${image.name}: ${image.url}`;
-    });
-}
-
-// Número de telefone do dono da loja
-const phoneNumber = '5583991816152';
-
-// Salvar no localStorage
-localStorage.setItem('lastOrderMessage', message);
-localStorage.setItem('lastOrderPhone', phoneNumber);
-
-// Enviar a mensagem
-sendWhatsAppMessage(message, phoneNumber);
+    try {
+        // Criar um formulário para coletar todas as informações de uma vez
+        createOrderForm(cartItems);
+    } catch (error) {
+        console.error('Erro ao processar o pedido:', error);
+        alert('Ocorreu um erro ao processar seu pedido. Por favor, tente novamente.');
+    }
 }
 
 /**
-* Envia mensagem para o WhatsApp sem problemas de popup
-* @param {String} message - Mensagem a ser enviada
-* @param {String} phoneNumber - Número do telefone
-*/
-function sendWhatsAppMessage(message, phoneNumber) {
-// Criar um overlay de carregamento
-const loadingOverlay = document.createElement('div');
-loadingOverlay.style.position = 'fixed';
-loadingOverlay.style.top = '0';
-loadingOverlay.style.left = '0';
-loadingOverlay.style.width = '100%';
-loadingOverlay.style.height = '100%';
-loadingOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-loadingOverlay.style.display = 'flex';
-loadingOverlay.style.flexDirection = 'column';
-loadingOverlay.style.justifyContent = 'center';
-loadingOverlay.style.alignItems = 'center';
-loadingOverlay.style.zIndex = '10000';
-
-// Mensagem de carregamento
-const loadingText = document.createElement('div');
-loadingText.textContent = 'Processando seu pedido...';
-loadingText.style.color = 'white';
-loadingText.style.fontSize = '20px';
-loadingText.style.marginBottom = '20px';
-
-// Spinner de carregamento
-const spinner = document.createElement('div');
-spinner.style.border = '5px solid #f3f3f3';
-spinner.style.borderTop = '5px solid #3498db';
-spinner.style.borderRadius = '50%';
-spinner.style.width = '50px';
-spinner.style.height = '50px';
-spinner.style.animation = 'spin 2s linear infinite';
-
-// Adicionar keyframes para animação
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+ * Cria um formulário modal para coletar todas as informações do pedido
+ * @param {Array} cartItems - Itens do carrinho
+ */
+function createOrderForm(cartItems) {
+    // Remover qualquer formulário existente
+    const existingForm = document.getElementById('order-form-modal');
+    if (existingForm) {
+        existingForm.remove();
     }
-`;
-document.head.appendChild(style);
-
-// Adicionar elementos ao overlay
-loadingOverlay.appendChild(loadingText);
-loadingOverlay.appendChild(spinner);
-
-// Adicionar overlay à página
-document.body.appendChild(loadingOverlay);
-
-// Verificar se é dispositivo móvel
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-// URL codificada para WhatsApp
-const encodedMessage = encodeURIComponent(message);
-
-// Agora vamos usar um método que funciona de forma confiável
-setTimeout(() => {
-    // Atualizar mensagem de carregamento
-    loadingText.textContent = 'Redirecionando para o WhatsApp...';
     
-    // Remover o overlay após um curto tempo
-    setTimeout(() => {
-        loadingOverlay.remove();
+    // Criar o container do modal
+    const modal = document.createElement('div');
+    modal.id = 'order-form-modal';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100%';
+    modal.style.height = '100%';
+    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    modal.style.display = 'flex';
+    modal.style.justifyContent = 'center';
+    modal.style.alignItems = 'center';
+    modal.style.zIndex = '9999';
+    
+    // Criar o conteúdo do formulário
+    const formContainer = document.createElement('div');
+    formContainer.style.backgroundColor = 'white';
+    formContainer.style.borderRadius = '10px';
+    formContainer.style.padding = '20px';
+    formContainer.style.width = '90%';
+    formContainer.style.maxWidth = '500px';
+    formContainer.style.maxHeight = '80vh';
+    formContainer.style.overflowY = 'auto';
+    
+    // Título do formulário
+    const title = document.createElement('h2');
+    title.textContent = 'Finalizar Pedido';
+    title.style.textAlign = 'center';
+    title.style.marginBottom = '20px';
+    title.style.color = '#333';
+    
+    // Formulário
+    const form = document.createElement('form');
+    form.id = 'checkout-form';
+    form.style.display = 'flex';
+    form.style.flexDirection = 'column';
+    form.style.gap = '15px';
+    
+    // Adicionar detalhes dos produtos ao formulário
+    const productSection = document.createElement('div');
+    productSection.style.marginBottom = '20px';
+    
+    const productTitle = document.createElement('h3');
+    productTitle.textContent = 'Produtos no Carrinho';
+    productTitle.style.marginBottom = '10px';
+    productTitle.style.borderBottom = '1px solid #ddd';
+    productTitle.style.paddingBottom = '5px';
+    
+    productSection.appendChild(productTitle);
+    
+    // Calcular total
+    let total = 0;
+    
+    // Adicionar cada produto com opções
+    cartItems.forEach((item, index) => {
+        // Calcular valor do item
+        const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
+        const itemTotal = priceValue * item.quantity;
+        total += itemTotal;
         
-        // URL do WhatsApp Web ou app
-        const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+        // Container do produto
+        const productItem = document.createElement('div');
+        productItem.style.marginBottom = '15px';
+        productItem.style.padding = '10px';
+        productItem.style.backgroundColor = '#f9f9f9';
+        productItem.style.borderRadius = '5px';
         
-        if (isMobile) {
-            // Em dispositivos móveis, tentar primeiro o link direto para o app
-            const whatsappDeepLink = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
-            
-            // Abrir o link em um iframe oculto (evita problemas com bloqueadores de pop-up)
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = whatsappDeepLink;
-            document.body.appendChild(iframe);
-            
-            // Remover o iframe após um curto tempo
-            setTimeout(() => {
-                document.body.removeChild(iframe);
-                
-                // Verificar se o app abriu (não há uma forma 100% confiável, mas podemos tentar)
-                setTimeout(() => {
-                    // Se ainda estiver na página, tentar o método de fallback
-                    showFallbackOptions(whatsappURL, message, phoneNumber);
-                }, 1000);
-            }, 100);
-        } else {
-            // Em desktop, abrir em uma nova guia (mais confiável que window.location)
-            const newTab = window.open(whatsappURL, '_blank');
-            
-            // Se o navegador bloqueou a abertura da nova guia
-            if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
-                // Tentar redirecionamento direto
-                window.location.href = whatsappURL;
-                
-                // Ainda oferecer opções alternativas após um tempo
-                setTimeout(() => {
-                    showFallbackOptions(whatsappURL, message, phoneNumber);
-                }, 3000);
+        // Informações do produto
+        const productInfo = document.createElement('div');
+        productInfo.innerHTML = `
+            <strong>${item.name}</strong> - ${item.quantity}x ${item.price}
+        `;
+        
+        productItem.appendChild(productInfo);
+        
+        // MODIFICAÇÃO: Sempre adicionar campo de tamanho para todos os itens
+        const sizeField = document.createElement('div');
+        sizeField.style.marginTop = '10px';
+        
+        const sizeLabel = document.createElement('label');
+        sizeLabel.htmlFor = `size-${index}`;
+        sizeLabel.textContent = 'Tamanho: ';
+        
+        const sizeInput = document.createElement('select');
+        sizeInput.id = `size-${index}`;
+        sizeInput.name = `size-${index}`;
+        sizeInput.className = 'form-control';
+        sizeInput.style.width = '100%';
+        sizeInput.style.padding = '8px';
+        sizeInput.style.boxSizing = 'border-box';
+        sizeInput.style.marginTop = '5px';
+        
+        // Opções de tamanho comuns
+        const sizes = ['PP', 'P', 'M', 'G', 'GG', '34', '35', '36', '37', '38', '39', '40', '41', '42', 'Único'];
+        sizes.forEach(size => {
+            const option = document.createElement('option');
+            option.value = size;
+            option.textContent = size;
+            // Selecionar tamanho padrão para cada tipo de produto
+            if ((item.name.toLowerCase().includes('vestido') || 
+                 item.name.toLowerCase().includes('blusa')) && size === 'M') {
+                option.selected = true;
+            } else if ((item.name.toLowerCase().includes('sapato') || 
+                       item.name.toLowerCase().includes('salto')) && size === '37') {
+                option.selected = true;
+            } else if (size === 'Único') {
+                option.selected = true;
             }
-        }
-    }, 1500);
-}, 1000);
-}
-
-/**
-* Mostra opções alternativas caso o redirecionamento falhe
-* @param {String} whatsappURL - URL do WhatsApp
-* @param {String} message - Mensagem do pedido
-* @param {String} phoneNumber - Número do telefone
-*/
-function showFallbackOptions(whatsappURL, message, phoneNumber) {
-// Verificar se o usuário ainda está na página (indicando que o redirecionamento falhou)
-const fallbackModal = document.createElement('div');
-fallbackModal.style.position = 'fixed';
-fallbackModal.style.top = '0';
-fallbackModal.style.left = '0';
-fallbackModal.style.width = '100%';
-fallbackModal.style.height = '100%';
-fallbackModal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-fallbackModal.style.display = 'flex';
-fallbackModal.style.justifyContent = 'center';
-fallbackModal.style.alignItems = 'center';
-fallbackModal.style.zIndex = '10000';
-
-// Container para as opções
-const optionsContainer = document.createElement('div');
-optionsContainer.style.backgroundColor = 'white';
-optionsContainer.style.borderRadius = '10px';
-optionsContainer.style.padding = '20px';
-optionsContainer.style.maxWidth = '450px';
-optionsContainer.style.width = '90%';
-optionsContainer.style.textAlign = 'center';
-
-// Título
-const title = document.createElement('h3');
-title.textContent = 'Não foi possível abrir o WhatsApp';
-title.style.marginTop = '0';
-title.style.color = '#333';
-
-// Mensagem
-const text = document.createElement('p');
-text.textContent = 'Escolha uma das opções abaixo para enviar seu pedido:';
-
-// Botões de opções alternativas
-const buttonContainer = document.createElement('div');
-buttonContainer.style.display = 'flex';
-buttonContainer.style.flexDirection = 'column';
-buttonContainer.style.gap = '10px';
-buttonContainer.style.marginTop = '20px';
-
-// Opção 1: Tentar novamente
-const retryButton = createActionButton(
-    'Tentar Novamente', 
-    '#4CAF50',
-    () => {
-        fallbackModal.remove();
-        window.open(whatsappURL, '_blank');
-    }
-);
-
-// Opção 2: Copiar mensagem
-const copyButton = createActionButton(
-    'Copiar Mensagem', 
-    '#2196F3',
-    () => {
-        copyTextToClipboard(message);
-        alert('Mensagem copiada! Você pode colá-la no WhatsApp.');
-        
-        // Mostrar instruções
-        text.innerHTML = 'Mensagem copiada! Agora:<br>1. Abra o WhatsApp<br>2. Encontre ou inicie uma conversa com o número do vendedor<br>3. Cole a mensagem';
-        
-        // Mudar para botão que abre o WhatsApp manualmente
-        buttonContainer.innerHTML = '';
-        
-        // Adicionar botão para abrir WhatsApp Web
-        const openWhatsAppButton = createActionButton(
-            'Abrir WhatsApp Web', 
-            '#25D366',
-            () => {
-                window.open('https://web.whatsapp.com/', '_blank');
-            }
-        );
-        
-        buttonContainer.appendChild(openWhatsAppButton);
-        
-        // Adicionar botão para fechar
-        const closeButton = createActionButton(
-            'Fechar', 
-            '#f44336',
-            () => {
-                fallbackModal.remove();
-            }
-        );
-        
-        buttonContainer.appendChild(closeButton);
-    }
-);
-
-// Opção 3: Fechar
-const closeButton = createActionButton(
-    'Cancelar', 
-    '#f44336',
-    () => {
-        fallbackModal.remove();
-    }
-);
-
-// Adicionar botões ao container
-buttonContainer.appendChild(retryButton);
-buttonContainer.appendChild(copyButton);
-buttonContainer.appendChild(closeButton);
-
-// Montar o modal
-optionsContainer.appendChild(title);
-optionsContainer.appendChild(text);
-optionsContainer.appendChild(buttonContainer);
-
-fallbackModal.appendChild(optionsContainer);
-document.body.appendChild(fallbackModal);
-}
-
-/**
-* Cria um botão de ação estilizado
-* @param {String} text - Texto do botão
-* @param {String} color - Cor de fundo
-* @param {Function} onClick - Função de clique
-* @returns {HTMLElement} - Botão criado
-*/
-function createActionButton(text, color, onClick) {
-const button = document.createElement('button');
-button.textContent = text;
-button.style.padding = '12px 20px';
-button.style.backgroundColor = color;
-button.style.color = 'white';
-button.style.border = 'none';
-button.style.borderRadius = '5px';
-button.style.cursor = 'pointer';
-button.style.fontWeight = 'bold';
-button.style.width = '100%';
-button.onclick = onClick;
-
-return button;
-}
-
-/**
-* Função auxiliar para copiar texto para a área de transferência
-* @param {String} text - Texto a ser copiado
-*/
-function copyTextToClipboard(text) {
-// Tentar usar a API moderna Clipboard
-if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text)
-        .then(() => console.log('Texto copiado com sucesso usando Clipboard API'))
-        .catch(err => {
-            console.error('Erro ao copiar texto com Clipboard API:', err);
-            fallbackCopyTextToClipboard(text);
+            sizeInput.appendChild(option);
         });
-} else {
-    // Usar método alternativo para contextos não seguros
-    fallbackCopyTextToClipboard(text);
-}
+        
+        sizeField.appendChild(sizeLabel);
+        sizeField.appendChild(sizeInput);
+        productItem.appendChild(sizeField);
+        
+        // MODIFICAÇÃO: Sempre adicionar campo de cor para todos os itens
+        const colorField = document.createElement('div');
+        colorField.style.marginTop = '10px';
+        
+        const colorLabel = document.createElement('label');
+        colorLabel.htmlFor = `color-${index}`;
+        colorLabel.textContent = 'Cor: ';
+        
+        const colorInput = document.createElement('input');
+        colorInput.type = 'text';
+        colorInput.id = `color-${index}`;
+        colorInput.name = `color-${index}`;
+        colorInput.value = 'Como na imagem';
+        colorInput.className = 'form-control';
+        colorInput.style.width = '100%';
+        colorInput.style.padding = '8px';
+        colorInput.style.boxSizing = 'border-box';
+        colorInput.style.marginTop = '5px';
+        
+        colorField.appendChild(colorLabel);
+        colorField.appendChild(colorInput);
+        productItem.appendChild(colorField);
+        
+        productSection.appendChild(productItem);
+    });
+    
+    // Mostrar total
+    const totalElement = document.createElement('div');
+    totalElement.style.fontSize = '18px';
+    totalElement.style.fontWeight = 'bold';
+    totalElement.style.textAlign = 'right';
+    totalElement.style.marginBottom = '20px';
+    totalElement.innerHTML = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+    
+    productSection.appendChild(totalElement);
+    
+    // Campo de Endereço
+    const addressField = createFormField('address', 'Endereço de entrega:', 'text', '', 'Digite seu endereço completo');
+    
+    // Campo de Forma de Pagamento
+    const paymentField = document.createElement('div');
+    paymentField.style.marginBottom = '15px';
+    
+    const paymentLabel = document.createElement('label');
+    paymentLabel.htmlFor = 'payment';
+    paymentLabel.textContent = 'Forma de Pagamento:';
+    paymentLabel.style.display = 'block';
+    paymentLabel.style.marginBottom = '5px';
+    paymentLabel.style.fontWeight = 'bold';
+    
+    const paymentSelect = document.createElement('select');
+    paymentSelect.name = 'payment';
+    paymentSelect.style.width = '100%';
+    paymentSelect.style.padding = '10px';
+    paymentSelect.style.borderRadius = '5px';
+    paymentSelect.style.border = '1px solid #ddd';
+    
+    const paymentOptions = ['PIX', 'Cartão de Crédito', 'Cartão de Débito', 'Dinheiro'];
+    paymentOptions.forEach(option => {
+        const paymentOption = document.createElement('option');
+        paymentOption.value = option;
+        paymentOption.textContent = option;
+        paymentSelect.appendChild(paymentOption);
+    });
+    
+    paymentField.appendChild(paymentLabel);
+    paymentField.appendChild(paymentSelect);
+    
+    // Campo de Observações
+    const notesField = createFormField('notes', 'Observações (opcional):', 'textarea', '', 'Informações adicionais para o pedido');
+    const notesTextarea = notesField.querySelector('textarea');
+    if (notesTextarea) {
+        notesTextarea.style.minHeight = '100px';
+    }
+    
+    // Botões
+    const buttonGroup = document.createElement('div');
+    buttonGroup.style.display = 'flex';
+    buttonGroup.style.justifyContent = 'space-between';
+    buttonGroup.style.marginTop = '20px';
+    
+    // Botão Cancelar
+    const cancelButton = document.createElement('button');
+    cancelButton.type = 'button';
+    cancelButton.textContent = 'Cancelar';
+    cancelButton.style.padding = '10px 20px';
+    cancelButton.style.backgroundColor = '#f44336';
+    cancelButton.style.color = 'white';
+    cancelButton.style.border = 'none';
+    cancelButton.style.borderRadius = '5px';
+    cancelButton.style.cursor = 'pointer';
+    cancelButton.onclick = function() {
+        modal.remove();
+    };
+    
+    // Botão Enviar Pedido
+    const submitButton = document.createElement('button');
+    submitButton.type = 'button';
+    submitButton.textContent = 'Enviar Pedido';
+    submitButton.style.padding = '10px 20px';
+    submitButton.style.backgroundColor = '#4CAF50';
+    submitButton.style.color = 'white';
+    submitButton.style.border = 'none';
+    submitButton.style.borderRadius = '5px';
+    submitButton.style.cursor = 'pointer';
+    submitButton.onclick = function() {
+        processFormData(form, cartItems);
+    };
+    
+    buttonGroup.appendChild(cancelButton);
+    buttonGroup.appendChild(submitButton);
+    
+    // Montar o formulário
+    form.appendChild(productSection);
+    form.appendChild(addressField);
+    form.appendChild(paymentField);
+    form.appendChild(notesField);
+    form.appendChild(buttonGroup);
+    
+    // Adicionar o formulário ao container
+    formContainer.appendChild(title);
+    formContainer.appendChild(form);
+    
+    // Adicionar o container ao modal
+    modal.appendChild(formContainer);
+    
+    // Adicionar o modal à página
+    document.body.appendChild(modal);
+    
+    // Focar no primeiro campo
+    const firstInput = form.querySelector('input, select, textarea');
+    if (firstInput) {
+        firstInput.focus();
+    }
 }
 
 /**
-* Método alternativo para copiar texto
-* @param {String} text - Texto a ser copiado
-*/
-function fallbackCopyTextToClipboard(text) {
-// Criar elemento temporário
-const textArea = document.createElement('textarea');
-textArea.value = text;
-
-// Garantir que o texto não seja visível
-textArea.style.position = 'fixed';
-textArea.style.left = '-999999px';
-textArea.style.top = '-999999px';
-
-document.body.appendChild(textArea);
-textArea.focus();
-textArea.select();
-
-try {
-    // Executar o comando de cópia
-    const successful = document.execCommand('copy');
-    const msg = successful ? 'bem-sucedido' : 'com falha';
-    console.log('Texto copiado ' + msg);
-} catch (err) {
-    console.error('Erro ao copiar texto: ', err);
+ * Cria um campo de formulário
+ * @param {String} id - ID do campo
+ * @param {String} label - Texto da label
+ * @param {String} type - Tipo do campo
+ * @param {String} value - Valor padrão
+ * @param {String} placeholder - Placeholder
+ * @returns {HTMLElement} - Campo de formulário
+ */
+function createFormField(id, label, type, value = '', placeholder = '') {
+    const field = document.createElement('div');
+    field.style.marginBottom = '15px';
+    
+    const fieldLabel = document.createElement('label');
+    fieldLabel.htmlFor = id;
+    fieldLabel.textContent = label;
+    fieldLabel.style.display = 'block';
+    fieldLabel.style.marginBottom = '5px';
+    fieldLabel.style.fontWeight = 'bold';
+    
+    let input;
+    if (type === 'textarea') {
+        input = document.createElement('textarea');
+    } else {
+        input = document.createElement('input');
+        input.type = type;
+    }
+    
+    input.id = id;
+    input.name = id;
+    input.value = value;
+    input.placeholder = placeholder;
+    input.style.width = '100%';
+    input.style.padding = '10px';
+    input.style.borderRadius = '5px';
+    input.style.border = '1px solid #ddd';
+    input.style.boxSizing = 'border-box';
+    
+    field.appendChild(fieldLabel);
+    field.appendChild(input);
+    
+    return field;
 }
 
-// Remover o elemento temporário
-document.body.removeChild(textArea);
+/**
+ * Processa os dados do formulário
+ * @param {HTMLFormElement} form - Formulário
+ * @param {Array} cartItems - Itens do carrinho
+ */
+function processFormData(form, cartItems) {
+    // Verificar campo de endereço
+    const addressInput = form.querySelector('#address');
+    if (!addressInput || !addressInput.value.trim()) {
+        alert('Por favor, informe o endereço de entrega.');
+        if (addressInput) addressInput.focus();
+        return;
+    }
+    
+    // Validar se o endereço é muito curto
+    if (addressInput.value.trim().length < 10) {
+        if (!confirm('O endereço parece muito curto. Deseja continuar mesmo assim?')) {
+            addressInput.focus();
+            return;
+        }
+    }
+    
+    // Coletar dados do formulário
+    const address = addressInput.value.trim();
+    const paymentSelect = form.querySelector('#payment');
+    const payment = paymentSelect ? paymentSelect.value : 'PIX';
+    const notesInput = form.querySelector('#notes');
+    const notes = notesInput ? notesInput.value.trim() : '';
+    
+    // Coletar detalhes de tamanho e cor
+    const cartItemsWithDetails = cartItems.map((item, index) => {
+        const newItem = { ...item };
+        
+        // Obter tamanho
+        const sizeField = form.querySelector(`#size-${index}`);
+        newItem.size = sizeField ? sizeField.value : 'Único';
+        
+        // Obter cor
+        const colorField = form.querySelector(`#color-${index}`);
+        newItem.color = colorField ? colorField.value : 'Como na imagem';
+        
+        return newItem;
+    });
+    
+    // Fechar o modal
+    const modal = document.getElementById('order-form-modal');
+    if (modal) {
+        modal.remove();
+    }
+    
+    // Formatar a mensagem do pedido
+    let message = '*📋 NOVO PEDIDO:*\n\n';
+    let total = 0;
+    
+    // Adicionar detalhes de cada item
+    cartItemsWithDetails.forEach(item => {
+        // Calcular valor de cada item
+        const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
+        const itemTotal = priceValue * item.quantity;
+        total += itemTotal;
+        
+        // Adicionar item à mensagem
+        message += `• ${item.quantity}x ${item.name} - ${item.price} cada\n`;
+        message += `  - Tamanho: ${item.size}\n`;
+        message += `  - Cor: ${item.color}\n`;
+    });
+    
+    // Adicionar informações do pedido
+    message += `\n*💰 Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
+    message += `*🏠 Endereço:* ${address}\n`;
+    message += `*💳 Forma de pagamento:* ${payment}\n`;
+    
+    // Adicionar observações se houver
+    if (notes) {
+        message += `\n*📝 Observações:* ${notes}\n`;
+    }
+    
+    // Adicionar data e hora do pedido
+    const now = new Date();
+    const dataHora = now.toLocaleString('pt-BR');
+    message += `\n*⏰ Data/Hora:* ${dataHora}`;
+    
+    // Adicionar referências às fotos dos produtos
+    const imageUrls = cartItemsWithDetails
+        .filter(item => item.image && !item.image.includes('/api/placeholder/'))
+        .map(item => ({
+            url: item.image,
+            name: item.name
+        }));
+    
+    // Verificar se há imagens para compartilhar
+    if (imageUrls.length > 0) {
+        message += '\n\n*📸 Fotos dos produtos:*';
+        imageUrls.forEach((image) => {
+            message += `\n• ${image.name}: ${image.url}`;
+        });
+    }
+    
+    // Número de telefone do dono da loja
+    const phoneNumber = '5583991816152';
+    
+    // Salvar no localStorage
+    localStorage.setItem('lastOrderMessage', message);
+    localStorage.setItem('lastOrderPhone', phoneNumber);
+    
+    // Enviar a mensagem
+    sendWhatsAppMessage(message, phoneNumber);
+}
+
+/**
+ * Envia mensagem para o WhatsApp sem problemas de popup
+ * @param {String} message - Mensagem a ser enviada
+ * @param {String} phoneNumber - Número do telefone
+ */
+function sendWhatsAppMessage(message, phoneNumber) {
+    // Criar um overlay de carregamento
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.id = 'loading-overlay';
+    loadingOverlay.style.position = 'fixed';
+    loadingOverlay.style.top = '0';
+    loadingOverlay.style.left = '0';
+    loadingOverlay.style.width = '100%';
+    loadingOverlay.style.height = '100%';
+    loadingOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    loadingOverlay.style.display = 'flex';
+    loadingOverlay.style.flexDirection = 'column';
+    loadingOverlay.style.justifyContent = 'center';
+    loadingOverlay.style.alignItems = 'center';
+    loadingOverlay.style.zIndex = '10000';
+    
+    // Mensagem de carregamento
+    const loadingText = document.createElement('div');
+    loadingText.textContent = 'Processando seu pedido...';
+    loadingText.style.color = 'white';
+    loadingText.style.fontSize = '20px';
+    loadingText.style.marginBottom = '20px';
+    
+    // Spinner de carregamento
+    const spinner = document.createElement('div');
+    spinner.style.border = '5px solid #f3f3f3';
+    spinner.style.borderTop = '5px solid #3498db';
+    spinner.style.borderRadius = '50%';
+    spinner.style.width = '50px';
+    spinner.style.height = '50px';
+    spinner.style.animation = 'spin 2s linear infinite';
+    
+    // Adicionar keyframes para animação
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Adicionar elementos ao overlay
+    loadingOverlay.appendChild(loadingText);
+    loadingOverlay.appendChild(spinner);
+    
+    // Adicionar overlay à página
+    document.body.appendChild(loadingOverlay);
+    
+    // Verificar se é dispositivo móvel
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // URL codificada para WhatsApp
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+    
+    // Atraso para garantir que o overlay seja exibido
+    setTimeout(() => {
+        // Atualizar mensagem de carregamento
+        loadingText.textContent = 'Redirecionando para o WhatsApp...';
+        
+        try {
+            // Em dispositivos móveis, tentar primeiro abrir o app
+            if (isMobile) {
+                // Abrir em nova guia (mais compatível em dispositivos móveis)
+                window.open(whatsappURL, '_blank');
+            } else {
+                // Em desktop, abrir em uma nova guia
+                const newTab = window.open(whatsappURL, '_blank');
+                
+                // Se o navegador bloqueou a abertura da nova guia
+                if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+                    // Tentar redirecionamento direto
+                    window.location.href = whatsappURL;
+                }
+            }
+            
+            // Remover o overlay após um curto tempo
+            setTimeout(() => {
+                if (document.getElementById('loading-overlay')) {
+                    document.getElementById('loading-overlay').remove();
+                }
+                
+                // Verificar se ainda estamos na mesma página após tentativa de redirecionamento
+                setTimeout(() => {
+                    // Se ainda não houver um modal de fallback na tela
+                    if (!document.getElementById('fallback-modal')) {
+                        showFallbackOptions(whatsappURL, message, phoneNumber);
+                    }
+                }, 2000);
+            }, 1500);
+        } catch (error) {
+            console.error('Erro ao abrir WhatsApp:', error);
+            if (document.getElementById('loading-overlay')) {
+                document.getElementById('loading-overlay').remove();
+            }
+            // Mostrar opções alternativas imediatamente em caso de erro
+            showFallbackOptions(whatsappURL, message, phoneNumber);
+        }
+    }, 1000);
+}
+
+/**
+ * Mostra opções alternativas caso o redirecionamento falhe
+ * @param {String} whatsappURL - URL do WhatsApp
+ * @param {String} message - Mensagem do pedido
+ * @param {String} phoneNumber - Número do telefone
+ */
+function showFallbackOptions(whatsappURL, message, phoneNumber) {
+    // Verificar se já existe um modal de fallback
+    if (document.getElementById('fallback-modal')) {
+        return;
+    }
+    
+    // Criar o modal de opções alternativas
+    const fallbackModal = document.createElement('div');
+    fallbackModal.id = 'fallback-modal';
+    fallbackModal.style.position = 'fixed';
+    fallbackModal.style.top = '0';
+    fallbackModal.style.left = '0';
+    fallbackModal.style.width = '100%';
+    fallbackModal.style.height = '100%';
+    fallbackModal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    fallbackModal.style.display = 'flex';
+    fallbackModal.style.justifyContent = 'center';
+    fallbackModal.style.alignItems = 'center';
+    fallbackModal.style.zIndex = '10000';
+    
+    // Container para as opções
+    const optionsContainer = document.createElement('div');
+    optionsContainer.style.backgroundColor = 'white';
+    optionsContainer.style.borderRadius = '10px';
+    optionsContainer.style.padding = '20px';
+    optionsContainer.style.maxWidth = '450px';
+    optionsContainer.style.width = '90%';
+    optionsContainer.style.textAlign = 'center';
+    
+    // Título
+    const title = document.createElement('h3');
+    title.textContent = 'Não foi possível abrir o WhatsApp';
+    title.style.marginTop = '0';
+    title.style.color = '#333';
+    
+    // Mensagem
+    const text = document.createElement('p');
+    text.textContent = 'Escolha uma das opções abaixo para enviar seu pedido:';
+    
+    // Botões de opções alternativas
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.flexDirection = 'column';
+    buttonContainer.style.gap = '10px';
+    buttonContainer.style.marginTop = '20px';
+    
+    // Opção 1: Tentar novamente
+    const retryButton = createActionButton(
+        'Tentar Novamente', 
+        '#4CAF50',
+        () => {
+            fallbackModal.remove();
+            // Usar window.open para maior compatibilidade
+            window.open(whatsappURL, '_blank');
+        }
+    );
+    
+    // Opção 2: Copiar mensagem
+    const copyButton = createActionButton(
+        'Copiar Mensagem', 
+        '#2196F3',
+        () => {
+            copyTextToClipboard(message);
+            alert('Mensagem copiada! Você pode colá-la no WhatsApp.');
+            
+            // Mostrar instruções
+            text.innerHTML = 'Mensagem copiada! Agora:<br>1. Abra o WhatsApp<br>2. Encontre ou inicie uma conversa com o número do vendedor<br>3. Cole a mensagem';
+            
+            // Atualizar os botões
+            buttonContainer.innerHTML = '';
+            
+            // Adicionar botão para abrir WhatsApp diretamente
+            const openWhatsAppButton = createActionButton(
+                'Abrir WhatsApp', 
+                '#25D366',
+                () => {
+                    const whatsappDirectURL = `https://wa.me/${phoneNumber}`;
+                    window.open(whatsappDirectURL, '_blank');
+                }
+            );
+            
+            buttonContainer.appendChild(openWhatsAppButton);
+            
+            // Adicionar botão para fechar
+            const closeButton = createActionButton(
+                'Fechar', 
+                '#f44336',
+                () => {
+                    fallbackModal.remove();
+                }
+            );
+            
+            buttonContainer.appendChild(closeButton);
+        }
+    );
+    
+    // Opção 3: Fechar
+    const closeButton = createActionButton(
+        'Cancelar', 
+        '#f44336',
+        () => {
+            fallbackModal.remove();
+        }
+    );
+    
+    // Adicionar botões ao container
+    buttonContainer.appendChild(retryButton);
+    buttonContainer.appendChild(copyButton);
+    buttonContainer.appendChild(closeButton);
+    
+    // Montar o modal
+    optionsContainer.appendChild(title);
+    optionsContainer.appendChild(text);
+    optionsContainer.appendChild(buttonContainer);
+    
+    fallbackModal.appendChild(optionsContainer);
+    document.body.appendChild(fallbackModal);
+}
+
+/**
+ * Cria um botão de ação estilizado
+ * @param {String} text - Texto do botão
+ * @param {String} color - Cor de fundo
+ * @param {Function} onClick - Função de clique
+ * @returns {HTMLElement} - Botão criado
+ */
+function createActionButton(text, color, onClick) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.style.padding = '12px 20px';
+    button.style.backgroundColor = color;
+    button.style.color = 'white';
+    button.style.border = 'none';
+    button.style.borderRadius = '5px';
+    button.style.cursor = 'pointer';
+    button.style.fontWeight = 'bold';
+    button.style.width = '100%';
+    button.onclick = onClick;
+    
+    return button;
+}
+
+/**
+ * Função auxiliar para copiar texto para a área de transferência
+ * @param {String} text - Texto a ser copiado
+ */
+function copyTextToClipboard(text) {
+    // Tentar usar a API moderna Clipboard
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+            .then(() => console.log('Texto copiado com sucesso usando Clipboard API'))
+            .catch(err => {
+                console.error('Erro ao copiar texto com Clipboard API:', err);
+                fallbackCopyTextToClipboard(text);
+            });
+    } else {
+        // Usar método alternativo para contextos não seguros
+        fallbackCopyTextToClipboard(text);
+    }
+}
+
+/**
+ * Método alternativo para copiar texto
+ * @param {String} text - Texto a ser copiado
+ */
+function fallbackCopyTextToClipboard(text) {
+    // Criar elemento temporário
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    
+    // Garantir que o texto não seja visível
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        // Executar o comando de cópia
+        const successful = document.execCommand('copy');
+        const msg = successful ? 'bem-sucedido' : 'com falha';
+        console.log('Texto copiado ' + msg);
+    } catch (err) {
+        console.error('Erro ao copiar texto: ', err);
+    }
+    
+    // Remover o elemento temporário
+    document.body.removeChild(textArea);
 }
 
 // Função para remover acentos de uma string (para pesquisa)
