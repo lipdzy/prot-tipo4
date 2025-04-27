@@ -1,101 +1,23 @@
 // Produtos
 const produtos = [
     { 
-        nome: "Corrente Ponto de Luz", 
-        price: "R$ 299,90", 
-        image: "https://i.postimg.cc/5yLPzdZc/corrente.jpg",
-        description: "Elegante corrente banhada a ouro com pingente de cristal que reflete a luz de forma única. Perfeita para ocasiões especiais e uso diário."
-    },
-    { 
         nome: "Vestido Sarah", 
         price: "R$ 390,90", 
         image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg",
-        description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado."
+        description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado. *Tamanhos disponiveis: p, m, g*"
     },
     { 
         nome: "Salto alto Preto", 
         price: "R$ 299,90", 
         image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
-        description: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto."
+        description: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto. *Tamanhos disponiveis: 37, 38, 41*"
     },
     { 
         nome: "Bolsa Branca Delicada", 
         price: "R$ 199,90", 
         image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg",
-        description: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. O acessório perfeito para complementar seu visual."
+        description: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. *Cores disponiveis: rosa, azul, preto*"
     },
-    { 
-        nome: "Pó Compacto", 
-        price: "R$ 62,00", 
-        image: "/api/placeholder/400/300",
-        description: "Pó compacto de textura fina e acabamento translúcido que controla a oleosidade da pele sem ressecar. Perfeito para todos os tipos de pele."
-    },
-    { 
-        nome: "Sérum Facial Hidratante", 
-        price: "R$ 79,90", 
-        image: "/api/placeholder/400/300",
-        description: "Sérum hidratante com ácido hialurônico e vitaminas que restaura a barreira de hidratação da pele, proporcionando luminosidade e maciez."
-    },
-    { 
-        nome: "Protetor Solar FPS 50", 
-        price: "R$ 72,00", 
-        image: "/api/placeholder/400/300",
-        description: "Protetor solar de amplo espectro com FPS 50, textura leve e toque seco. Protege contra os raios UVA e UVB, além de prevenir o envelhecimento precoce."
-    },
-    { 
-        nome: "Demaquilante Bifásico", 
-        price: "R$ 48,00", 
-        image: "/api/placeholder/400/300",
-        description: "Demaquilante bifásico que remove até as maquiagens mais resistentes sem ressecar a pele. Fórmula suave e com ingredientes hidratantes."
-    },
-    { 
-        nome: "Kit Pincéis Maquiagem", 
-        price: "R$ 115,90", 
-        image: "/api/placeholder/400/300",
-        description: "Kit completo com 12 pincéis profissionais para maquiagem. Cerdas macias e cabos ergonômicos que facilitam a aplicação de produtos diversos."
-    },
-    { 
-        nome: "Blush Rosado", 
-        price: "R$ 42,50", 
-        image: "/api/placeholder/400/300",
-        description: "Blush em pó com acabamento matte e tonalidade rosada natural. Proporciona um rubor delicado e duradouro com fácil aplicação."
-    },
-    { 
-        nome: "Iluminador Facial", 
-        price: "R$ 54,90", 
-        image: "/api/placeholder/400/300",
-        description: "Iluminador em pó com partículas microfinas que proporcionam um brilho natural e luminoso à pele. Ideal para destacar os pontos altos do rosto."
-    },
-    { 
-        nome: "Contorno Facial em Pó", 
-        price: "R$ 65,90", 
-        image: "/api/placeholder/400/300",
-        description: "Pó compacto para contorno facial que realça e define os traços do rosto. Textura aveludada e fácil de esfumar."
-    },
-    { 
-        nome: "Esmalte Gel Rosê", 
-        price: "R$ 24,90", 
-        image: "/api/placeholder/400/300",
-        description: "Esmalte em tom rosê com acabamento gel que proporciona brilho intenso e durabilidade excepcional. Fórmula hipoalergênica e de secagem rápida."
-    },
-    { 
-        nome: "Hidratante Corporal", 
-        price: "R$ 49,90", 
-        image: "/api/placeholder/400/300",
-        description: "Hidratante corporal de rápida absorção com manteiga de karité e vitamina E. Proporciona hidratação profunda e deixa a pele macia o dia todo."
-    },
-    { 
-        nome: "Óleo de Argan para Cabelos", 
-        price: "R$ 55,00", 
-        image: "/api/placeholder/400/300",
-        description: "Óleo capilar com argan puro que nutre, repara e protege os fios do calor. Devolve o brilho e maciez aos cabelos danificados."
-    },
-    { 
-        nome: "Shampoo Anti-Queda", 
-        price: "R$ 39,90", 
-        image: "/api/placeholder/400/300",
-        description: "Shampoo formulado com ativos que combatem a queda e estimulam o crescimento capilar. Limpa suavemente sem ressecar os fios."
-    }
 ];
 
 // Variáveis globais
