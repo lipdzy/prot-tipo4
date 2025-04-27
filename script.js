@@ -1036,45 +1036,43 @@ function sendWhatsAppMessage(message, phoneNumber) {
             // URL do WhatsApp Web ou app
             const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
             
-             if (isMobile) {
-        // Em dispositivos móveis, tentar primeiro o link direto para o app
-        window.location.href = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
-        
-        // Verificar se o redirecionamento foi bem-sucedido após um curto tempo
-        setTimeout(() => {
-            if (document.hasFocus()) {
-                // Se o usuário ainda estiver na página, tentar o método alternativo
-                window.location.href = whatsappURL;
+            if (isMobile) {
+                // Em dispositivos móveis, tentar primeiro o link direto para o app
+                const whatsappDeepLink = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
                 
-                // Ainda se o usuário continuar na página, mostrar as opções alternativas
+                // Abrir o link em um iframe oculto (evita problemas com bloqueadores de pop-up)
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = whatsappDeepLink;
+                document.body.appendChild(iframe);
+                
+                // Remover o iframe após um curto tempo
                 setTimeout(() => {
-                    if (document.hasFocus()) {
+                    document.body.removeChild(iframe);
+                    
+                    // Verificar se o app abriu (não há uma forma 100% confiável, mas podemos tentar)
+                    setTimeout(() => {
+                        // Se ainda estiver na página, tentar o método de fallback
                         showFallbackOptions(whatsappURL, message, phoneNumber);
-                    }
-                }, 2000);
+                    }, 1000);
+                }, 100);
+            } else {
+                // Em desktop, abrir em uma nova guia (mais confiável que window.location)
+                const newTab = window.open(whatsappURL, '_blank');
+                
+                // Se o navegador bloqueou a abertura da nova guia
+                if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+                    // Tentar redirecionamento direto
+                    window.location.href = whatsappURL;
+                    
+                    // Ainda oferecer opções alternativas após um tempo
+                    setTimeout(() => {
+                        showFallbackOptions(whatsappURL, message, phoneNumber);
+                    }, 3000);
+                }
             }
         }, 1500);
-    } else {
-        // Em desktop, tentar abrir o WhatsApp Web em uma nova aba
-        const newWindow = window.open(whatsappURL, '_blank');
-        
-        // Se o navegador bloqueou o popup
-        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-            // Tenta o redirecionamento direto
-            window.location.href = whatsappURL;
-            
-            // Verificar se o redirecionamento funcionou
-            setTimeout(() => {
-                if (document.hasFocus()) {
-                    showFallbackOptions(whatsappURL, message, phoneNumber);
-                }
-            }, 2000);
-        }
-    }
-} catch (error) {
-    console.error("Erro ao tentar abrir o WhatsApp:", error);
-    // Em caso de erro, mostrar opções alternativas
-    showFallbackOptions(whatsappURL, message, phoneNumber);
+    }, 1000);
 }
 
 /**
