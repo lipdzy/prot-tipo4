@@ -10,42 +10,26 @@
 // CONFIGURAÇÃO DE PRODUTOS
 // ======================================================
 const PRODUTOS_CONFIG = {
-    // Vestido Sarah (índice 1)
+    // Vestido Sarah (índice 0)
     "vestido-sarah": {
         nome: "Vestido Sarah",
         preco: "R$ 390,90",
-        descricao: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado.",
-        imagens: [
-            "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg",
-            "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
-            "https://i.postimg.cc/t4D0DLwy/vestidovermelho.jpg"
-        ]
+        descricao: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado."
     },
     
-    // Salto Alto Preto (índice 2)
+    // Salto Alto Preto (índice 1)
     "salto-alto": {
-        nome: "Salto Alto Preto",
+        nome: "Salto alto Preto",
         preco: "R$ 299,90",
-        descricao: "Sapato de salto alto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto.",
-        imagens: [
-            "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
-            "https://i.postimg.cc/9034KzRP/saltonude.jpg",
-            "https://i.postimg.cc/rwxp2PQ9/saltovermelho.jpg"
-        ]
+        descricao: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto."
     },
     
-    // Bolsa Branca (índice 3)
+    // Bolsa Branca (índice 2)
     "bolsa-branca": {
         nome: "Bolsa Branca Delicada",
         preco: "R$ 199,90",
-        descricao: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. O acessório perfeito para complementar seu visual.",
-        imagens: [
-            "https://i.postimg.cc/v8qvXvrg/bolsa.jpg",
-            "https://i.postimg.cc/Y9JgCLG3/bolsapreta.jpg",
-            "https://i.postimg.cc/V6t8VvbS/bolsacaramelo.jpg"
-        ]
+        descricao: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. O acessório perfeito para complementar seu visual."
     },
-    
 };
 
 // NÃO MODIFIQUE NADA ABAIXO DESTA LINHA A MENOS QUE VOCÊ SAIBA O QUE ESTÁ FAZENDO
@@ -67,138 +51,109 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Configurar eventos na página de detalhes
     setupDetailPageEvents(parseInt(productIndex));
+    
+    // Ocultar a navegação de imagens, já que agora só usamos uma imagem
+    const imageNavigation = document.getElementById('imageNavigation');
+    if (imageNavigation) {
+        imageNavigation.style.display = 'none';
+    }
 });
 
-// Variáveis globais para controle de imagens
+// Variáveis globais
 let currentProductConfig = null;
-let currentImageIndex = 0;
 
 // Função para carregar detalhes do produto
 function loadProductDetails(index) {
-    const produto = produtos[index];
-    
-    // Se o produto não existir, redirecionar para a página principal
-    if (!produto) {
+    // Verificar se o índice é válido
+    if (index < 0 || index >= produtos.length) {
+        console.error(`Produto com índice ${index} não encontrado.`);
         window.location.href = 'index.html';
         return;
     }
     
+    const produto = produtos[index];
+    
     // Obter a configuração específica do produto com base no nome
     let produtoConfig = null;
+    
+    // Transformar nome do produto para formato de chave (lowercase e com hífens)
+    const produtoKey = produto.nome.toLowerCase().replace(/\s+/g, '-');
+    
+    // Tentar encontrar o produto na configuração
     for (const [chave, config] of Object.entries(PRODUTOS_CONFIG)) {
-        if (config.nome === produto.name) {
+        if (chave === produtoKey || config.nome === produto.nome) {
             produtoConfig = config;
             break;
         }
     }
     
-    // Se não encontrar configuração específica, usar dados padrão
+    // Se não encontrar configuração específica, criar uma com os dados do produto original
     if (!produtoConfig) {
+        console.log(`Configuração não encontrada para ${produto.nome}, usando dados padrão.`);
         produtoConfig = {
-            nome: produto.name,
+            nome: produto.nome,
             preco: produto.price,
-            descricao: produto.description || `${produto.name} é um item de alta qualidade que combina estilo e conforto.`,
-            imagens: [produto.image]
+            descricao: produto.description || `${produto.nome} é um item de alta qualidade que combina estilo e conforto.`
         };
     }
     
     // Guardar configuração do produto atual
     currentProductConfig = produtoConfig;
-    currentImageIndex = 0;
     
     // Preencher detalhes do produto
-    document.getElementById('productImage').src = produtoConfig.imagens[0];
-    document.getElementById('productImage').alt = produtoConfig.nome;
-    document.getElementById('productName').textContent = produtoConfig.nome;
-    document.getElementById('productPrice').textContent = produtoConfig.preco;
+    const productImage = document.getElementById('productImage');
+    if (productImage) {
+        productImage.src = produto.image;
+        productImage.alt = produto.nome;
+    }
+    
+    const productName = document.getElementById('productName');
+    if (productName) {
+        productName.textContent = produto.nome;
+    }
+    
+    const productPrice = document.getElementById('productPrice');
+    if (productPrice) {
+        productPrice.textContent = produto.price;
+    }
     
     // Adicionar descrição do produto
-    document.getElementById('productDescription').textContent = produtoConfig.descricao;
+    const productDescription = document.getElementById('productDescription');
+    if (productDescription) {
+        productDescription.textContent = produtoConfig.descricao;
+    }
     
     // Atualizar título da página
-    document.title = `${produtoConfig.nome} - Closet Dellas`;
-    
-    // Criar controles de navegação se houver múltiplas imagens
-    if (produtoConfig.imagens && produtoConfig.imagens.length > 1) {
-        // Mostrar os botões de navegação já existentes no HTML
-        const prevBtn = document.getElementById('prevImageBtn');
-        const nextBtn = document.getElementById('nextImageBtn');
-        const imageCounter = document.getElementById('imageCounter');
-        
-        if (prevBtn && nextBtn) {
-            // Configurar contagem de imagens
-            imageCounter.textContent = `1/${produtoConfig.imagens.length}`;
-            
-            // Configurar eventos dos botões
-            prevBtn.addEventListener('click', function() {
-                navigateProductImages(-1);
-            });
-            
-            nextBtn.addEventListener('click', function() {
-                navigateProductImages(1);
-            });
-            
-            // Mostrar os botões
-            document.getElementById('imageNavigation').style.display = 'flex';
-        }
-    } else {
-        // Se não houver várias imagens, ocultar os botões
-        const imageNavigation = document.getElementById('imageNavigation');
-        if (imageNavigation) {
-            imageNavigation.style.display = 'none';
-        }
-    }
-}
-
-// Função para navegar entre as imagens do produto
-function navigateProductImages(direction) {
-    if (!currentProductConfig || !currentProductConfig.imagens || currentProductConfig.imagens.length <= 1) return;
-    
-    // Atualizar índice da imagem atual
-    currentImageIndex = (currentImageIndex + direction + currentProductConfig.imagens.length) % currentProductConfig.imagens.length;
-    
-    // Atualizar contador de imagens
-    const imageCounter = document.getElementById('imageCounter');
-    if (imageCounter) {
-        imageCounter.textContent = `${currentImageIndex + 1}/${currentProductConfig.imagens.length}`;
-    }
-    
-    // Atualizar imagem
-    changeProductImage(currentProductConfig.imagens[currentImageIndex]);
-}
-
-// Função para mudar a imagem do produto
-function changeProductImage(imageUrl) {
-    const productImage = document.getElementById('productImage');
-    if (!productImage) return;
-    
-    // Adicionar efeito de fade na transição
-    productImage.style.opacity = '0.5';
-    productImage.style.transition = 'opacity 0.3s ease';
-    
-    // Mudar a imagem após um pequeno atraso para o efeito ser visível
-    setTimeout(() => {
-        productImage.src = imageUrl;
-        
-        // Quando a nova imagem carregar, restaurar a opacidade
-        productImage.onload = function() {
-            productImage.style.opacity = '1';
-        };
-    }, 300);
+    document.title = `${produto.nome} - Closet Dellas`;
 }
 
 // Configurar eventos na página de detalhes
 function setupDetailPageEvents(productIndex) {
-    // Botões de quantidade
+    // Obter elementos do DOM
     const decreaseBtn = document.getElementById('decreaseQuantity');
     const increaseBtn = document.getElementById('increaseQuantity');
     const quantityValue = document.getElementById('quantityValue');
     const addToCartBtn = document.getElementById('addToCartBtn');
     
+    // Verificar se todos os elementos necessários existem
+    if (!decreaseBtn || !increaseBtn || !quantityValue || !addToCartBtn) {
+        console.error('Elementos de quantidade ou botão de adicionar ao carrinho não encontrados.');
+        return;
+    }
+    
     let quantity = 1;
     
+    // Remover listeners antigos se existirem
+    const newDecreaseBtn = decreaseBtn.cloneNode(true);
+    const newIncreaseBtn = increaseBtn.cloneNode(true);
+    const newAddToCartBtn = addToCartBtn.cloneNode(true);
+    
+    decreaseBtn.parentNode.replaceChild(newDecreaseBtn, decreaseBtn);
+    increaseBtn.parentNode.replaceChild(newIncreaseBtn, increaseBtn);
+    addToCartBtn.parentNode.replaceChild(newAddToCartBtn, addToCartBtn);
+    
     // Diminuir quantidade
-    decreaseBtn.addEventListener('click', function() {
+    newDecreaseBtn.addEventListener('click', function() {
         if (quantity > 1) {
             quantity--;
             quantityValue.textContent = quantity;
@@ -206,20 +161,26 @@ function setupDetailPageEvents(productIndex) {
     });
     
     // Aumentar quantidade
-    increaseBtn.addEventListener('click', function() {
+    newIncreaseBtn.addEventListener('click', function() {
         quantity++;
         quantityValue.textContent = quantity;
     });
     
     // Adicionar ao carrinho
-    addToCartBtn.addEventListener('click', function() {
+    newAddToCartBtn.addEventListener('click', function() {
         // Adicionar ao carrinho com a quantidade atual
-        addToCartWithDetails(productIndex, quantity);
+        addToCartFromDetails(productIndex, quantity);
     });
 }
 
-// Função modificada para adicionar produto ao carrinho
-function addToCartWithDetails(productIndex, quantity) {
+// Função para adicionar produto ao carrinho a partir da página de detalhes
+function addToCartFromDetails(productIndex, quantity) {
+    // Verificar se o índice é válido
+    if (productIndex < 0 || productIndex >= produtos.length) {
+        console.error(`Produto com índice ${productIndex} não encontrado.`);
+        return;
+    }
+    
     const produto = produtos[productIndex];
     
     // Verificar se o produto já está no carrinho
@@ -234,14 +195,14 @@ function addToCartWithDetails(productIndex, quantity) {
         // Adicionar novo item ao carrinho
         cartItems.push({
             index: productIndex,
-            name: produto.name,
+            name: produto.nome,
             price: produto.price,
-            // Usar a imagem principal do produto
-            image: currentProductConfig.imagens[0],
+            image: produto.image,
             quantity: quantity
         });
     }
     
+    // Atualizar exibição do carrinho e contador
     updateCartDisplay();
     updateCartCounter();
     
@@ -249,5 +210,5 @@ function addToCartWithDetails(productIndex, quantity) {
     saveCartToStorage();
     
     // Mostrar notificação
-    showNotification(`${quantity}x ${produto.name} adicionado ao carrinho!`);
+    showNotification(`${quantity}x ${produto.nome} adicionado ao carrinho!`);
 }
