@@ -1,22 +1,64 @@
-// Produtos
+// Produtos 
 const produtos = [
-    { 
-        nome: "Vestido Sarah", 
-        price: "R$ 390,90", 
-        image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg",
+    {
+         nome: "Vestido Sarah",
+         price: "R$ 390,90",
+         image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg",
         description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado. *Cores disponiveis: branco, preto,*"
     },
-    { 
-        nome: "Salto alto Preto", 
-        price: "R$ 299,90",
+    {
+         nome: "Salto alto Preto",
+         price: "R$ 299,90",
         image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
         description: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto. *Tamanhos disponiveis: 37, 38, 41*"
     },
-    { 
-        nome: "Bolsa Branca Delicada", 
-        price: "R$ 199,90", 
-        image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg",
+    {
+         nome: "Bolsa Branca Delicada",
+         price: "R$ 199,90",
+         image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg",
         description: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. *Cores disponiveis: rosa, azul, preto*"
+    },
+    {
+         nome: "Calça Jeans Premium",
+         price: "R$ 259,90",
+         image: "https://i.postimg.cc/bvrMXL7H/calca-jeans.jpg",
+        description: "Calça jeans de modelagem moderna com tecido premium e acabamento de alta qualidade. Confortável e versátil para o dia a dia. *Tamanhos disponiveis: 38, 40, 42, 44*"
+    },
+    {
+         nome: "Blusa de Seda Elegante",
+         price: "R$ 179,90",
+         image: "https://i.postimg.cc/fR8zNSqJ/blusa-seda.jpg",
+        description: "Blusa confeccionada em seda natural com corte fluido e elegante. Peça atemporal que adiciona sofisticação a qualquer look. *Cores disponiveis: off-white, rosa antigo, verde-oliva*"
+    },
+    {
+         nome: "Blazer Estruturado Clássico",
+         price: "R$ 420,90",
+         image: "https://i.postimg.cc/J4QnvBwL/blazer.jpg",
+        description: "Blazer com modelagem estruturada em tecido premium que oferece caimento impecável. Perfeito para compor looks formais e profissionais. *Cores disponiveis: preto, azul marinho, cinza*"
+    },
+    {
+         nome: "Sapatilha Conforto Total",
+         price: "R$ 149,90",
+         image: "https://i.postimg.cc/L5jkJvgS/sapatilha.jpg",
+        description: "Sapatilha confeccionada com tecnologia de amortecimento e materiais leves. Combina estilo e máximo conforto para o uso diário. *Tamanhos disponiveis: 35 ao 39*"
+    },
+    {
+         nome: "Óculos de Sol Premium",
+         price: "R$ 289,90",
+         image: "https://i.postimg.cc/RVjB19py/oculos.jpg",
+        description: "Óculos de sol com proteção UV completa e armação de alta qualidade. Design moderno que complementa diversos estilos e formatos de rosto. *Cores disponiveis: preto, tartaruga, dourado*"
+    },
+    {
+         nome: "Colar Delicado Banhado",
+         price: "R$ 119,90",
+         image: "https://i.postimg.cc/NFYg94Wr/colar.jpg",
+        description: "Colar fino banhado a ouro com pingente minimalista. Joia delicada que adiciona um toque de elegância a qualquer produção. *Acabamentos disponiveis: ouro, prata, rosé*"
+    },
+    {
+         nome: "Saia Midi Plissada",
+         price: "R$ 229,90",
+         image: "https://i.postimg.cc/5ymtLSp9/saia-midi.jpg",
+        description: "Saia midi plissada em tecido fluido com caimento perfeito. Versátil e feminina, ideal para diversas ocasiões do dia a dia ao evento especial. *Cores disponiveis: bege, preto, verde musgo*"
     },
 ];
 
@@ -512,7 +554,7 @@ function shareCartOnWhatsApp() {
 
 /**
  * Cria um formulário modal para coletar todas as informações do pedido
- * Versão melhorada para compatibilidade entre navegadores
+ * Versão melhorada para perguntar tamanho e cor para cada item individualmente
  * @param {Array} cartItems - Itens do carrinho
  */
 function createOrderForm(cartItems) {
@@ -576,13 +618,30 @@ function createOrderForm(cartItems) {
     // Calcular total
     let total = 0;
     
-    // Adicionar cada produto com opções
+    // Reorganize os itens para que cada unidade seja tratada individualmente
+    let expandedCartItems = [];
+    
+    // Expandir itens do carrinho para que cada unidade seja um item individual
     cartItems.forEach((item, index) => {
         // Calcular valor do item
         const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
         const itemTotal = priceValue * item.quantity;
         total += itemTotal;
         
+        // Para cada quantidade do item, criar uma entrada individual
+        for (let i = 0; i < item.quantity; i++) {
+            expandedCartItems.push({
+                ...item,
+                originalIndex: index,
+                originalQuantity: item.quantity,
+                expandedIndex: expandedCartItems.length,
+                unitIndex: i + 1
+            });
+        }
+    });
+    
+    // Adicionar cada unidade de produto como um item separado com suas próprias opções
+    expandedCartItems.forEach((item, index) => {
         // Container do produto
         const productItem = document.createElement('div');
         productItem.style.marginBottom = '15px';
@@ -592,13 +651,18 @@ function createOrderForm(cartItems) {
         
         // Informações do produto
         const productInfo = document.createElement('div');
+        
+        // Mostrar número da unidade se houver mais de uma do mesmo produto
+        const unitLabel = item.originalQuantity > 1 ? 
+            ` (Unidade ${item.unitIndex} de ${item.originalQuantity})` : '';
+            
         productInfo.innerHTML = `
-            <strong>${item.name}</strong> - ${item.quantity}x ${item.price}
+            <strong>${item.name}${unitLabel}</strong> - ${item.price}
         `;
         
         productItem.appendChild(productInfo);
         
-        // MODIFICAÇÃO: Sempre adicionar campo de tamanho para todos os itens
+        // MODIFICAÇÃO: Campo de tamanho para cada unidade individual
         const sizeField = document.createElement('div');
         sizeField.style.marginTop = '10px';
         
@@ -640,7 +704,7 @@ function createOrderForm(cartItems) {
         sizeField.appendChild(sizeInput);
         productItem.appendChild(sizeField);
         
-        // MODIFICAÇÃO: Sempre adicionar campo de cor para todos os itens
+        // MODIFICAÇÃO: Campo de cor para cada unidade individual
         const colorField = document.createElement('div');
         colorField.style.marginTop = '10px';
         
@@ -774,7 +838,7 @@ function createOrderForm(cartItems) {
     }
     
     submitButton.onclick = function() {
-        processFormData(form, cartItems);
+        processFormData(form, expandedCartItems, cartItems);
     };
     
     buttonGroup.appendChild(cancelButton);
@@ -877,11 +941,12 @@ function createFormField(id, label, type, value = '', placeholder = '') {
 
 /**
  * Processa os dados do formulário e prepara para envio
- * Versão melhorada para compatibilidade universal
+ * Versão atualizada para lidar com itens expandidos individualmente
  * @param {HTMLFormElement} form - Formulário
- * @param {Array} cartItems - Itens do carrinho
+ * @param {Array} expandedCartItems - Itens do carrinho expandidos (um por unidade)
+ * @param {Array} originalCartItems - Itens do carrinho originais (para referência)
  */
-function processFormData(form, cartItems) {
+function processFormData(form, expandedCartItems, originalCartItems) {
     // Verificar campo de endereço
     const addressInput = form.querySelector('#address');
     if (!addressInput || !addressInput.value.trim()) {
@@ -915,8 +980,8 @@ function processFormData(form, cartItems) {
     const notesInput = form.querySelector('#notes');
     const notes = notesInput ? notesInput.value.trim() : '';
     
-    // Coletar detalhes de tamanho e cor
-    const cartItemsWithDetails = cartItems.map((item, index) => {
+    // Coletar detalhes de tamanho e cor para cada unidade
+    const itemsWithDetails = expandedCartItems.map((item, index) => {
         const newItem = { ...item };
         
         // Obter tamanho
@@ -942,15 +1007,30 @@ function processFormData(form, cartItems) {
     let message = '*📋 NOVO PEDIDO:*\n\n';
     let total = 0;
     
-    // Adicionar detalhes de cada item
-    cartItemsWithDetails.forEach(item => {
-        // Calcular valor de cada item
-        const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
-        const itemTotal = priceValue * item.quantity;
-        total += itemTotal;
+    // Agrupar itens do mesmo produto para exibição mais organizada
+    const groupedItems = {};
+    
+    // Primeiro, agrupar itens por produto e especificações
+    itemsWithDetails.forEach(item => {
+        const key = `${item.name}-${item.size}-${item.color}`;
+        if (!groupedItems[key]) {
+            groupedItems[key] = {
+                ...item,
+                groupQuantity: 1
+            };
+        } else {
+            groupedItems[key].groupQuantity++;
+        }
         
+        // Calcular valor para o total geral
+        const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
+        total += priceValue;
+    });
+    
+    // Adicionar itens agrupados à mensagem
+    Object.values(groupedItems).forEach(item => {
         // Adicionar item à mensagem
-        message += `• ${item.quantity}x ${item.name} - ${item.price} cada\n`;
+        message += `• ${item.groupQuantity}x ${item.name} - ${item.price} cada\n`;
         message += `  - Tamanho: ${item.size}\n`;
         message += `  - Cor: ${item.color}\n`;
     });
@@ -970,13 +1050,22 @@ function processFormData(form, cartItems) {
     const dataHora = now.toLocaleString('pt-BR');
     message += `\n*⏰ Data/Hora:* ${dataHora}`;
     
-    // Adicionar referências às fotos dos produtos
-    const imageUrls = cartItemsWithDetails
+    // Adicionar referências às fotos dos produtos (evitar duplicações)
+    const imageUrls = [];
+    const addedImages = new Set();
+    
+    originalCartItems
         .filter(item => item.image && !item.image.includes('/api/placeholder/'))
-        .map(item => ({
-            url: item.image,
-            name: item.name
-        }));
+        .forEach(item => {
+            // Evitar duplicações de imagens
+            if (!addedImages.has(item.image)) {
+                imageUrls.push({
+                    url: item.image,
+                    name: item.name
+                });
+                addedImages.add(item.image);
+            }
+        });
     
     // Verificar se há imagens para compartilhar
     if (imageUrls.length > 0) {
@@ -1399,6 +1488,7 @@ function copyTextToClipboard(text) {
             
             document.body.appendChild(textArea);
             
+            // Selecionar o texto (diferente para iOS)
             // Selecionar o texto (diferente para iOS)
             if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
                 // iOS requer abordagem especial para seleção

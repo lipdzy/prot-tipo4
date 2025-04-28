@@ -1,4 +1,4 @@
-// ======================================================
+ // ======================================================
 // ÁREA DE CONFIGURAÇÃO - EDITE AQUI
 // ======================================================
 // Instruções: 
@@ -16,14 +16,14 @@ const PRODUTOS_CONFIG = {
         preco: "R$ 390,90",
         descricao: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado."
     },
-    
+
     // Salto Alto Preto (índice 1)
     "salto-alto": {
         nome: "Salto alto Preto",
         preco: "R$ 299,90",
         descricao: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto."
     },
-    
+
     // Bolsa Branca (índice 2)
     "bolsa-branca": {
         nome: "Bolsa Branca Delicada",
