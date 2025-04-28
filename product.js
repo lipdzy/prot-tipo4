@@ -14,22 +14,23 @@ const PRODUTOS_CONFIG = {
     "vestido-sarah": {
         nome: "Vestido Sarah",
         preco: "R$ 390,90",
-        descricao: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado."
+        descricao: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado. *Cores disponiveis: branco, preto,*"
     },
 
     // Salto Alto Preto (índice 1)
     "salto-alto": {
         nome: "Salto alto Preto",
         preco: "R$ 299,90",
-        descricao: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto."
+        descricao: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto. *Tamanhos disponiveis: 37, 38, 41*"
     },
 
     // Bolsa Branca (índice 2)
     "bolsa-branca": {
         nome: "Bolsa Branca Delicada",
         preco: "R$ 199,90",
-        descricao: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. O acessório perfeito para complementar seu visual."
+        descricao: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. *Cores disponiveis: rosa, azul, preto*"
     },
+    
 };
 
 // NÃO MODIFIQUE NADA ABAIXO DESTA LINHA A MENOS QUE VOCÊ SAIBA O QUE ESTÁ FAZENDO

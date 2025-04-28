@@ -1,66 +1,38 @@
-// Produtos 
+// ======================================================
+// ÁREA DE CONFIGURAÇÃO - EDITE AQUI
+// ======================================================
+// Instruções: 
+// 1. Apenas modifique os valores após os dois pontos (:)
+// 2. Mantenha o formato exatamente como está
+// 3. Não remova as aspas ou vírgulas
+// 4. Salve o arquivo após as alterações
+
+// CONFIGURAÇÃO DE PRODUTOS
+// ======================================================
 const produtos = [
+  
     {
          nome: "Vestido Sarah",
-         price: "R$ 390,90",
+         price: "R$ 259,90",
          image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg",
         description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado. *Cores disponiveis: branco, preto,*"
     },
     {
          nome: "Salto alto Preto",
-         price: "R$ 299,90",
-        image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
+         price: "R$ 279,90",
+         image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
         description: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto. *Tamanhos disponiveis: 37, 38, 41*"
     },
     {
          nome: "Bolsa Branca Delicada",
-         price: "R$ 199,90",
+         price: "R$ 420,90",
          image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg",
         description: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. *Cores disponiveis: rosa, azul, preto*"
     },
-    {
-         nome: "Calça Jeans Premium",
-         price: "R$ 259,90",
-         image: "https://i.postimg.cc/bvrMXL7H/calca-jeans.jpg",
-        description: "Calça jeans de modelagem moderna com tecido premium e acabamento de alta qualidade. Confortável e versátil para o dia a dia. *Tamanhos disponiveis: 38, 40, 42, 44*"
-    },
-    {
-         nome: "Blusa de Seda Elegante",
-         price: "R$ 179,90",
-         image: "https://i.postimg.cc/fR8zNSqJ/blusa-seda.jpg",
-        description: "Blusa confeccionada em seda natural com corte fluido e elegante. Peça atemporal que adiciona sofisticação a qualquer look. *Cores disponiveis: off-white, rosa antigo, verde-oliva*"
-    },
-    {
-         nome: "Blazer Estruturado Clássico",
-         price: "R$ 420,90",
-         image: "https://i.postimg.cc/J4QnvBwL/blazer.jpg",
-        description: "Blazer com modelagem estruturada em tecido premium que oferece caimento impecável. Perfeito para compor looks formais e profissionais. *Cores disponiveis: preto, azul marinho, cinza*"
-    },
-    {
-         nome: "Sapatilha Conforto Total",
-         price: "R$ 149,90",
-         image: "https://i.postimg.cc/L5jkJvgS/sapatilha.jpg",
-        description: "Sapatilha confeccionada com tecnologia de amortecimento e materiais leves. Combina estilo e máximo conforto para o uso diário. *Tamanhos disponiveis: 35 ao 39*"
-    },
-    {
-         nome: "Óculos de Sol Premium",
-         price: "R$ 289,90",
-         image: "https://i.postimg.cc/RVjB19py/oculos.jpg",
-        description: "Óculos de sol com proteção UV completa e armação de alta qualidade. Design moderno que complementa diversos estilos e formatos de rosto. *Cores disponiveis: preto, tartaruga, dourado*"
-    },
-    {
-         nome: "Colar Delicado Banhado",
-         price: "R$ 119,90",
-         image: "https://i.postimg.cc/NFYg94Wr/colar.jpg",
-        description: "Colar fino banhado a ouro com pingente minimalista. Joia delicada que adiciona um toque de elegância a qualquer produção. *Acabamentos disponiveis: ouro, prata, rosé*"
-    },
-    {
-         nome: "Saia Midi Plissada",
-         price: "R$ 229,90",
-         image: "https://i.postimg.cc/5ymtLSp9/saia-midi.jpg",
-        description: "Saia midi plissada em tecido fluido com caimento perfeito. Versátil e feminina, ideal para diversas ocasiões do dia a dia ao evento especial. *Cores disponiveis: bege, preto, verde musgo*"
-    },
 ];
+
+// NÃO MODIFIQUE NADA ABAIXO DESTA LINHA A MENOS QUE VOCÊ SAIBA O QUE ESTÁ FAZENDO
+// ======================================================
 
 // Variáveis globais
 let cartItems = [];
@@ -180,6 +152,9 @@ function loadProducts() {
             </div>
         `;
         
+        // Adicionar atributo data-index ao card do produto para facilitar a navegação
+        productCard.setAttribute('data-index', index);
+        
         catalogContainer.appendChild(productCard);
     });
     
@@ -192,10 +167,33 @@ function loadProducts() {
 
 // Adicionar eventos na página principal
 function addEventListeners() {
-    // Evento para navegar para a página de detalhes ao clicar na imagem
+    // MODIFICADO: Evento para navegar para a página de detalhes ao clicar no card do produto
+    const productCards = document.querySelectorAll('.product');
+    productCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Verificar se o clique foi em um botão de ação (favorito ou carrinho)
+            if (e.target.closest('.product-actions') || 
+                e.target.closest('.favorite-btn') || 
+                e.target.closest('.cart-btn')) {
+                // Se o clique foi em um botão, não navegar para a página de detalhes
+                return;
+            }
+            
+            const index = this.getAttribute('data-index');
+            // Salvar o índice do produto no localStorage para recuperar na página de detalhes
+            localStorage.setItem('selectedProductIndex', index);
+            // Redirecionar para a página de detalhes
+            window.location.href = 'product.html';
+        });
+    });
+    
+    // Evento para imagens (mantido para compatibilidade)
     const productImages = document.querySelectorAll('.product-image-container');
     productImages.forEach(img => {
-        img.addEventListener('click', function() {
+        img.addEventListener('click', function(e) {
+            // Impedir que o evento borbulhe para o card
+            e.stopPropagation();
+            
             const index = this.getAttribute('data-index');
             // Salvar o índice do produto no localStorage para recuperar na página de detalhes
             localStorage.setItem('selectedProductIndex', index);
@@ -207,7 +205,10 @@ function addEventListeners() {
     // Favoritar produto
     const favoriteBtns = document.querySelectorAll('.favorite-btn');
     favoriteBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            // Impedir que o evento borbulhe para o card
+            e.stopPropagation();
+            
             const index = this.getAttribute('data-index');
             const heartIcon = this.querySelector('i');
             
@@ -229,7 +230,10 @@ function addEventListeners() {
     // Adicionar ao carrinho
     const cartBtns = document.querySelectorAll('.cart-btn');
     cartBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            // Impedir que o evento borbulhe para o card
+            e.stopPropagation();
+            
             const index = parseInt(this.getAttribute('data-index'));
             addToCart(index);
             
@@ -279,6 +283,11 @@ function addEventListeners() {
     
     // Configurar a pesquisa
     setupSearch();
+    
+    // ADICIONADO: Melhorar o estilo para indicar que o card é clicável
+    productCards.forEach(card => {
+        card.style.cursor = 'pointer';
+    });
 }
 
 // Configurar eventos do carrinho (comuns a todas as páginas)
