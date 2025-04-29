@@ -29,6 +29,7 @@ const produtos = [
          image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg",
         description: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. *Cores disponiveis: rosa, azul, preto*"
     },
+    
 ];
 
 // Variáveis globais

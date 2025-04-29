@@ -28,6 +28,7 @@ body {
     background-color: #fcfaf9;
     color: var(--text-color);
     line-height: 1.6;
+    position: relative;
 }
 
 /* Refined shimmer animation */
@@ -220,7 +221,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 40px;
-    position: relative; /* Added to support absolute positioning of social buttons */
+    position: relative;
 }
 
 /* Section ordering */
@@ -232,7 +233,9 @@ main {
     order: 2;
 }
 
-/* Removi a seção de contato */
+#contato {
+    order: 3;
+}
 
 #localizacao {
     order: 4;
@@ -240,27 +243,38 @@ main {
 
 .section {
     margin-bottom: 20px;
-    background-color: transparent;
+    background-color: var(--light-color);
     border-radius: var(--border-radius-soft);
     padding: 35px;
+    box-shadow: var(--box-shadow);
     display: flex;
     flex-direction: column;
     position: relative;
-    border: none;
-    box-shadow: none;
+    border: 1px solid rgba(212, 175, 55, 0.1);
 }
 
-/* Removi o estilo do título de seção com a linha abaixo */
 .section-title {
     font-size: 26px;
     margin-bottom: 30px;
     color: var(--accent-color);
+    padding-bottom: 15px;
     font-weight: 300;
     letter-spacing: 2px;
     text-transform: uppercase;
     text-align: center;
     position: relative;
     order: 0;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 1px;
+    background-color: var(--primary-color);
 }
 
 /* Elegant hours list */
@@ -322,81 +336,140 @@ main {
     color: var(--accent-color);
 }
 
-/* NEW - Floating Social Icons */
-.floating-social-links {
+/* Social links in bottom right corner */
+.social-links-container {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 80px;
+    right: 30px;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    z-index: 99;
+    z-index: 999;
 }
 
-.social-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+.social-links-container .social-button {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    background-color: var(--light-color);
+    border-radius: 50%;
     text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    border: 1px solid var(--border-color);
     position: relative;
+    overflow: hidden;
 }
 
-/* Glow effect for social icons */
-.social-icon::before {
+/* Add shimmer effect to social buttons */
+.social-links-container .social-button::before {
     content: '';
     position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    background: inherit;
-    border-radius: 50%;
-    z-index: -1;
-    opacity: 0.4;
-    filter: blur(8px);
-    transition: all 0.3s ease;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(120deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0) 30%,
+        rgba(255,255,255,0.6) 50%,
+        rgba(255,255,255,0) 70%,
+        rgba(255,255,255,0) 100%);
+    background-size: 200% 200%;
+    transform: rotate(45deg);
+    animation: socialShimmer 4s infinite linear;
+    z-index: 1;
 }
 
-.social-icon:hover::before {
-    opacity: 0.7;
-    filter: blur(12px);
+@keyframes socialShimmer {
+    0% {
+        transform: rotate(45deg) translateX(-100%);
+    }
+    100% {
+        transform: rotate(45deg) translateX(100%);
+    }
 }
 
-.social-icon:hover {
-    transform: translateY(-5px);
+.social-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0) 45%,
+        rgba(255,255,255,0.4) 50%,
+        rgba(255,255,255,0) 55%,
+        rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 5s infinite linear;
+    z-index: 1;
 }
 
-.instagram-icon {
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+.social-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    background-color: rgba(255,255,255,0.95);
+}
+
+.social-button i {
+    font-size: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.instagram {
+    color: var(--instagram-color);
+    border-color: var(--instagram-color);
+}
+
+.instagram:hover {
+    background-color: var(--instagram-color);
     color: white;
 }
 
-.tiktok-icon {
-    background: linear-gradient(45deg, #000000, #25F4EE, #FE2C55, #000000);
+.tiktok {
+    color: var(--tiktok-color);
+    border-color: var(--tiktok-color);
+}
+
+.tiktok:hover {
+    background-color: var(--tiktok-color);
     color: white;
 }
 
-.whatsapp-icon {
+.whatsapp {
+    color: var(--whatsapp-color);
+    border-color: var(--whatsapp-color);
+}
+
+.whatsapp:hover {
     background-color: var(--whatsapp-color);
     color: white;
 }
 
-.location-icon {
+.location {
+    color: #4285F4;
+    border-color: #4285F4;
+}
+
+.location:hover {
     background-color: #4285F4;
     color: white;
 }
 
-.social-icon i {
-    font-size: 22px;
+/* Hide original social links in the contato and localizacao sections */
+#contato .social-links, 
+#localizacao .social-links {
+    display: none;
 }
-
-/* Social links with gold accents - Original (can be removed or kept as alternative) */
-/* Removi os estilos antigos dos botões sociais */
 
 /* Elegant share button */
 .share-button {
@@ -1414,28 +1487,23 @@ footer p {
         font-size: 13px;
     }
     
+    /* Social links container adjustment */
+    .social-links-container {
+        bottom: 60px;
+        right: 15px;
+    }
+    
+    .social-links-container .social-button {
+        width: 40px;
+        height: 40px;
+    }
+    
     /* Cart button adjustments */
     .cart-button {
         width: 45px;
         height: 45px;
         top: 15px;
         right: 15px;
-    }
-    
-    /* Floating social icons adjustments */
-    .floating-social-links {
-        bottom: 15px;
-        right: 15px;
-        gap: 10px;
-    }
-    
-    .social-icon {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .social-icon i {
-        font-size: 18px;
     }
     
     /* Main content adjustments */
@@ -1544,6 +1612,21 @@ footer p {
         padding: 12px 15px;
     }
     
+    /* Social links container adjustment for very small screens */
+    .social-links-container {
+        bottom: 50px;
+        right: 10px;
+    }
+    
+    .social-links-container .social-button {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .social-links-container .social-button i {
+        font-size: 16px;
+    }
+    
     /* Product catalog adjustments */
     .catalog {
         grid-template-columns: repeat(2, 1fr);
@@ -1621,22 +1704,6 @@ footer p {
     .color-option {
         width: 26px;
         height: 26px;
-    }
-    
-    /* Floating social icons adjustments for very small screens */
-    .floating-social-links {
-        bottom: 10px;
-        right: 10px;
-        gap: 8px;
-    }
-    
-    .social-icon {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .social-icon i {
-        font-size: 16px;
     }
     
     /* Footer adjustments */
