@@ -124,11 +124,11 @@ header::before {
     height: 100%;
     background: linear-gradient(90deg,
         transparent 0%,
-        rgba(99, 84, 83, 0.15) 25%,
-        rgba(99, 84, 83, 0.25) 50%,
-        rgba(99, 84, 83, 0.15) 75%,
+        rgba(99, 84, 83, 0.08) 25%,
+        rgba(99, 84, 83, 0.12) 50%,
+        rgba(99, 84, 83, 0.08) 75%,
         transparent 100%);
-    animation: backgroundShimmer 4s infinite linear;
+    animation: backgroundShimmer 6s infinite linear;
     z-index: 1;
 }
 
