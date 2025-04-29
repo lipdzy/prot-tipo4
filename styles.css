@@ -6,13 +6,12 @@
     --text-color: #3a3535;
     --light-color: #ffffff;
     --dark-color: #2a2526;
-    --gold-accent: #d4af37;
-    --soft-gold: rgba(212, 175, 55, 0.15);
+    --shimmer-color: rgba(255, 255, 255, 0.5);
+    --soft-shimmer: rgba(255, 255, 255, 0.3);
+    --border-color: rgba(155, 130, 129, 0.2);
     --whatsapp-color: #25D366;
     --instagram-color: #C13584;
     --tiktok-color: #000000;
-    --shimmer-color: rgba(255, 255, 255, 0.5);
-    --border-color: rgba(212, 175, 55, 0.2);
     --border-radius-soft: 8px;
     --border-radius-round: 30px;
     --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -57,7 +56,7 @@ body {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(212,175,55,0.2) 50%,
+        rgba(255,255,255,0.4) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
@@ -86,7 +85,7 @@ header::before {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(212,175,55,0.15) 50%,
+        rgba(255,255,255,0.25) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
@@ -125,9 +124,9 @@ header::before {
     height: 100%;
     background: linear-gradient(90deg,
         transparent 0%,
-        rgba(212, 175, 55, 0.2) 25%,
-        rgba(212, 175, 55, 0.3) 50%,
-        rgba(212, 175, 55, 0.2) 75%,
+        rgba(255, 255, 255, 0.4) 25%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0.4) 75%,
         transparent 100%);
     animation: backgroundShimmer 4s infinite linear;
     z-index: 1;
@@ -202,7 +201,7 @@ nav a::after {
     left: 0;
     width: 0;
     height: 1px;
-    background-color: var(--gold-accent);
+    background-color: var(--light-color);
     transition: all 0.3s ease;
 }
 
@@ -211,7 +210,7 @@ nav a:hover::after {
 }
 
 nav a:hover {
-    color: var(--gold-accent);
+    color: var(--light-color);
 }
 
 main {
@@ -273,7 +272,7 @@ main {
     transform: translateX(-50%);
     width: 60px;
     height: 1px;
-    background-color: var(--gold-accent);
+    background-color: var(--primary-color);
 }
 
 /* Elegant hours list */
@@ -302,10 +301,10 @@ main {
 .hours-list li:hover {
     transform: translateY(-3px);
     box-shadow: 0 7px 14px rgba(0, 0, 0, 0.07);
-    border-color: rgba(212, 175, 55, 0.3);
+    border-color: rgba(155, 130, 129, 0.3);
 }
 
-/* Subtle gold shimmer effect */
+/* White shimmer effect */
 .hours-list li::before {
     content: '';
     position: absolute;
@@ -316,7 +315,7 @@ main {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(212,175,55,0.15) 50%,
+        rgba(255,255,255,0.3) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
@@ -373,7 +372,7 @@ main {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(212,175,55,0.2) 50%,
+        rgba(255,255,255,0.4) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
@@ -472,7 +471,7 @@ main {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(255,255,255,0.2) 50%,
+        rgba(255,255,255,0.3) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
@@ -553,7 +552,7 @@ main {
 
 /* Search results styling */
 .search-highlight {
-    background-color: var(--soft-gold);
+    background-color: var(--soft-shimmer);
     padding: 2px 0;
     border-radius: 3px;
 }
@@ -583,13 +582,13 @@ main {
     height: 380px;
     display: flex;
     flex-direction: column;
-    border: 1px solid rgba(212, 175, 55, 0.05);
+    border: 1px solid rgba(155, 130, 129, 0.05);
 }
 
 .product:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    border-color: rgba(212, 175, 55, 0.15);
+    border-color: rgba(155, 130, 129, 0.15);
 }
 
 .product-image-container {
@@ -867,7 +866,7 @@ main {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(255,255,255,0.2) 50%,
+        rgba(255,255,255,0.3) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
@@ -910,7 +909,7 @@ main {
     overflow-y: auto;
     position: relative;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(155, 130, 129, 0.1);
 }
 
 .cart-header {
@@ -949,7 +948,7 @@ main {
     display: flex;
     margin-bottom: 20px;
     padding-bottom: 20px;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    border-bottom: 1px solid rgba(155, 130, 129, 0.1);
 }
 
 .cart-item-image {
@@ -1083,7 +1082,7 @@ main {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(255,255,255,0.2) 50%,
+        rgba(255,255,255,0.3) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
@@ -1157,7 +1156,7 @@ main {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(212,175,55,0.15) 50%,
+        rgba(255,255,255,0.4) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
@@ -1231,7 +1230,7 @@ footer::before {
     background: linear-gradient(120deg, 
         rgba(255,255,255,0) 0%,
         rgba(255,255,255,0) 45%,
-        rgba(212,175,55,0.15) 50%,
+        rgba(255,255,255,0.25) 50%,
         rgba(255,255,255,0) 55%,
         rgba(255,255,255,0) 100%);
     background-size: 200% 100%;
