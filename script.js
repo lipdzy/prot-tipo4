@@ -9,30 +9,27 @@
 
 // CONFIGURAÇÃO DE PRODUTOS
 // ======================================================
+// Produtos 
 const produtos = [
-  
     {
          nome: "Vestido Sarah",
-         price: "R$ 259,90",
+         price: "R$ 390,90",
          image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg",
         description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado. *Cores disponiveis: branco, preto,*"
     },
     {
          nome: "Salto alto Preto",
-         price: "R$ 279,90",
-         image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
+         price: "R$ 299,90",
+        image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
         description: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto. *Tamanhos disponiveis: 37, 38, 41*"
     },
     {
          nome: "Bolsa Branca Delicada",
-         price: "R$ 420,90",
+         price: "R$ 199,90",
          image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg",
         description: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. *Cores disponiveis: rosa, azul, preto*"
     },
 ];
-
-// NÃO MODIFIQUE NADA ABAIXO DESTA LINHA A MENOS QUE VOCÊ SAIBA O QUE ESTÁ FAZENDO
-// ======================================================
 
 // Variáveis globais
 let cartItems = [];
@@ -1016,30 +1013,18 @@ function processFormData(form, expandedCartItems, originalCartItems) {
     let message = '*📋 NOVO PEDIDO:*\n\n';
     let total = 0;
     
-    // Agrupar itens do mesmo produto para exibição mais organizada
-    const groupedItems = {};
-    
-    // Primeiro, agrupar itens por produto e especificações
-    itemsWithDetails.forEach(item => {
-        const key = `${item.name}-${item.size}-${item.color}`;
-        if (!groupedItems[key]) {
-            groupedItems[key] = {
-                ...item,
-                groupQuantity: 1
-            };
-        } else {
-            groupedItems[key].groupQuantity++;
-        }
-        
+    // Processar cada item individualmente, sem agrupar
+    itemsWithDetails.forEach((item, index) => {
         // Calcular valor para o total geral
         const priceValue = parseFloat(item.price.replace('R$ ', '').replace(',', '.'));
         total += priceValue;
-    });
-    
-    // Adicionar itens agrupados à mensagem
-    Object.values(groupedItems).forEach(item => {
+        
+        // Informação adicional para itens do mesmo produto
+        const sameItemInfo = item.originalQuantity > 1 ? 
+            ` (Unidade ${item.unitIndex} de ${item.originalQuantity})` : '';
+        
         // Adicionar item à mensagem
-        message += `• ${item.groupQuantity}x ${item.name} - ${item.price} cada\n`;
+        message += `• ${item.name}${sameItemInfo} - ${item.price}\n`;
         message += `  - Tamanho: ${item.size}\n`;
         message += `  - Cor: ${item.color}\n`;
     });
