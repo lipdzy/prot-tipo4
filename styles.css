@@ -629,10 +629,10 @@ main {
 
 .product-title-price {
     width: 100%;
-    margin-bottom: 5px;
     display: flex;
     flex-direction: column;
-    height: 70%;
+    height: 75%;
+    overflow: hidden;
 }
 
 .product-title {
@@ -663,8 +663,8 @@ main {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    margin-top: 4px;
-    height: 30%;
+    height: 25%;
+    padding-top: 5px;
 }
 
 .favorite-btn, .cart-btn {
@@ -1598,7 +1598,7 @@ footer p {
     /* Product details adjustments */
     .product-details {
         height: 25%;
-        padding: 8px 10px;
+        padding: 8px 10px 10px;
     }
     
     .product-title-price {
@@ -1622,8 +1622,8 @@ footer p {
     /* Button adjustments for small screens */
     .product-actions {
         gap: 5px;
-        margin-top: 2px;
         height: 25%;
+        padding-top: 3px;
     }
     
     .favorite-btn, .cart-btn {
