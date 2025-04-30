@@ -3,114 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Closet Dellas - Sua loja de roupas</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Boutique Elegance | Moda Feminina Exclusiva</title>
+    
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <!-- Header com logo e mensagem de boas-vindas -->
+    <header class="header">
         <div class="logo-container">
-            <div class="logo logo-shimmer">
+            <div class="logo-placeholder">
                 <img src="https://i.postimg.cc/65Wz3j7G/CLOSET-DELLAS-jpg.jpg" alt="Logo da Loja">
             </div>
-            <h1 class="company-name">Closet Dellas</h1>
-            <p class="welcome-text">Bem-vindo à Closet Dellas! Faça já o seu pedido!</p>
-        </div>
-        <nav>
-            <a href="#horarios">Horários</a>
-            <a href="#produtos">Produtos</a>            
-        </nav>
-                
-        <!-- Botão do carrinho no canto superior direito -->
-        <div class="cart-button" id="cartButton">
-            <i class="fas fa-shopping-cart"></i>
-            <div class="cart-button-counter" id="cartButtonCounter">0</div>
+            <h1 class="store-name">CLOSET DELLAS</h1>
+            <p class="welcome-message">ELEGÂNCIA EM CADA DETALHE</p>
         </div>
     </header>
-
-    <main>
-        <!-- Seção de Horários Simplificados -->
-<section class="section" id="horarios">
-    <h2 class="section-title">Horários de Funcionamento</h2>
-    <ul class="hours-list">
-        <li><span>Segunda a Sexta:</span> <span>09:00 - 18:00</span></li>
-        <li><span>Sábado:</span> <span>09:00 - 13:00</span></li>
-        
-    </ul>
-</section>
-
-        <!-- Seção de Produtos/Catálogo -->
-        <section class="section" id="produtos">
-            <h2 class="section-title">Nossos Produtos</h2>
-            
-            <!-- Barra de pesquisa -->
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Pesquisar produtos...">
-                    <button id="searchButton">
-                        <i class="fas fa-search"></i>
-                    </button>
+    
+    <!-- Conteúdo principal -->
+    <div class="container">
+        <!-- Status de funcionamento -->
+        <div class="store-status">
+            <div>
+                <h2 class="hours-title">Horário de Atendimento</h2>
+                <div class="hours">
+                    <p><span>Segunda a Sexta:</span> 09:00 - 18:00</p>
+                    <p><span>Sábado:</span> 09:00 - 13:00</p>
                 </div>
             </div>
-            
-            <!-- Catálogo de produtos -->
-            <div class="catalog" id="catalog">
-                <!-- Os produtos serão inseridos aqui via JavaScript -->
+            <div class="status-indicator" id="status">
+                <!-- Será atualizado via JavaScript -->
             </div>
-        </section>
-
-        <!-- Seção de Contato -->
-<div class="social-links-container">
-    <a href="https://wa.me/+5583991816152" class="social-button whatsapp" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-    <a href="https://www.instagram.com/arthur.fellp/" class="social-button instagram" target="_blank">
-        <i class="fab fa-instagram"></i>
-    </a>
-    <a href="https://www.tiktok.com/@arthsntt" class="social-button tiktok" target="_blank">
-        <i class="fab fa-tiktok"></i>
-    </a>
-    <a href="https://maps.app.goo.gl/bGNWmxNbjNZQTpjr5" class="social-button location" target="_blank">
-        <i class="fas fa-map-marker-alt"></i>
-    </a>
-</div>
-        </section>
-    </main>
-
-    <!-- Modal para visualização de imagem -->
-    <div id="productModal" class="product-modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <img id="modalImage" src="" alt="">
         </div>
-    </div>
-
-    <!-- Carrinho de compras -->
-    <div id="cartOverlay" class="cart-overlay">
-        <div class="cart-container">
-            <div class="cart-header">
-                <h2 class="cart-title">Seu Carrinho</h2>
-                <span class="close-cart">&times;</span>
-            </div>
-            <div id="cartItems" class="cart-items">
-                <!-- Itens do carrinho serão inseridos aqui via JavaScript -->
-            </div>
-            <div id="cartTotal" class="cart-total">Total: R$ 0,00</div>
-            <div class="cart-actions">
-                <button id="clearCart" class="cart-clear">Limpar Carrinho</button>
-                <button id="shareCart" class="cart-share">
-                    <i class="fab fa-whatsapp"></i> Compartilhar no WhatsApp
-                </button>
-            </div>
+        
+        <!-- Redes sociais -->
+        <div class="social-links">
+            <h2 class="social-title">Nossas Redes</h2>
+            <ul class="social-list">
+                <li class="social-item">
+                    <a href="#" class="social-link" target="_blank">
+                        <div class="social-icon instagram">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <span class="social-text">Conheça nosso Instagram</span>
+                    </a>
+                </li>
+                <li class="social-item">
+                    <a href="#" class="social-link" target="_blank">
+                        <div class="social-icon whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <span class="social-text">Atendimento Exclusivo via WhatsApp</span>
+                    </a>
+                </li>
+                <li class="social-item">
+                    <a href="#" class="social-link" target="_blank">
+                        <div class="social-icon tiktok">
+                            <i class="fab fa-tiktok"></i>
+                        </div>
+                        <span class="social-text">Tendências no nosso TikTok</span>
+                    </a>
+                </li>
+                <li class="social-item">
+                    <a href="#" class="social-link" target="_blank">
+                        <div class="social-icon location">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <span class="social-text">Visite nossa Loja</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
     
-    <footer>
-        <p>&copy; 2025 Closet Dellas - Todos os direitos reservados</p>
-        <p>Sua loja especializada em roupas</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Belle Rose - Moda Feminina Elegante - Todos os direitos reservados</p>
     </footer>
-    
+
+    <!-- Linkando o JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
