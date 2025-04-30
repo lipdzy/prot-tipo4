@@ -15,21 +15,17 @@ const produtos = [
          nome: "Vestido Sarah",
          price: "R$ 390,90",
          image: "https://i.postimg.cc/YqtZJRZp/vestidobranco.jpg",
-        description: "Vestido branco em tecido leve e fluido, com detalhes rendados. Ideal para ocasiões que pedem um visual romântico e sofisticado. *Cores disponiveis: branco, preto,*"
     },
     {
          nome: "Salto alto Preto",
          price: "R$ 299,90",
         image: "https://i.postimg.cc/SxH495Ny/salto-alto.jpg",
-        description: "Sapato de salto alto preto em couro sintético de alta qualidade. Design atemporal que combina com diversos looks, oferecendo elegância e conforto. *Tamanhos disponiveis: 37, 38, 41*"
     },
     {
          nome: "Bolsa Branca Delicada",
          price: "R$ 199,90",
          image: "https://i.postimg.cc/v8qvXvrg/bolsa.jpg",
-        description: "Bolsa branca em material sintético de alta durabilidade, com acabamento premium e compartimentos internos organizados. *Cores disponiveis: rosa, azul, preto*"
     },
-    
 ];
 
 // Variáveis globais
