@@ -158,7 +158,51 @@ function loadProducts() {
     // Adicionar eventos após criar os elementos
     addEventListeners();
 }
-
+// Configurar eventos na página de detalhes
+function setupDetailPageEvents(productIndex) {
+    // Obter elementos do DOM
+    const decreaseBtn = document.getElementById('decreaseQuantity');
+    const increaseBtn = document.getElementById('increaseQuantity');
+    const quantityValue = document.getElementById('quantityValue');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    
+    // Verificar se todos os elementos necessários existem
+    if (!decreaseBtn || !increaseBtn || !quantityValue || !addToCartBtn) {
+        console.error('Elementos de quantidade ou botão de adicionar ao carrinho não encontrados.');
+        return;
+    }
+    
+    let quantity = 1;
+    
+    // Remover listeners antigos se existirem
+    const newDecreaseBtn = decreaseBtn.cloneNode(true);
+    const newIncreaseBtn = increaseBtn.cloneNode(true);
+    const newAddToCartBtn = addToCartBtn.cloneNode(true);
+    
+    decreaseBtn.parentNode.replaceChild(newDecreaseBtn, decreaseBtn);
+    increaseBtn.parentNode.replaceChild(newIncreaseBtn, increaseBtn);
+    addToCartBtn.parentNode.replaceChild(newAddToCartBtn, addToCartBtn);
+    
+    // Diminuir quantidade
+    newDecreaseBtn.addEventListener('click', function() {
+        if (quantity > 1) {
+            quantity--;
+            quantityValue.textContent = quantity;
+        }
+    });
+    
+    // Aumentar quantidade
+    newIncreaseBtn.addEventListener('click', function() {
+        quantity++;
+        quantityValue.textContent = quantity;
+    });
+    
+    // Adicionar ao carrinho - SOMENTE quando o botão é clicado
+    newAddToCartBtn.addEventListener('click', function() {
+        // Adicionar ao carrinho com a quantidade atual
+        addToCartFromDetails(productIndex, quantity);
+    });
+}
 // Adicionar eventos na página principal
 function addEventListeners() {
     // MODIFICADO: Evento para navegar para a página de detalhes ao clicar no card do produto

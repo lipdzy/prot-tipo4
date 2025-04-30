@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
-    // Carregar detalhes do produto
+    // Carregar detalhes do produto - só exibe informações, não adiciona ao carrinho
     loadProductDetails(parseInt(productIndex));
     
     // Configurar eventos na página de detalhes
