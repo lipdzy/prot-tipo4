@@ -277,36 +277,48 @@ main {
     background-color: var(--primary-color);
 }
 
-/* Elegant hours list */
+/* Compact hours section - UPDATED */
+#horarios {
+    padding: 20px 20px 25px;
+}
+
+#horarios .section-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+}
+
 .hours-list {
     list-style: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
     width: 100%;
 }
 
 .hours-list li {
-    margin-bottom: 0;
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    padding: 8px 15px;
+    min-width: 220px;
     display: flex;
     justify-content: space-between;
-    padding: 20px 25px;
-    background-color: var(--secondary-color);
-    border-radius: var(--border-radius-soft);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.02);
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(155, 130, 129, 0.1);
+    transition: all 0.3s ease;
+    font-size: 12px;
 }
 
 .hours-list li:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.07);
-    border-color: rgba(155, 130, 129, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
 }
 
-/* White shimmer effect */
+.hours-list li span:first-child {
+    font-weight: 500;
+}
+
+/* White shimmer effect - simplified */
 .hours-list li::before {
     content: '';
     position: absolute;
@@ -323,17 +335,6 @@ main {
     background-size: 200% 100%;
     animation: shimmer 5s infinite linear;
     z-index: 1;
-}
-
-.hours-list li span {
-    position: relative;
-    z-index: 2;
-    font-weight: 400;
-}
-
-.hours-list li span:first-child {
-    font-weight: 600;
-    color: var(--accent-color);
 }
 
 /* Social links in bottom right corner */
